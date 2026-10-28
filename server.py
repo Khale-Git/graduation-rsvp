@@ -29,7 +29,7 @@ if sys.platform.startswith('win'):
         pass
 
 PORT = 8088
-ADMIN_PASSWORDS = ["Organiser2026", "2026", "organizer2026"]
+ADMIN_PASSWORDS = [os.environ.get("ORGANISER_PASSCODE", "IanBobians#2026")]
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "rsvps.json")
 
@@ -101,7 +101,7 @@ class RSVPRequestHandler(http.server.SimpleHTTPRequestHandler):
         # GET /api/export-csv - Download CSV spreadsheet
         if path == "/api/export-csv":
             pin = query.get("pin", [""])[0] or self.headers.get("X-Admin-Pin", "")
-            if pin != ADMIN_PIN:
+            if pin not in ADMIN_PASSWORDS:
                 self.send_json_response({"error": "Unauthorized. Invalid Admin PIN."}, status=401)
                 return
 

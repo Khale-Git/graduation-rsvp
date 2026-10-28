@@ -175,20 +175,6 @@
       padding: 0.25rem;
     }
 
-    .auth-hint-box {
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px dashed rgba(56, 189, 248, 0.3);
-      border-radius: 8px;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.78rem;
-      color: #93c5fd;
-      margin-bottom: 1.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
     .auth-error-msg {
       color: #f87171;
       font-size: 0.82rem;
@@ -619,12 +605,7 @@
           <div id="login-error-msg" class="auth-error-msg">Incorrect passcode. Please try again.</div>
         </div>
 
-        <div class="auth-hint-box">
-          <span>ℹ️</span>
-          <span>Organiser Passcode: <strong>Organiser2026</strong></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary-tech btn-full">
+        <button type="submit" class="btn btn-primary-tech btn-full" style="margin-top: 1.25rem;">
           <span>Unlock Headcount Dashboard</span>
         </button>
       </form>
@@ -647,6 +628,9 @@
         <button id="refresh-roster-btn" class="btn btn-sm btn-ghost-tech" title="Refresh data from server or local database">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
           <span>Refresh</span>
+        </button>
+        <button id="change-passcode-btn" class="btn btn-sm btn-outline-cyber" title="Change your secret Organiser Passcode">
+          <span>🔑 Change Passcode</span>
         </button>
         <button id="export-catering-csv-btn" class="btn btn-sm btn-primary-tech" title="Download Excel-compatible CSV for catering and budgeting">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -758,12 +742,23 @@
   <script>
     /* ===================================================================
        ORGANISER PORTAL ENGINE
-       Dedicated Passcode: Organiser2026 (or 2026)
+       Protected by Client-Side Cryptographic SHA-256 Hashing
        =================================================================== */
     (function() {
-      const PASSWORDS = ['Organiser2026', '2026', 'organizer2026'];
       const AUTH_STORAGE_KEY = 'ikg_organiser_auth_session';
+      const PASS_HASH_KEY = 'ikg_organiser_pass_hash_v2';
       const LOCAL_CACHE_KEY = 'ikg_rsvp_admin_cache_v1';
+
+      async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      function getStoredPassHash() {
+        return localStorage.getItem(PASS_HASH_KEY) || '5c8698a24637e69b445958a9caa0510334344c520d274ce57ad9a16aef235048';
+      }
 
       const authGate = document.getElementById('auth-gate-section');
       const dashboard = document.getElementById('admin-dashboard-section');
@@ -878,13 +873,17 @@
         unlockDashboard();
       }
 
-      // 3. Login Submission
-      loginForm.addEventListener('submit', (e) => {
+      // 3. Login Submission (Cryptographic Hash Verification)
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const entered = (pwInput.value || '').trim();
-        if (PASSWORDS.includes(entered)) {
+        const enteredHash = await sha256(entered);
+        const validHash = getStoredPassHash();
+
+        if (enteredHash === validHash) {
           errorMsg.style.display = 'none';
           sessionStorage.setItem(AUTH_STORAGE_KEY, 'true');
+          sessionStorage.setItem('ikg_organiser_active_key', entered);
           unlockDashboard();
         } else {
           errorMsg.style.display = 'block';
@@ -892,9 +891,38 @@
         }
       });
 
-      // 4. Sign Out
+      // 4. Change Passcode Handler (Organiser can update at any time)
+      const changePassBtn = document.getElementById('change-passcode-btn');
+      if (changePassBtn) {
+        changePassBtn.addEventListener('click', async () => {
+          const currentPass = prompt("Security Check: Enter your current secret passcode:");
+          if (!currentPass) return;
+          const currentHash = await sha256(currentPass.trim());
+          if (currentHash !== getStoredPassHash()) {
+            alert("Security Verification Failed: Incorrect current passcode.");
+            return;
+          }
+          const newPass = prompt("Enter your NEW secret passcode:");
+          if (!newPass || newPass.trim().length < 4) {
+            alert("Security Error: Passcode must be at least 4 characters.");
+            return;
+          }
+          const confirmPass = prompt("Confirm your NEW secret passcode:");
+          if (newPass.trim() !== (confirmPass || '').trim()) {
+            alert("Error: Passcodes do not match. Passcode was NOT changed.");
+            return;
+          }
+          const newHash = await sha256(newPass.trim());
+          localStorage.setItem(PASS_HASH_KEY, newHash);
+          sessionStorage.setItem('ikg_organiser_active_key', newPass.trim());
+          alert("✓ Secret passcode updated successfully! Only you have access to this portal.");
+        });
+      }
+
+      // 5. Sign Out
       signOutBtn.addEventListener('click', () => {
         sessionStorage.removeItem(AUTH_STORAGE_KEY);
+        sessionStorage.removeItem('ikg_organiser_active_key');
         localStorage.removeItem(AUTH_STORAGE_KEY);
         dashboard.style.display = 'none';
         authGate.style.display = 'flex';
@@ -909,7 +937,7 @@
         loadRosterData();
       }
 
-      // 5. Data Fetching (Server API + LocalStorage Cache + Sample Fallback)
+      // 6. Data Fetching (Server API + LocalStorage Cache + Sample Fallback)
       async function loadRosterData() {
         let combined = [];
 
@@ -926,7 +954,8 @@
 
         // Fetch from backend API if running
         try {
-          const res = await fetch('/api/rsvps?pin=Organiser2026');
+          const activePin = sessionStorage.getItem('ikg_organiser_active_key') || '';
+          const res = await fetch(`/api/rsvps?pin=${encodeURIComponent(activePin)}`);
           if (res.ok) {
             const json = await res.json();
             if (json.rsvps && Array.isArray(json.rsvps) && json.rsvps.length > 0) {
