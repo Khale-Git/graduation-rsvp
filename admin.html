@@ -750,7 +750,73 @@
         loadRosterData();
       }
 
-      // 5. Data Fetching (Server API + LocalStorage Cache)
+      const SAMPLE_RECORDS = [
+        {
+          referenceCode: "IKG-7482",
+          fullName: "The Wanje Family",
+          phoneNumber: "+254 712 345 678",
+          attending: "yes",
+          guestCount: 4,
+          message: "Excited to celebrate Ian's big milestone! Standard menu is great.",
+          submittedAt: "2026-10-28T09:15:00.000Z"
+        },
+        {
+          referenceCode: "IKG-3921",
+          fullName: "Zablon & Guest",
+          phoneNumber: "+254 722 987 654",
+          attending: "yes",
+          guestCount: 2,
+          message: "Vegetarian meals preferred for both of us. Proud of you brother!",
+          submittedAt: "2026-10-28T10:30:00.000Z"
+        },
+        {
+          referenceCode: "IKG-8104",
+          fullName: "Prof. Sarah Wanjiku",
+          phoneNumber: "+254 733 112 233",
+          attending: "yes",
+          guestCount: 2,
+          message: "Hearty congratulations Ian on your Bachelor's Degree in Applied Computer Science!",
+          submittedAt: "2026-10-28T11:45:00.000Z"
+        },
+        {
+          referenceCode: "IKG-5519",
+          fullName: "Brian Mwangi",
+          phoneNumber: "+254 701 445 566",
+          attending: "yes",
+          guestCount: 2,
+          message: "Halal dietary preference please. Can't wait for Saturday!",
+          submittedAt: "2026-10-28T12:20:00.000Z"
+        },
+        {
+          referenceCode: "IKG-9230",
+          fullName: "Dr. & Mrs. Kimemia",
+          phoneNumber: "+254 720 556 778",
+          attending: "yes",
+          guestCount: 3,
+          message: "Delighted to attend and celebrate this achievement with the family.",
+          submittedAt: "2026-10-28T13:10:00.000Z"
+        },
+        {
+          referenceCode: "IKG-1647",
+          fullName: "Kevin Otieno",
+          phoneNumber: "+254 715 889 900",
+          attending: "no",
+          guestCount: 1,
+          message: "Sending warmest congratulations from Mombasa! Will celebrate with you in spirit.",
+          submittedAt: "2026-10-28T14:05:00.000Z"
+        },
+        {
+          referenceCode: "IKG-6395",
+          fullName: "Daystar CS Alumni Group",
+          phoneNumber: "+254 798 334 455",
+          attending: "yes",
+          guestCount: 5,
+          message: "Daystar CS Class of 2026 cohort coming through!",
+          submittedAt: "2026-10-28T14:40:00.000Z"
+        }
+      ];
+
+      // 5. Data Fetching (Server API + LocalStorage Cache + Sample Fallback)
       async function loadRosterData() {
         let combined = [];
 
@@ -767,8 +833,7 @@
           const res = await fetch('/api/rsvps?pin=Organiser2026');
           if (res.ok) {
             const json = await res.json();
-            if (json.rsvps && Array.isArray(json.rsvps)) {
-              // Merge deduplicating by referenceCode or phoneNumber
+            if (json.rsvps && Array.isArray(json.rsvps) && json.rsvps.length > 0) {
               const map = new Map();
               combined.forEach(item => map.set(item.referenceCode || item.phoneNumber, item));
               json.rsvps.forEach(item => map.set(item.referenceCode || item.phoneNumber, item));
@@ -776,8 +841,15 @@
             }
           }
         } catch (err) {
-          // If running statically on GitHub Pages, fallback to cached RSVPs
           console.log('Running on static host, utilizing cached attendee database.');
+        }
+
+        // If no records yet, use the realistic sample dummy data
+        if (!combined || combined.length === 0) {
+          combined = [...SAMPLE_RECORDS];
+          try {
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
+          } catch (e) {}
         }
 
         currentData = combined;
