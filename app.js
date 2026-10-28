@@ -297,6 +297,8 @@ function initRSVPForm() {
 
     const dietarySelect = document.getElementById('dietaryRequirements');
     const dietaryVal = dietarySelect ? dietarySelect.value : 'Standard Menu';
+    const teaSelect = document.getElementById('teaPreference');
+    const teaVal = teaSelect ? teaSelect.value : 'Chai (Tea with Sugar)';
 
     const rsvpPayload = {
       referenceCode: refCode,
@@ -305,6 +307,7 @@ function initRSVPForm() {
       attending: attendingVal,
       guestCount: guestCountVal,
       dietary: dietaryVal,
+      teaPreference: teaVal,
       message: notesVal,
       timestamp: new Date().toISOString()
     };
@@ -389,6 +392,22 @@ function initRSVPForm() {
       partyRow.style.display = 'none';
     }
 
+    const dietRow = document.getElementById('confirmed-diet-row');
+    const dietValEl = document.getElementById('confirmed-dietary');
+    const teaRow = document.getElementById('confirmed-tea-row');
+    const teaValEl = document.getElementById('confirmed-tea');
+
+    if (dietValEl) dietValEl.textContent = data.dietary || 'Standard Menu';
+    if (teaValEl) teaValEl.textContent = data.teaPreference || 'Chai (Tea with Sugar)';
+
+    if (data.attending === 'No') {
+      if (dietRow) dietRow.style.display = 'none';
+      if (teaRow) teaRow.style.display = 'none';
+    } else {
+      if (dietRow) dietRow.style.display = 'flex';
+      if (teaRow) teaRow.style.display = 'flex';
+    }
+
     document.getElementById('confirmed-ref').textContent = data.referenceCode || 'IKG-2026-ACS-DAYSTAR';
 
     if (dbStatusEl) {
@@ -418,6 +437,8 @@ function initRSVPForm() {
           fullNameInput.value = parsed.fullName || '';
           phoneInput.value = parsed.phoneNumber || '';
           congratsMsgInput.value = parsed.message || '';
+          if (dietarySelect && parsed.dietary) dietarySelect.value = parsed.dietary;
+          if (teaSelect && parsed.teaPreference) teaSelect.value = parsed.teaPreference;
           
           if (parsed.attending === 'No') {
             document.getElementById('attending-no').checked = true;

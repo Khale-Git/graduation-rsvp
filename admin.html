@@ -688,7 +688,7 @@
 
     <!-- Dietary Preferences Summary Ribbon -->
     <div class="dietary-pills-wrap">
-      <span class="dietary-pill-title">🍽️ Catering Dietary Breakdown:</span>
+      <span class="dietary-pill-title">🍽️ Food Preferences Breakdown:</span>
       <div class="dietary-badges" id="dietary-badges-list">
         <span class="dietary-counter-badge diet-std">🍽️ Standard: <strong id="diet-standard-count">0</strong></span>
         <span class="dietary-counter-badge diet-veg">🥗 Vegetarian: <strong id="diet-veg-count">0</strong></span>
@@ -696,6 +696,17 @@
         <span class="dietary-counter-badge diet-vegan">🌱 Vegan: <strong id="diet-vegan-count">0</strong></span>
         <span class="dietary-counter-badge diet-gluten">🌾 Gluten-Free: <strong id="diet-gluten-count">0</strong></span>
         <span class="dietary-counter-badge diet-other">⚠️ Allergies / Other: <strong id="diet-special-count">0</strong></span>
+      </div>
+    </div>
+
+    <!-- Kenyan Celebration Tea Urn Breakdown (Chai, Ndufia, Strong) -->
+    <div class="dietary-pills-wrap" style="border-color: rgba(245, 158, 11, 0.35); background: rgba(30, 20, 10, 0.45);">
+      <span class="dietary-pill-title" style="color: #fbbf24;">☕ Kenyan Tea Urns (Catering):</span>
+      <div class="dietary-badges" id="tea-badges-list">
+        <span class="dietary-counter-badge" style="border-color: rgba(245, 158, 11, 0.4); color: #fde68a;">☕ Chai (With Sugar): <strong id="tea-chai-count">0</strong> cups</span>
+        <span class="dietary-counter-badge" style="border-color: rgba(16, 185, 129, 0.4); color: #a7f3d0;">🍵 Ndufia (No Sugar): <strong id="tea-ndufia-count">0</strong> cups</span>
+        <span class="dietary-counter-badge" style="border-color: rgba(239, 68, 68, 0.4); color: #fca5a5;">🫖 Strong (Tea Leaves): <strong id="tea-strong-count">0</strong> cups</span>
+        <span class="dietary-counter-badge" style="border-color: rgba(56, 189, 248, 0.4); color: #bae6fd;">🥤 Cold Beverage: <strong id="tea-cold-count">0</strong></span>
       </div>
     </div>
 
@@ -722,6 +733,7 @@
               <th>Proposing Headcount</th>
               <th>Status</th>
               <th>Dietary Requirements</th>
+              <th>Tea &amp; Beverage</th>
               <th>Phone Number</th>
               <th>Notes &amp; Messages</th>
               <th>Registered At</th>
@@ -729,7 +741,7 @@
           </thead>
           <tbody id="roster-table-body">
             <tr>
-              <td colspan="8" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
+              <td colspan="9" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
             </tr>
           </tbody>
         </table>
@@ -772,7 +784,7 @@
       const sampleBtn = document.getElementById('load-sample-btn');
       const footerSummary = document.getElementById('roster-footer-summary');
 
-      // 7 Default Realistic Dummy Attendees
+      // 7 Default Realistic Dummy Attendees (with Dietary & Kenyan Tea Urn Preferences)
       const SAMPLE_RECORDS = [
         {
           referenceCode: "IKG-7482",
@@ -781,6 +793,7 @@
           attending: "yes",
           guestCount: 4,
           dietary: "Standard Menu",
+          teaPreference: "Chai (Tea with Sugar)",
           message: "Excited to celebrate Ian's big milestone! Standard menu is great.",
           submittedAt: "2026-10-28T09:15:00.000Z"
         },
@@ -791,6 +804,7 @@
           attending: "yes",
           guestCount: 2,
           dietary: "Vegetarian",
+          teaPreference: "Strong Tea (Pure Tea Leaves)",
           message: "Vegetarian meals preferred for both of us. Proud of you brother!",
           submittedAt: "2026-10-28T10:30:00.000Z"
         },
@@ -801,6 +815,7 @@
           attending: "yes",
           guestCount: 2,
           dietary: "Standard Menu",
+          teaPreference: "Ndufia (Tea without Sugar)",
           message: "Hearty congratulations Ian on your Bachelor's Degree in Applied Computer Science!",
           submittedAt: "2026-10-28T11:45:00.000Z"
         },
@@ -811,6 +826,7 @@
           attending: "yes",
           guestCount: 2,
           dietary: "Halal",
+          teaPreference: "Chai (Tea with Sugar)",
           message: "Halal dietary preference please. Can't wait for Saturday!",
           submittedAt: "2026-10-28T12:20:00.000Z"
         },
@@ -821,6 +837,7 @@
           attending: "yes",
           guestCount: 3,
           dietary: "Standard Menu",
+          teaPreference: "Ndufia (Tea without Sugar)",
           message: "Delighted to attend and celebrate this achievement with the family.",
           submittedAt: "2026-10-28T13:10:00.000Z"
         },
@@ -831,6 +848,7 @@
           attending: "no",
           guestCount: 1,
           dietary: "Standard Menu",
+          teaPreference: "Chai (Tea with Sugar)",
           message: "Sending warmest congratulations from Mombasa! Will celebrate with you in spirit.",
           submittedAt: "2026-10-28T14:05:00.000Z"
         },
@@ -841,6 +859,7 @@
           attending: "yes",
           guestCount: 5,
           dietary: "Gluten-Free",
+          teaPreference: "Strong Tea (Pure Tea Leaves)",
           message: "Daystar CS Class of 2026 cohort coming through!",
           submittedAt: "2026-10-28T14:40:00.000Z"
         }
@@ -945,6 +964,12 @@
         let glutenDiet = 0;
         let specialDiet = 0;
 
+        // Kenyan Tea Urn Counters
+        let chaiCups = 0;
+        let ndufiaCups = 0;
+        let strongCups = 0;
+        let coldCups = 0;
+
         currentData.forEach(guest => {
           const isAttending = guest.attending === 'yes' || guest.attending === true || guest.attending === 'Attending In-Person' || guest.attending === 'Yes';
           const size = parseInt(guest.guestCount, 10) || 1;
@@ -964,6 +989,18 @@
             else if (notes.includes('veg')) vegDiet += size;
             else if (notes.includes('halal')) halalDiet += size;
             else standardDiet += size;
+
+            // Tea Urn Breakdown
+            const tea = (guest.teaPreference || '').toLowerCase();
+            if (tea.includes('ndufia') || tea.includes('without sugar')) {
+              ndufiaCups += size;
+            } else if (tea.includes('strong') || tea.includes('leaves') || tea.includes('strungi')) {
+              strongCups += size;
+            } else if (tea.includes('cold') || tea.includes('juice')) {
+              coldCups += size;
+            } else {
+              chaiCups += size;
+            }
           } else {
             declinedCount += 1;
           }
@@ -982,6 +1019,16 @@
         document.getElementById('diet-vegan-count').textContent = veganDiet;
         document.getElementById('diet-gluten-count').textContent = glutenDiet;
         document.getElementById('diet-special-count').textContent = specialDiet;
+
+        // Tea Urn counters
+        const chaiEl = document.getElementById('tea-chai-count');
+        const ndufiaEl = document.getElementById('tea-ndufia-count');
+        const strongEl = document.getElementById('tea-strong-count');
+        const coldEl = document.getElementById('tea-cold-count');
+        if (chaiEl) chaiEl.textContent = chaiCups;
+        if (ndufiaEl) ndufiaEl.textContent = ndufiaCups;
+        if (strongEl) strongEl.textContent = strongCups;
+        if (coldEl) coldEl.textContent = coldCups;
 
         // Filter pills counts
         document.getElementById('filter-all-count').textContent = currentData.length;
@@ -1008,6 +1055,19 @@
         return '<span class="diet-badge-cell diet-std">🍽️ Standard</span>';
       }
 
+      // Helper: Render Kenyan Tea Badge
+      function getTeaBadge(teaStr) {
+        const t = (teaStr || 'Chai').toLowerCase();
+        if (t.includes('ndufia') || t.includes('without sugar')) {
+          return '<span class="diet-badge-cell" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0;">🍵 Ndufia (No Sugar)</span>';
+        } else if (t.includes('strong') || t.includes('leaves') || t.includes('strungi')) {
+          return '<span class="diet-badge-cell" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5;">🫖 Strong (Tea Leaves)</span>';
+        } else if (t.includes('cold') || t.includes('juice')) {
+          return '<span class="diet-badge-cell" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #bae6fd;">🥤 Cold Beverage</span>';
+        }
+        return '<span class="diet-badge-cell" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a;">☕ Chai (With Sugar)</span>';
+      }
+
       // 7. Render Filtered & Searched Table
       function renderFilteredTable() {
         const query = (searchInput.value || '').toLowerCase().trim();
@@ -1022,9 +1082,10 @@
             const matchName = (g.fullName || '').toLowerCase().includes(query);
             const matchPhone = (g.phoneNumber || '').toLowerCase().includes(query);
             const matchDiet = (g.dietary || '').toLowerCase().includes(query);
+            const matchTea = (g.teaPreference || '').toLowerCase().includes(query);
             const matchMsg = (g.message || '').toLowerCase().includes(query);
             const matchRef = (g.referenceCode || '').toLowerCase().includes(query);
-            return matchName || matchPhone || matchDiet || matchMsg || matchRef;
+            return matchName || matchPhone || matchDiet || matchTea || matchMsg || matchRef;
           }
           return true;
         });
@@ -1034,7 +1095,7 @@
         if (filtered.length === 0) {
           tableBody.innerHTML = `
             <tr>
-              <td colspan="8" class="text-center py-4 text-muted">
+              <td colspan="9" class="text-center py-4 text-muted">
                 No matching attendee records found.
               </td>
             </tr>
@@ -1064,8 +1125,11 @@
             <td>
               ${isAttending ? getDietaryBadge(g.dietary) : '<span class="text-muted">—</span>'}
             </td>
+            <td>
+              ${isAttending ? getTeaBadge(g.teaPreference) : '<span class="text-muted">—</span>'}
+            </td>
             <td><code>${escapeHtml(g.phoneNumber || '—')}</code></td>
-            <td style="max-width: 260px; white-space: normal;">
+            <td style="max-width: 240px; white-space: normal;">
               <small class="text-slate-300">${escapeHtml(g.message || 'No special requirements')}</small>
             </td>
             <td style="font-size: 0.78rem; color: #94a3b8; white-space: nowrap;">

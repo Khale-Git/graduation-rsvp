@@ -380,6 +380,22 @@
                   </div>
                 </div>
 
+                <!-- Kenyan Celebration Tea & Beverage Preference -->
+                <div class="form-group">
+                  <label for="teaPreference" class="form-label">
+                    <span>Tea &amp; Beverage Preference <span class="text-muted">(Celebration Tea Urns)</span></span>
+                  </label>
+                  <div class="input-shell select-shell">
+                    <span class="input-icon">☕</span>
+                    <select id="teaPreference" name="teaPreference" class="tech-input tech-select">
+                      <option value="Chai (Tea with Sugar)">☕ Chai (Traditional Milk Tea with Sugar)</option>
+                      <option value="Ndufia (Tea without Sugar)">🍵 Ndufia (Milk Tea without Sugar)</option>
+                      <option value="Strong Tea (Pure Tea Leaves)">🫖 Strong Tea / Strungi (Black Tea Leaves, No Milk)</option>
+                      <option value="Juice / Cold Beverage">🥤 Cold Beverage / Juice Only</option>
+                    </select>
+                  </div>
+                </div>
+
                 <!-- Personal Message to Graduate (Optional) -->
                 <div class="form-group">
                   <label for="congratsMessage" class="form-label">
@@ -475,6 +491,14 @@
                   <div class="ticket-row" id="confirmed-party-row">
                     <span class="ticket-label">TOTAL IN PARTY</span>
                     <span class="ticket-val" id="confirmed-guests">-</span>
+                  </div>
+                  <div class="ticket-row" id="confirmed-diet-row">
+                    <span class="ticket-label">DIETARY RESTRICTIONS</span>
+                    <span class="ticket-val" id="confirmed-dietary">Standard Menu</span>
+                  </div>
+                  <div class="ticket-row" id="confirmed-tea-row">
+                    <span class="ticket-label">CELEBRATION TEA URN</span>
+                    <span class="ticket-val" id="confirmed-tea">Chai (Tea with Sugar)</span>
                   </div>
                   <div class="ticket-row">
                     <span class="ticket-label">REFERENCE CODE</span>
