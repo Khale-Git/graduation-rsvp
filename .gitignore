@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Local attendee database (protect guest phone numbers & private data)
+rsvps.json
+
+# Operating System files
+.DS_Store
+Thumbs.db

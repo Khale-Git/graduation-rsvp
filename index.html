@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graduation Celebration | Ian Kiromo Githengu - B.Sc. Applied Computer Science</title>
+  <meta name="description" content="You are cordially invited to the Graduation Celebration of Ian Kiromo Githengu, celebrating a Bachelor's Degree in Applied Computer Science from Daystar University on Saturday, November 21st, 2026.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Tech Background Canvas & Overlays -->
+  <canvas id="network-canvas" aria-hidden="true"></canvas>
+  <div class="circuit-grid-overlay" aria-hidden="true"></div>
+  <div class="radial-glow glow-top" aria-hidden="true"></div>
+  <div class="radial-glow glow-bottom" aria-hidden="true"></div>
+
+  <!-- Navigation / Header Bar -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="brand-badge" id="brand-terminal-badge" title="Click or press Ctrl+Shift+A for Admin Portal">
+        <span class="terminal-symbol">&gt;_</span>
+        <span class="brand-text">IKG.GRAD // 2026</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link">Event</a>
+        <a href="#countdown" class="nav-link">Countdown</a>
+        <a href="#rsvp" class="nav-link">RSVP</a>
+        <a href="#location" class="nav-link">Location</a>
+      </nav>
+      <div class="header-actions">
+        <button id="header-admin-btn" class="btn btn-sm btn-ghost-tech" title="Admin Portal (Password Protected)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span class="header-admin-text">Admin</span>
+        </button>
+        <a href="#rsvp" class="btn btn-sm btn-outline-cyber">Confirm Attendance</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- 1. Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="container hero-container">
+        
+        <div class="hero-badge-wrap fade-in-up">
+          <div class="tech-chip">
+            <span class="chip-dot"></span>
+            <span class="chip-text">ACADEMIC COMMENCEMENT &amp; RECEPTION</span>
+            <span class="chip-code">[STATUS: CONFERRED]</span>
+          </div>
+        </div>
+
+        <h1 class="hero-headline fade-in-up delay-1">
+          You are invited to the Graduation Celebration of <br>
+          <span class="name-gradient">Ian Kiromo Githengu</span>
+        </h1>
+
+        <p class="hero-subtext fade-in-up delay-2">
+          Celebrating a <strong class="text-silver">Bachelor's Degree in Applied Computer Science</strong> 
+          from <span class="highlight-institution">Daystar University</span>
+        </p>
+
+        <!-- Degree Details Pill / Circuit Card -->
+        <div class="academic-strip fade-in-up delay-3">
+          <div class="academic-item">
+            <div class="icon-circle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <div>
+              <span class="meta-label">FACULTY</span>
+              <span class="meta-value">School of Science, Engineering &amp; Health</span>
+            </div>
+          </div>
+          <div class="academic-divider"></div>
+          <div class="academic-item">
+            <div class="icon-circle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+            </div>
+            <div>
+              <span class="meta-label">DISCIPLINE</span>
+              <span class="meta-value">Applied Computer Science (B.Sc.)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Event Parameters Quick Deck -->
+        <div class="event-cards-grid fade-in-up delay-4">
+          <div class="glass-card event-quick-card">
+            <div class="card-icon-halo">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="event-info-text">
+              <span class="info-label">DATE &amp; TIME</span>
+              <p class="info-primary">Saturday, November 21st, 2026</p>
+              <p class="info-secondary">Starting promptly at 2:00 PM EAT</p>
+            </div>
+          </div>
+
+          <div class="glass-card event-quick-card">
+            <div class="card-icon-halo">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="event-info-text">
+              <span class="info-label">LOCATION</span>
+              <p class="info-primary">Thee Bobians Residence</p>
+              <p class="info-secondary">GPS: -1.1562, 36.6424</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Actions: Add to Calendar Prominently Featured -->
+        <div class="hero-actions fade-in-up delay-5">
+          <a href="#rsvp" class="btn btn-primary-tech">
+            <span>Confirm Your RSVP</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          
+          <div class="calendar-btn-group">
+            <button id="add-to-calendar-btn" class="btn btn-secondary-tech" aria-haspopup="dialog" aria-label="Add event to calendar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+              <span>Add to Calendar</span>
+            </button>
+          </div>
+
+          <a href="#location" class="btn btn-ghost-tech">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            <span>Directions</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. Countdown Timer Section -->
+    <section id="countdown" class="countdown-section section-padding">
+      <div class="container">
+        
+        <div class="section-header text-center fade-in-up">
+          <span class="section-tag">&lt;T-MINUS SYSTEM CLOCK /&gt;</span>
+          <h2 class="section-title">Countdown to the Milestone</h2>
+          <p class="section-description">
+            Commencing Saturday, November 21, 2026 at 14:00:00 (Nairobi, UTC+3)
+          </p>
+        </div>
+
+        <div class="countdown-deck fade-in-up delay-1">
+          
+          <div class="countdown-box" id="timer-box-days">
+            <div class="box-corner tl"></div>
+            <div class="box-corner tr"></div>
+            <div class="box-corner bl"></div>
+            <div class="box-corner br"></div>
+            <div class="glow-effect"></div>
+            <div class="digital-number" id="cd-days">00</div>
+            <div class="countdown-label">DAYS</div>
+            <div class="unit-bar"><span class="bar-fill" id="bar-days"></span></div>
+          </div>
+
+          <div class="countdown-separator">:</div>
+
+          <div class="countdown-box" id="timer-box-hours">
+            <div class="box-corner tl"></div>
+            <div class="box-corner tr"></div>
+            <div class="box-corner bl"></div>
+            <div class="box-corner br"></div>
+            <div class="glow-effect"></div>
+            <div class="digital-number" id="cd-hours">00</div>
+            <div class="countdown-label">HOURS</div>
+            <div class="unit-bar"><span class="bar-fill" id="bar-hours"></span></div>
+          </div>
+
+          <div class="countdown-separator">:</div>
+
+          <div class="countdown-box" id="timer-box-minutes">
+            <div class="box-corner tl"></div>
+            <div class="box-corner tr"></div>
+            <div class="box-corner bl"></div>
+            <div class="box-corner br"></div>
+            <div class="glow-effect"></div>
+            <div class="digital-number" id="cd-minutes">00</div>
+            <div class="countdown-label">MINUTES</div>
+            <div class="unit-bar"><span class="bar-fill" id="bar-minutes"></span></div>
+          </div>
+
+          <div class="countdown-separator">:</div>
+
+          <div class="countdown-box" id="timer-box-seconds">
+            <div class="box-corner tl"></div>
+            <div class="box-corner tr"></div>
+            <div class="box-corner bl"></div>
+            <div class="box-corner br"></div>
+            <div class="glow-effect"></div>
+            <div class="digital-number" id="cd-seconds">00</div>
+            <div class="countdown-label">SECONDS</div>
+            <div class="unit-bar"><span class="bar-fill" id="bar-seconds"></span></div>
+          </div>
+
+        </div>
+
+        <div class="countdown-footer text-center fade-in-up delay-2">
+          <div class="sync-status">
+            <span class="live-beacon"></span>
+            <span class="sync-text">SYNCHRONIZED WITH TIME ZONE: UTC+03:00 (EAST AFRICA TIME)</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. RSVP Form Section with Group Support & Personalized Digital Card -->
+    <section id="rsvp" class="rsvp-section section-padding">
+      <div class="container rsvp-wrapper">
+        
+        <div class="rsvp-card-container fade-in-up">
+          <div class="cyber-card-frame">
+            
+            <div class="card-header-bar">
+              <div class="terminal-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="header-status-code">
+                <span class="backend-status-pill" id="backend-status-pill" title="Backend Status">
+                  <span class="backend-indicator"></span>
+                  <span id="backend-label">BACKEND: CONNECTED</span>
+                </span>
+              </div>
+              <div class="deadline-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Deadline: November 12th</span>
+              </div>
+            </div>
+
+            <div class="card-inner-content">
+              <div class="form-intro">
+                <h2 class="form-title" id="rsvp-title">Confirm Your Attendance</h2>
+                <p class="form-subtitle">
+                  We look forward to celebrating this remarkable milestone with you. Please submit your RSVP by 
+                  <strong class="highlight-date">Thursday, November 12th, 2026</strong>. A personalized digital invitation card will be automatically generated for you upon confirmation.
+                </p>
+              </div>
+
+              <!-- Live RSVP Feedback Container -->
+              <div id="rsvp-feedback-banner" class="feedback-banner" style="display: none;"></div>
+
+              <form id="rsvp-form" class="rsvp-form" novalidate>
+                
+                <!-- Guest Name(s) Field - Explicitly supports individuals & group/family names -->
+                <div class="form-group">
+                  <label for="fullName" class="form-label">
+                    <span>Guest / Family / Party Name(s)</span>
+                    <span class="required-indicator">*</span>
+                  </label>
+                  <div class="input-hint-sub">
+                    You can enter individual or group names (e.g., <em>"The Wanje Family"</em>, <em>"Zablon &amp; Guest"</em>, <em>"Prof. Sarah Wanjiku"</em>). This name will appear on your customized digital invitation card.
+                  </div>
+                  <div class="input-shell">
+                    <span class="input-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </span>
+                    <input 
+                      type="text" 
+                      id="fullName" 
+                      name="fullName" 
+                      class="tech-input" 
+                      placeholder="e.g., The Wanje Family / Zablon & Guest / Prof. Sarah Wanjiku" 
+                      required
+                      autocomplete="name"
+                    >
+                  </div>
+                  <span class="field-error" id="fullName-error"></span>
+                </div>
+
+                <!-- Phone Number Field -->
+                <div class="form-group">
+                  <label for="phoneNumber" class="form-label">
+                    <span>Phone Number</span>
+                    <span class="required-indicator">*</span>
+                  </label>
+                  <div class="input-shell">
+                    <span class="input-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                    <input 
+                      type="tel" 
+                      id="phoneNumber" 
+                      name="phoneNumber" 
+                      class="tech-input" 
+                      placeholder="e.g., +254 712 345 678" 
+                      required
+                      autocomplete="tel"
+                    >
+                  </div>
+                  <span class="field-error" id="phoneNumber-error"></span>
+                </div>
+
+                <!-- Attendance Decision -->
+                <div class="form-group">
+                  <label class="form-label">
+                    <span>Will you attend?</span>
+                    <span class="required-indicator">*</span>
+                  </label>
+                  
+                  <div class="attendance-options" role="radiogroup" aria-label="Attendance selection">
+                    
+                    <label class="radio-card" for="attending-yes">
+                      <input type="radio" id="attending-yes" name="attending" value="Yes" required checked>
+                      <div class="radio-card-content">
+                        <div class="radio-indicator"></div>
+                        <div class="radio-text">
+                          <span class="radio-title">Yes, I will attend!</span>
+                          <span class="radio-desc">Delighted to celebrate with Ian</span>
+                        </div>
+                        <span class="radio-emoji">🥂</span>
+                      </div>
+                    </label>
+
+                    <label class="radio-card" for="attending-no">
+                      <input type="radio" id="attending-no" name="attending" value="No" required>
+                      <div class="radio-card-content">
+                        <div class="radio-indicator"></div>
+                        <div class="radio-text">
+                          <span class="radio-title">No, regretfully decline</span>
+                          <span class="radio-desc">Sending warm wishes from afar</span>
+                        </div>
+                        <span class="radio-emoji">✉️</span>
+                      </div>
+                    </label>
+
+                  </div>
+                  <span class="field-error" id="attending-error"></span>
+                </div>
+
+                <!-- Additional Guests / Note (Interactive Budgeting) -->
+                <div class="form-group" id="guest-count-group">
+                  <label for="guestCount" class="form-label">
+                    <span>Total Number in Your Party</span>
+                    <span class="text-muted">For Seating &amp; Catering Budget</span>
+                  </label>
+                  <div class="input-shell select-shell">
+                    <span class="input-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </span>
+                    <select id="guestCount" name="guestCount" class="tech-input tech-select">
+                      <option value="1">1 Person (Just Me)</option>
+                      <option value="2">2 Persons (Couple / +1 Guest)</option>
+                      <option value="3">3 Persons (Family / Group)</option>
+                      <option value="4">4 Persons (Family / Group)</option>
+                      <option value="5">5 Persons (Family / Group)</option>
+                      <option value="6">6+ Persons</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Personal Message to Graduate (Optional) -->
+                <div class="form-group">
+                  <label for="congratsMessage" class="form-label">
+                    <span>Message to the Graduate <span class="text-muted">(Optional)</span></span>
+                  </label>
+                  <div class="input-shell textarea-shell">
+                    <textarea 
+                      id="congratsMessage" 
+                      name="congratsMessage" 
+                      class="tech-input tech-textarea" 
+                      rows="3" 
+                      placeholder="Leave a congratulatory message or note for Ian..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                  <button type="submit" id="rsvp-submit-btn" class="btn btn-submit-tech">
+                    <span class="btn-glow-layer"></span>
+                    <span class="btn-content">
+                      <span class="btn-text">Submit RSVP &amp; Generate Invitation Card</span>
+                      <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+
+                <div class="form-meta-footer">
+                  <span class="lock-icon">🔒</span>
+                  <span>Data is safely saved to the database. You can update your response at any time before Nov 12th.</span>
+                </div>
+
+              </form>
+
+              <!-- Success State: Dynamic Personalized Invitation Card & Confirmation -->
+              <div id="rsvp-success-card" class="rsvp-success-card" style="display: none;">
+                
+                <div class="success-header-badge">
+                  <div class="success-icon-badge">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  </div>
+                  <h3 class="success-title">RSVP Successfully Confirmed!</h3>
+                  <p class="success-subtitle">
+                    Thank you, <span id="confirmed-recipient-title" class="text-silver font-bold"></span>. Your personalized digital invitation card is ready below.
+                  </p>
+                </div>
+
+                <!-- DYNAMIC PERSONALIZED INVITATION CARD (HTML5 CANVAS) -->
+                <div class="personalized-card-container">
+                  <div class="card-generator-bar">
+                    <span class="card-gen-title">🎨 PERSONALIZED DIGITAL INVITATION CARD</span>
+                    <span class="card-gen-badge">HIGH-RES // 300 DPI</span>
+                  </div>
+
+                  <div class="canvas-viewport-wrapper">
+                    <!-- The Canvas Element for Client-Side Generation -->
+                    <canvas id="invitation-card-canvas" width="1200" height="800" class="invitation-render-canvas" aria-label="Personalized Graduation Invitation Card"></canvas>
+                    <div id="canvas-loading-spinner" class="canvas-loading-overlay" style="display: none;">
+                      <div class="spinner-circle"></div>
+                      <span>Rendering Personalized Card...</span>
+                    </div>
+                  </div>
+
+                  <!-- Download Customized Card Action -->
+                  <div class="card-download-actions">
+                    <button id="download-invitation-btn" type="button" class="btn btn-primary-tech btn-lg-glow">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      <span>Download Your Personalized Card</span>
+                    </button>
+                    <p class="card-share-note">
+                      💡 Tip: Download this personalized card to your phone to present at the gate or share with your family!
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Confirmation Voucher Details -->
+                <div class="confirmation-ticket">
+                  <div class="ticket-row">
+                    <span class="ticket-label">ATTENDEE / PARTY</span>
+                    <span class="ticket-val" id="confirmed-name">-</span>
+                  </div>
+                  <div class="ticket-row">
+                    <span class="ticket-label">STATUS</span>
+                    <span class="ticket-val ticket-status-badge" id="confirmed-status">-</span>
+                  </div>
+                  <div class="ticket-row">
+                    <span class="ticket-label">CONTACT PHONE</span>
+                    <span class="ticket-val" id="confirmed-phone">-</span>
+                  </div>
+                  <div class="ticket-row" id="confirmed-party-row">
+                    <span class="ticket-label">TOTAL IN PARTY</span>
+                    <span class="ticket-val" id="confirmed-guests">-</span>
+                  </div>
+                  <div class="ticket-row">
+                    <span class="ticket-label">REFERENCE CODE</span>
+                    <span class="ticket-val code-font text-accent-blue" id="confirmed-ref">IKG-2026-CONF</span>
+                  </div>
+                  <div class="ticket-row">
+                    <span class="ticket-label">DATABASE SYNC</span>
+                    <span class="ticket-val text-green" id="confirmed-db-status">✓ Stored in Guest Database</span>
+                  </div>
+                </div>
+
+                <!-- Post RSVP Calendar Quick Actions -->
+                <div class="post-rsvp-calendar-banner">
+                  <p class="cal-banner-title">📅 Save to your personal calendar:</p>
+                  <div class="cal-banner-buttons">
+                    <a id="post-rsvp-cal-google" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-secondary-tech">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      <span>Add to Google Calendar</span>
+                    </a>
+                    <button id="post-rsvp-cal-ics" type="button" class="btn btn-sm btn-secondary-tech">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      <span>Download Apple / Outlook (.ics)</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="success-actions">
+                  <button type="button" id="edit-rsvp-btn" class="btn btn-secondary-tech">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <span>Update Response</span>
+                  </button>
+                  <a href="#location" class="btn btn-primary-tech">
+                    <span>View Venue &amp; Directions</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. Location & Map Section -->
+    <section id="location" class="location-section section-padding">
+      <div class="container">
+        
+        <div class="section-header text-center fade-in-up">
+          <span class="section-tag">&lt;GEO_COORDINATES: -1.1562, 36.6424 /&gt;</span>
+          <h2 class="section-title">Event Location</h2>
+          <p class="section-description">
+            Join us at Thee Bobians Residence for celebratory refreshments, dinner, and fellowship.
+          </p>
+        </div>
+
+        <div class="location-layout-grid">
+          
+          <!-- Venue Details Card -->
+          <div class="venue-info-card glass-card fade-in-up delay-1">
+            <div class="venue-tag">RECEPTION VENUE</div>
+            <h3 class="venue-name">Thee Bobians Residence</h3>
+            
+            <div class="venue-details-list">
+              <div class="venue-detail-item">
+                <div class="detail-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <div class="detail-label">VENUE ADDRESS</div>
+                  <div class="detail-value">Thee Bobians Residence</div>
+                  <div class="detail-sub">Kiambu County / Nairobi Environs, Kenya</div>
+                </div>
+              </div>
+
+              <div class="venue-detail-item">
+                <div class="detail-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <div>
+                  <div class="detail-label">EXACT COORDINATES</div>
+                  <div class="detail-value code-font">-1.156200, 36.642400</div>
+                  <div class="detail-sub">Precise GPS Pin for Navigation</div>
+                </div>
+              </div>
+
+              <div class="venue-detail-item">
+                <div class="detail-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <div class="detail-label">PROGRAM SCHEDULE</div>
+                  <div class="detail-value">2:00 PM - Arrival &amp; Welcome Drinks</div>
+                  <div class="detail-sub">Speeches, Toast &amp; Banquet to follow</div>
+                </div>
+              </div>
+
+              <div class="venue-detail-item">
+                <div class="detail-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div>
+                  <div class="detail-label">PARKING &amp; ACCESS</div>
+                  <div class="detail-value">Dedicated On-Site Parking Available</div>
+                  <div class="detail-sub">Security marshals on site to guide parking</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Direction Actions -->
+            <div class="venue-cta-buttons">
+              <a 
+                href="https://www.google.com/maps/dir/?api=1&destination=-1.1562,36.6424" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="btn btn-primary-tech btn-full"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                <span>Navigate via Google Maps</span>
+              </a>
+              
+              <button id="copy-coords-btn" class="btn btn-secondary-tech btn-full">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span id="copy-coords-text">Copy Coordinates</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Interactive Google Map Frame -->
+          <div class="map-wrapper-card glass-card fade-in-up delay-2">
+            <div class="map-card-topbar">
+              <div class="map-radar">
+                <span class="radar-ping"></span>
+                <span class="radar-dot"></span>
+              </div>
+              <div class="map-coordinates-title">LIVE RADAR PIN: -1.1562° N, 36.6424° E</div>
+              <a 
+                href="https://maps.google.com/?q=-1.1562,36.6424" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="map-external-link"
+                title="Expand map full screen"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="map-frame-box">
+              <iframe 
+                id="event-google-map"
+                title="Google Map showing Thee Bobians Residence at -1.1562, 36.6424"
+                src="https://maps.google.com/maps?q=-1.1562,36.6424&hl=en&z=15&output=embed"
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            <div class="map-card-footer">
+              <span class="map-caption">📍 Thee Bobians Residence &bull; Centered on -1.1562, 36.6424</span>
+              <span class="map-hint">Tap / click to interact or zoom</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Sleek Portfolio Footer ("Designed by the Graduate" with CV/Resume Download) -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      
+      <!-- Graduate Bio & Portfolio Showcase -->
+      <div class="portfolio-showcase-box">
+        <div class="designer-badge">
+          <span class="tech-indicator-pulse"></span>
+          <span>DESIGNED &amp; ENGINEERED BY THE GRADUATE</span>
+        </div>
+        
+        <h3 class="designer-name">Ian Kiromo Githengu</h3>
+        <p class="designer-credentials">
+          B.Sc. in Applied Computer Science &bull; Daystar University &bull; Class of 2026
+        </p>
+        <p class="designer-bio">
+          Passionate about full-stack software engineering, modern web architectures, and cloud-native computing.
+        </p>
+
+        <!-- Professional Portfolio & CV Links -->
+        <div class="portfolio-links">
+          
+          <!-- Requirement 1: CV / Resume Download Integration (Opens local PDF) -->
+          <a 
+            href="Ian_Kiromo_Githengu_CV.pdf" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="portfolio-link-btn highlight-cv-btn" 
+            title="Download Ian Kiromo Githengu's Curriculum Vitae (PDF)"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="font-bold">Download Resume / CV</span>
+          </a>
+
+          <a href="https://github.com/iankiromo" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn" title="GitHub Profile">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <span>GitHub</span>
+          </a>
+
+          <a href="https://www.linkedin.com/in/ian-kiromo-2a1239371/" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn" title="LinkedIn Profile">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+
+          <a href="mailto:ikiromo9@gmail.com" class="portfolio-link-btn" title="Contact Email (ikiromo9@gmail.com)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Email</span>
+          </a>
+        </div>
+
+        <!-- Tech Stack Tags -->
+        <div class="tech-stack-pills">
+          <span class="tech-pill">HTML5 Canvas (Dynamic Cards)</span>
+          <span class="tech-pill">Vanilla CSS (Custom Tokens)</span>
+          <span class="tech-pill">Client-Side Async JS</span>
+          <span class="tech-pill">Python Backend API</span>
+        </div>
+      </div>
+
+      <div class="footer-quote">
+        <code>"while (alive) { innovate(); achieve(); celebrate(); }"</code>
+      </div>
+
+      <div class="footer-bottom-row">
+        <span class="footer-copy">&copy; 2026 Ian Kiromo Githengu. All Rights Reserved. &bull; Daystar University</span>
+        <button id="footer-admin-link" class="footer-admin-trigger" title="Admin Portal (Access Code: 2026)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Admin Portal (Budgeting)</span>
+        </button>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ===================================================================
+       CALENDAR MODAL DIALOG
+       =================================================================== -->
+  <dialog id="calendar-modal" class="cyber-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add to Calendar</h3>
+        <button id="close-modal-btn" class="modal-close" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Save the graduation celebration to your calendar so you don't miss any of the celebrations on <strong>Saturday, Nov 21, 2026 at 2:00 PM EAT</strong>:</p>
+        <div class="calendar-options">
+          <a id="cal-google" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-calendar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div class="cal-btn-text">
+              <span class="cal-btn-primary">Google Calendar</span>
+              <span class="cal-btn-sub">Opens directly in Google Calendar with map link</span>
+            </div>
+          </a>
+          <button id="cal-ics" type="button" class="btn btn-calendar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <div class="cal-btn-text">
+              <span class="cal-btn-primary">Apple / Outlook Calendar (.ics)</span>
+              <span class="cal-btn-sub">Direct file download with alarms and coordinates</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===================================================================
+       HIDDEN ADMIN AUTH DIALOG
+       =================================================================== -->
+  <dialog id="admin-auth-dialog" class="cyber-modal">
+    <div class="modal-card admin-auth-card">
+      <div class="modal-header">
+        <div class="admin-auth-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <h3>Admin Authentication</h3>
+        </div>
+        <button id="close-auth-modal" class="modal-close" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="admin-auth-form" class="modal-body">
+        <p>Please enter your Admin Passcode to view RSVP submissions and guest budget counts:</p>
+        <div class="form-group">
+          <div class="input-shell">
+            <span class="input-icon">🔑</span>
+            <input 
+              type="password" 
+              id="admin-pin-input" 
+              class="tech-input" 
+              placeholder="Enter PIN (Default: 2026)" 
+              required
+              autocomplete="current-password"
+            >
+          </div>
+          <span class="field-error" id="admin-auth-error"></span>
+        </div>
+        <div class="modal-footer-actions">
+          <button type="submit" class="btn btn-primary-tech btn-full">
+            <span>Unlock Admin Dashboard</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===================================================================
+       HIDDEN ADMIN VIEW MODAL (GUEST LIST & BUDGETING CALCULATOR)
+       =================================================================== -->
+  <dialog id="admin-dashboard-modal" class="cyber-modal admin-dashboard-dialog">
+    <div class="modal-card admin-dashboard-card">
+      
+      <div class="admin-dash-header">
+        <div>
+          <span class="section-tag">&lt;ADMIN_CONSOLE // BUDGETING /&gt;</span>
+          <h2 class="admin-dash-title">RSVP &amp; Catering Budgeting Portal</h2>
+          <p class="admin-dash-subtitle">Live attendee data, headcount estimation, and CSV exports.</p>
+        </div>
+        <div class="admin-header-actions">
+          <button id="export-csv-btn" class="btn btn-sm btn-primary-tech" title="Download Excel/Google Sheets CSV">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Export CSV Spreadsheet</span>
+          </button>
+          <button id="refresh-admin-btn" class="btn btn-sm btn-secondary-tech" title="Refresh Live Data">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <span>Refresh</span>
+          </button>
+          <button id="close-admin-dash" class="modal-close" aria-label="Close portal">&times;</button>
+        </div>
+      </div>
+
+      <!-- Live Budgeting KPI Cards -->
+      <div class="admin-kpi-grid">
+        <div class="kpi-card highlight-card">
+          <span class="kpi-label">TOTAL CONFIRMED GUESTS (HEADCOUNT)</span>
+          <span class="kpi-number text-accent-blue" id="kpi-headcount">0</span>
+          <span class="kpi-sub">Total plates/seats needed for catering</span>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">ATTENDING RSVPs</span>
+          <span class="kpi-number text-green" id="kpi-attending">0</span>
+          <span class="kpi-sub">Primary respondents confirmed</span>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">DECLINED RSVPs</span>
+          <span class="kpi-number text-amber" id="kpi-declined">0</span>
+          <span class="kpi-sub">Warm regrets received</span>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">TOTAL RESPONSES</span>
+          <span class="kpi-number text-white" id="kpi-total">0</span>
+          <span class="kpi-sub">Total database submissions</span>
+        </div>
+      </div>
+
+      <!-- Guest Filter & Table -->
+      <div class="admin-table-container">
+        <div class="table-toolbar">
+          <div class="input-shell search-shell">
+            <span class="input-icon">🔍</span>
+            <input type="text" id="admin-search-input" class="tech-input" placeholder="Search guests by name or phone...">
+          </div>
+          <div class="table-stats-count" id="table-display-count">Showing 0 guests</div>
+        </div>
+
+        <div class="table-scroll-wrap">
+          <table class="admin-table" id="admin-guest-table">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Full Name</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Party Size</th>
+                <th>Message / Note</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table-body">
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">No RSVP responses recorded yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-dash-footer">
+        <span class="text-muted">Data source: Local Python Database (`rsvps.json`) &amp; Browser Cache.</span>
+        <button id="add-sample-data-btn" class="btn btn-sm btn-ghost-tech">Add Sample RSVP (Testing)</button>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- Confetti Canvas for Celebration on RSVP -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
