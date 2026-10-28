@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organiser Headcount & Planning Portal | Ian Kiromo Graduation</title>
+  <meta name="description" content="Organiser portal to monitor proposed attendees, headcount metrics, catering counts, and guest responses for Ian Kiromo Githengu's Graduation Celebration.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Dedicated Organiser Page Styles */
+    body {
+      background-color: var(--bg-primary, #0c1626);
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .admin-navbar {
+      background: rgba(14, 26, 45, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .admin-brand-tag {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    .admin-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Auth Gate Card */
+    .auth-gate-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .auth-card {
+      background: rgba(17, 33, 56, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+    }
+
+    .auth-icon-badge {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+    }
+
+    .auth-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    .auth-subtitle {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 1.75rem;
+    }
+
+    .auth-input-wrap {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .auth-input-label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #cbd5e1;
+      margin-bottom: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .password-field-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-field-shell input {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.5rem;
+      background: rgba(12, 22, 38, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 8px;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .password-field-shell input:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+    }
+
+    .password-field-shell .key-icon {
+      position: absolute;
+      left: 0.85rem;
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .auth-hint-box {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.78rem;
+      color: #93c5fd;
+      margin-bottom: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .auth-error-msg {
+      color: #f87171;
+      font-size: 0.82rem;
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    /* Organiser Main Content */
+    .admin-main-wrap {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: none;
+    }
+
+    .admin-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    }
+
+    .admin-page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.85rem;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+    }
+
+    .admin-page-desc {
+      color: #94a3b8;
+      font-size: 0.92rem;
+    }
+
+    .admin-toolbar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Headcount Highlight Grid */
+    .headcount-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .kpi-stat-box {
+      background: rgba(17, 33, 56, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .kpi-stat-box:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .kpi-stat-box.featured-headcount {
+      background: linear-gradient(135deg, rgba(14, 38, 70, 0.9), rgba(17, 33, 56, 0.8));
+      border: 1px solid #38bdf8;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+    }
+
+    .kpi-stat-box.featured-headcount::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #38bdf8);
+    }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .featured-headcount .stat-label {
+      color: #7dd3fc;
+    }
+
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .featured-headcount .stat-value {
+      color: #38bdf8;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .stat-sub {
+      font-size: 0.82rem;
+      color: #64748b;
+    }
+
+    .featured-headcount .stat-sub {
+      color: #cbd5e1;
+    }
+
+    /* Dietary & Note Badges */
+    .dietary-pills-wrap {
+      background: rgba(14, 26, 45, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .dietary-pill-title {
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .dietary-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dietary-badge {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      color: #e2e8f0;
+    }
+
+    .dietary-badge strong {
+      color: #38bdf8;
+      margin-left: 0.25rem;
+    }
+
+    /* Roster Table Container */
+    .roster-card {
+      background: rgba(17, 33, 56, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .roster-toolbar {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .roster-search-shell {
+      position: relative;
+      flex: 1;
+      max-width: 380px;
+    }
+
+    .roster-search-shell input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.25rem;
+      background: rgba(12, 22, 38, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 0.88rem;
+    }
+
+    .roster-search-shell input:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+
+    .roster-search-shell .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    .roster-filter-pills {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background: rgba(12, 22, 38, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #94a3b8;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    .roster-table-scroll {
+      overflow-x: auto;
+    }
+
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .roster-table th {
+      background: rgba(12, 22, 38, 0.7);
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      white-space: nowrap;
+    }
+
+    .roster-table td {
+      padding: 0.95rem 1.25rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+      color: #e2e8f0;
+      vertical-align: middle;
+    }
+
+    .roster-table tr:hover td {
+      background: rgba(56, 189, 248, 0.03);
+    }
+
+    .party-size-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .status-badge-attending {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #34d399;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .status-badge-declined {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #f87171;
+      font-size: 0.82rem;
+    }
+
+    .roster-footer {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #64748b;
+      font-size: 0.82rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+      background: rgba(12, 22, 38, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .auth-card { padding: 1.75rem; }
+      .admin-header-row { flex-direction: column; align-items: flex-start; }
+      .roster-toolbar { flex-direction: column; align-items: stretch; }
+      .roster-search-shell { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Tech Grid Overlays -->
+  <div class="circuit-grid-overlay" aria-hidden="true"></div>
+  <div class="radial-glow glow-top" aria-hidden="true"></div>
+  <div class="radial-glow glow-bottom" aria-hidden="true"></div>
+
+  <!-- Header Navigation -->
+  <header class="admin-navbar">
+    <div class="admin-nav-container">
+      <a href="index.html" class="admin-brand">
+        <span>🎓 IKG // GRADUATION CELEBRATION</span>
+        <span class="admin-brand-tag">ORGANISER PORTAL</span>
+      </a>
+      <div class="admin-nav-actions">
+        <a href="index.html" class="btn btn-sm btn-ghost-tech">
+          <span>← Back to Event Site</span>
+        </a>
+        <button id="admin-signout-btn" class="btn btn-sm btn-outline-cyber" style="display: none;">
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. AUTHENTICATION GATE (Visible when not logged in) -->
+  <div id="auth-gate-section" class="auth-gate-wrap">
+    <div class="auth-card">
+      <div class="auth-icon-badge">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h1 class="auth-title">Organiser Access</h1>
+      <p class="auth-subtitle">Confidential attendee headcount &amp; catering management portal for Ian Kiromo's Graduation Celebration.</p>
+
+      <form id="organiser-login-form">
+        <div class="auth-input-wrap">
+          <label class="auth-input-label" for="portal-password-input">Organiser Passcode</label>
+          <div class="password-field-shell">
+            <span class="key-icon">🔑</span>
+            <input 
+              type="password" 
+              id="portal-password-input" 
+              placeholder="Enter passcode"
+              required 
+              autocomplete="current-password"
+            >
+            <button type="button" id="toggle-pw-visibility" class="password-toggle-btn" title="Show/Hide Password">👁️</button>
+          </div>
+          <div id="login-error-msg" class="auth-error-msg">Incorrect passcode. Please try again.</div>
+        </div>
+
+        <div class="auth-hint-box">
+          <span>ℹ️</span>
+          <span>Organiser Passcode: <strong>Organiser2026</strong></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary-tech btn-full">
+          <span>Unlock Headcount Dashboard</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. ORGANISER MAIN DASHBOARD (Visible when logged in) -->
+  <main id="admin-dashboard-section" class="admin-main-wrap">
+    
+    <!-- Top Overview & Actions -->
+    <div class="admin-header-row">
+      <div>
+        <h1 class="admin-page-title">Attendee Headcount &amp; Catering Intelligence</h1>
+        <p class="admin-page-desc">Real-time RSVP responses, total human headcount, and dietary breakdown for Saturday, Nov 21, 2026 at Thee Bobians Residence.</p>
+      </div>
+      <div class="admin-toolbar">
+        <button id="refresh-roster-btn" class="btn btn-sm btn-ghost-tech" title="Refresh data from server or local database">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          <span>Refresh Data</span>
+        </button>
+        <button id="export-catering-csv-btn" class="btn btn-sm btn-primary-tech" title="Download Excel-compatible CSV for catering and budgeting">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Export Catering CSV</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Headcount KPI Grid -->
+    <div class="headcount-kpi-grid">
+      <!-- 1. Total Headcount (The Big Number For Catering) -->
+      <div class="kpi-stat-box featured-headcount">
+        <span class="stat-label">TOTAL PROPOSING TO ATTEND (HEADCOUNT)</span>
+        <span class="stat-value" id="kpi-total-headcount">0</span>
+        <span class="stat-sub">Total human plates &amp; chairs required</span>
+      </div>
+
+      <!-- 2. Confirmed Parties -->
+      <div class="kpi-stat-box">
+        <span class="stat-label">CONFIRMED PARTIES / GROUPS</span>
+        <span class="stat-value text-green" id="kpi-confirmed-parties">0</span>
+        <span class="stat-sub">Primary responding households</span>
+      </div>
+
+      <!-- 3. Declined Count -->
+      <div class="kpi-stat-box">
+        <span class="stat-label">DECLINED (UNABLE TO ATTEND)</span>
+        <span class="stat-value text-amber" id="kpi-declined-count">0</span>
+        <span class="stat-sub">Warm regrets sent</span>
+      </div>
+
+      <!-- 4. Total Submissions -->
+      <div class="kpi-stat-box">
+        <span class="stat-label">TOTAL FORM SUBMISSIONS</span>
+        <span class="stat-value" id="kpi-total-responses">0</span>
+        <span class="stat-sub">Total database submissions</span>
+      </div>
+    </div>
+
+    <!-- Dietary Preferences Summary -->
+    <div class="dietary-pills-wrap">
+      <span class="dietary-pill-title">Catering Breakdown:</span>
+      <div class="dietary-badges" id="dietary-badges-list">
+        <span class="dietary-badge">Standard Menu: <strong id="diet-standard-count">0</strong></span>
+        <span class="dietary-badge">Vegetarian: <strong id="diet-veg-count">0</strong></span>
+        <span class="dietary-badge">Halal: <strong id="diet-halal-count">0</strong></span>
+        <span class="dietary-badge">Special Notes: <strong id="diet-special-count">0</strong></span>
+      </div>
+    </div>
+
+    <!-- Attendee Roster Table -->
+    <div class="roster-card">
+      <div class="roster-toolbar">
+        <div class="roster-search-shell">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="roster-search-input" placeholder="Search guests by name, phone, or notes...">
+        </div>
+        <div class="roster-filter-pills">
+          <button class="filter-btn active" data-filter="all">All (<span id="filter-all-count">0</span>)</button>
+          <button class="filter-btn" data-filter="attending">Attending (<span id="filter-attending-count">0</span>)</button>
+          <button class="filter-btn" data-filter="declined">Declined (<span id="filter-declined-count">0</span>)</button>
+        </div>
+      </div>
+
+      <div class="roster-table-scroll">
+        <table class="roster-table">
+          <thead>
+            <tr>
+              <th>Ref Code</th>
+              <th>Guest / Group Name</th>
+              <th>Proposing Headcount</th>
+              <th>Status</th>
+              <th>Phone Number</th>
+              <th>Dietary &amp; Messages</th>
+              <th>Registered At</th>
+            </tr>
+          </thead>
+          <tbody id="roster-table-body">
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="roster-footer">
+        <span id="roster-footer-summary">Displaying 0 guests</span>
+        <span>Data verified for Daystar University Academic Commencement</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* ===================================================================
+       ORGANISER PORTAL ENGINE
+       Dedicated Passcode: Organiser2026 (or 2026)
+       =================================================================== */
+    (function() {
+      const PASSWORDS = ['Organiser2026', '2026', 'organizer2026'];
+      const AUTH_STORAGE_KEY = 'ikg_organiser_auth_session';
+      const LOCAL_CACHE_KEY = 'ikg_rsvp_cache_v1';
+
+      const authGate = document.getElementById('auth-gate-section');
+      const dashboard = document.getElementById('admin-dashboard-section');
+      const loginForm = document.getElementById('organiser-login-form');
+      const pwInput = document.getElementById('portal-password-input');
+      const pwToggle = document.getElementById('toggle-pw-visibility');
+      const errorMsg = document.getElementById('login-error-msg');
+      const signOutBtn = document.getElementById('admin-signout-btn');
+
+      const kpiTotalHeadcount = document.getElementById('kpi-total-headcount');
+      const kpiConfirmedParties = document.getElementById('kpi-confirmed-parties');
+      const kpiDeclinedCount = document.getElementById('kpi-declined-count');
+      const kpiTotalResponses = document.getElementById('kpi-total-responses');
+      const tableBody = document.getElementById('roster-table-body');
+      const searchInput = document.getElementById('roster-search-input');
+      const exportBtn = document.getElementById('export-catering-csv-btn');
+      const refreshBtn = document.getElementById('refresh-roster-btn');
+      const footerSummary = document.getElementById('roster-footer-summary');
+
+      let currentData = [];
+      let activeFilter = 'all';
+
+      // 1. Password Visibility Toggle
+      pwToggle.addEventListener('click', () => {
+        pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
+      });
+
+      // 2. Authentication Check on Load
+      if (sessionStorage.getItem(AUTH_STORAGE_KEY) === 'true' || localStorage.getItem(AUTH_STORAGE_KEY) === 'true') {
+        unlockDashboard();
+      }
+
+      // 3. Login Submission
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const entered = (pwInput.value || '').trim();
+        if (PASSWORDS.includes(entered)) {
+          errorMsg.style.display = 'none';
+          sessionStorage.setItem(AUTH_STORAGE_KEY, 'true');
+          unlockDashboard();
+        } else {
+          errorMsg.style.display = 'block';
+          pwInput.focus();
+        }
+      });
+
+      // 4. Sign Out
+      signOutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem(AUTH_STORAGE_KEY);
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        dashboard.style.display = 'none';
+        authGate.style.display = 'flex';
+        signOutBtn.style.display = 'none';
+        pwInput.value = '';
+      });
+
+      function unlockDashboard() {
+        authGate.style.display = 'none';
+        dashboard.style.display = 'block';
+        signOutBtn.style.display = 'inline-flex';
+        loadRosterData();
+      }
+
+      // 5. Data Fetching (Server API + LocalStorage Cache)
+      async function loadRosterData() {
+        let combined = [];
+
+        // Check local storage backup first
+        try {
+          const cached = localStorage.getItem(LOCAL_CACHE_KEY);
+          if (cached) {
+            combined = JSON.parse(cached);
+          }
+        } catch (e) {}
+
+        // Fetch from backend API if running
+        try {
+          const res = await fetch('/api/rsvps?pin=Organiser2026');
+          if (res.ok) {
+            const json = await res.json();
+            if (json.rsvps && Array.isArray(json.rsvps)) {
+              // Merge deduplicating by referenceCode or phoneNumber
+              const map = new Map();
+              combined.forEach(item => map.set(item.referenceCode || item.phoneNumber, item));
+              json.rsvps.forEach(item => map.set(item.referenceCode || item.phoneNumber, item));
+              combined = Array.from(map.values());
+            }
+          }
+        } catch (err) {
+          // If running statically on GitHub Pages, fallback to cached RSVPs
+          console.log('Running on static host, utilizing cached attendee database.');
+        }
+
+        currentData = combined;
+        updateMetricsAndTable();
+      }
+
+      // 6. Metrics & Headcount Calculations
+      function updateMetricsAndTable() {
+        let proposedHeadcount = 0;
+        let confirmedParties = 0;
+        let declinedCount = 0;
+        let standardDiet = 0;
+        let vegDiet = 0;
+        let halalDiet = 0;
+        let specialDiet = 0;
+
+        currentData.forEach(guest => {
+          const isAttending = guest.attending === 'yes' || guest.attending === true || guest.attending === 'Attending In-Person';
+          const size = parseInt(guest.guestCount, 10) || 1;
+
+          if (isAttending) {
+            proposedHeadcount += size;
+            confirmedParties += 1;
+
+            const notes = (guest.message || guest.dietary || '').toLowerCase();
+            if (notes.includes('veg') || notes.includes('vegan')) vegDiet += size;
+            else if (notes.includes('halal')) halalDiet += size;
+            else if (notes.length > 2) specialDiet += size;
+            else standardDiet += size;
+          } else {
+            declinedCount += 1;
+          }
+        });
+
+        // Update KPI cards
+        kpiTotalHeadcount.textContent = proposedHeadcount;
+        kpiConfirmedParties.textContent = confirmedParties;
+        kpiDeclinedCount.textContent = declinedCount;
+        kpiTotalResponses.textContent = currentData.length;
+
+        // Dietary counters
+        document.getElementById('diet-standard-count').textContent = standardDiet;
+        document.getElementById('diet-veg-count').textContent = vegDiet;
+        document.getElementById('diet-halal-count').textContent = halalDiet;
+        document.getElementById('diet-special-count').textContent = specialDiet;
+
+        // Filter pills counts
+        document.getElementById('filter-all-count').textContent = currentData.length;
+        document.getElementById('filter-attending-count').textContent = confirmedParties;
+        document.getElementById('filter-declined-count').textContent = declinedCount;
+
+        renderFilteredTable();
+      }
+
+      // 7. Render Filtered & Searched Table
+      function renderFilteredTable() {
+        const query = (searchInput.value || '').toLowerCase().trim();
+
+        const filtered = currentData.filter(g => {
+          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person';
+          
+          if (activeFilter === 'attending' && !isAttending) return false;
+          if (activeFilter === 'declined' && isAttending) return false;
+
+          if (query) {
+            const matchName = (g.fullName || '').toLowerCase().includes(query);
+            const matchPhone = (g.phoneNumber || '').toLowerCase().includes(query);
+            const matchMsg = (g.message || '').toLowerCase().includes(query);
+            const matchRef = (g.referenceCode || '').toLowerCase().includes(query);
+            return matchName || matchPhone || matchMsg || matchRef;
+          }
+          return true;
+        });
+
+        tableBody.innerHTML = '';
+
+        if (filtered.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted">
+                No matching attendee records found.
+              </td>
+            </tr>
+          `;
+          footerSummary.textContent = `Displaying 0 of ${currentData.length} records`;
+          return;
+        }
+
+        filtered.forEach(g => {
+          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person';
+          const size = parseInt(g.guestCount, 10) || 1;
+          const tr = document.createElement('tr');
+
+          tr.innerHTML = `
+            <td><code class="text-accent-blue" style="font-size: 0.78rem;">#${g.referenceCode || 'IKG-RSVP'}</code></td>
+            <td><strong>${escapeHtml(g.fullName || 'Honored Guest')}</strong></td>
+            <td>
+              ${isAttending 
+                ? `<span class="party-size-pill">👥 ${size} ${size === 1 ? 'Guest' : 'Guests'}</span>` 
+                : `<span class="text-muted">0</span>`}
+            </td>
+            <td>
+              ${isAttending 
+                ? `<span class="status-badge-attending">● Confirmed Attending</span>` 
+                : `<span class="status-badge-declined">✕ Declined</span>`}
+            </td>
+            <td><code>${escapeHtml(g.phoneNumber || '—')}</code></td>
+            <td style="max-width: 250px; white-space: normal;">
+              <small class="text-slate-300">${escapeHtml(g.message || 'No special requirements')}</small>
+            </td>
+            <td style="font-size: 0.78rem; color: #94a3b8;">
+              ${g.submittedAt ? new Date(g.submittedAt).toLocaleDateString() : 'Recent'}
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+
+        footerSummary.textContent = `Displaying ${filtered.length} of ${currentData.length} records`;
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // 8. Filter Pills Handler
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.getAttribute('data-filter');
+          renderFilteredTable();
+        });
+      });
+
+      // 9. Real-time Search Input
+      searchInput.addEventListener('input', renderFilteredTable);
+
+      // 10. Refresh Button
+      refreshBtn.addEventListener('click', () => {
+        loadRosterData();
+      });
+
+      // 11. 1-Click Catering CSV Export
+      exportBtn.addEventListener('click', () => {
+        if (!currentData.length) {
+          alert('No RSVP records to export.');
+          return;
+        }
+
+        const headers = ['Reference Code', 'Full Name / Party Name', 'Proposing Headcount', 'Status', 'Phone Number', 'Dietary / Notes', 'Registered At'];
+        const rows = currentData.map(g => {
+          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person';
+          return [
+            `"${g.referenceCode || ''}"`,
+            `"${(g.fullName || '').replace(/"/g, '""')}"`,
+            isAttending ? (g.guestCount || 1) : 0,
+            isAttending ? 'Attending In-Person' : 'Declined',
+            `"${(g.phoneNumber || '').replace(/"/g, '""')}"`,
+            `"${(g.message || '').replace(/"/g, '""')}"`,
+            `"${g.submittedAt || ''}"`
+          ].join(',');
+        });
+
+        const csvContent = [headers.join(','), ...rows].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Ian_Kiromo_Graduation_Catering_Headcount_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
+    })();
+  </script>
+</body>
+</html>

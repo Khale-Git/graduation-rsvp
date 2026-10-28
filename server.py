@@ -29,7 +29,7 @@ if sys.platform.startswith('win'):
         pass
 
 PORT = 8088
-ADMIN_PIN = "2026"
+ADMIN_PASSWORDS = ["Organiser2026", "2026", "organizer2026"]
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "rsvps.json")
 
@@ -66,8 +66,8 @@ class RSVPRequestHandler(http.server.SimpleHTTPRequestHandler):
         # GET /api/rsvps - Retrieve all RSVPs (Admin)
         if path == "/api/rsvps":
             pin = query.get("pin", [""])[0] or self.headers.get("X-Admin-Pin", "")
-            if pin != ADMIN_PIN:
-                self.send_json_response({"error": "Unauthorized. Invalid Admin PIN."}, status=401)
+            if pin not in ADMIN_PASSWORDS:
+                self.send_json_response({"error": "Unauthorized. Invalid Admin Passcode."}, status=401)
                 return
 
             rsvps = load_rsvps()
@@ -217,7 +217,7 @@ def run():
         print(f"[GRADUATION RSVP SERVER] Running at http://localhost:{PORT}/")
         print(f"[DIRECTORY] {BASE_DIR}")
         print(f"[DATABASE] {DATA_FILE}")
-        print(f"[ADMIN PIN] {ADMIN_PIN}")
+        print(f"[ORGANISER PASSCODE] {ADMIN_PASSWORDS[0]}")
         print("=" * 65)
         try:
             httpd.serve_forever()

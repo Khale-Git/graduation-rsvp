@@ -777,51 +777,18 @@ function initAdminPortal() {
   const searchInput = document.getElementById('admin-search-input');
   const sampleDataBtn = document.getElementById('add-sample-data-btn');
 
-  let activeRsvps = [];
-
-  function openAuth() {
-    if (authDialog) {
-      authDialog.showModal();
-      pinInput.value = '';
-      authError.textContent = '';
-      setTimeout(() => pinInput.focus(), 100);
-    }
+  function navigateToAdmin() {
+    window.location.href = 'admin.html';
   }
 
-  if (headerAdminBtn) headerAdminBtn.addEventListener('click', openAuth);
-  if (footerAdminLink) footerAdminLink.addEventListener('click', openAuth);
-  if (terminalBadge) terminalBadge.addEventListener('click', openAuth);
+  if (terminalBadge) terminalBadge.addEventListener('click', navigateToAdmin);
 
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
       e.preventDefault();
-      openAuth();
+      navigateToAdmin();
     }
   });
-
-  if (closeAuthBtn && authDialog) {
-    closeAuthBtn.addEventListener('click', () => authDialog.close());
-  }
-
-  if (closeDashBtn && dashDialog) {
-    closeDashBtn.addEventListener('click', () => dashDialog.close());
-  }
-
-  if (authForm) {
-    authForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const enteredPin = pinInput.value.trim();
-
-      if (enteredPin === CONFIG.ADMIN_PIN) {
-        authDialog.close();
-        dashDialog.showModal();
-        loadAdminData();
-      } else {
-        authError.textContent = 'Invalid passcode. Access denied.';
-        pinInput.classList.add('has-error');
-      }
-    });
-  }
 
   async function loadAdminData() {
     let rsvps = [];
