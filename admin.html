@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organiser Headcount & Planning Portal | Ian Kiromo Graduation</title>
-  <meta name="description" content="Organiser portal to monitor proposed attendees, headcount metrics, catering counts, and guest responses for Ian Kiromo Githengu's Graduation Celebration.">
+  <meta name="description" content="Organiser portal to monitor proposed attendees, headcount metrics, catering dietary requirements, and guest responses for Ian Kiromo Githengu's Graduation Celebration.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
   
   <!-- Google Fonts -->
@@ -14,7 +14,6 @@
   
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Dedicated Organiser Page Styles */
     body {
       background-color: var(--bg-primary, #0c1626);
       color: #f1f5f9;
@@ -38,7 +37,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
@@ -200,7 +199,7 @@
     /* Organiser Main Content */
     .admin-main-wrap {
       flex: 1;
-      max-width: 1280px;
+      max-width: 1320px;
       width: 100%;
       margin: 0 auto;
       padding: 2rem 1.5rem 4rem;
@@ -234,6 +233,7 @@
       display: flex;
       gap: 0.75rem;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     /* Headcount Highlight Grid */
@@ -241,7 +241,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 1.25rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
 
     .kpi-stat-box {
@@ -314,44 +314,52 @@
       color: #cbd5e1;
     }
 
-    /* Dietary & Note Badges */
+    /* Dietary Preferences Summary Ribbon */
     .dietary-pills-wrap {
-      background: rgba(14, 26, 45, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
+      background: rgba(14, 26, 45, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 12px;
+      padding: 1.15rem 1.5rem;
       margin-bottom: 2rem;
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: 1.5rem;
       flex-wrap: wrap;
     }
 
     .dietary-pill-title {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-family: 'JetBrains Mono', monospace;
-      color: #94a3b8;
+      color: #38bdf8;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
     }
 
     .dietary-badges {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.65rem;
       flex-wrap: wrap;
     }
 
-    .dietary-badge {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      padding: 0.25rem 0.65rem;
+    .dietary-counter-badge {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 0.35rem 0.8rem;
       border-radius: 9999px;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       color: #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-    .dietary-badge strong {
+    .dietary-counter-badge strong {
       color: #38bdf8;
-      margin-left: 0.25rem;
+      font-weight: 700;
     }
 
     /* Roster Table Container */
@@ -443,13 +451,13 @@
       font-size: 0.74rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      padding: 0.85rem 1.25rem;
+      padding: 0.85rem 1.15rem;
       border-bottom: 1px solid rgba(148, 163, 184, 0.15);
       white-space: nowrap;
     }
 
     .roster-table td {
-      padding: 0.95rem 1.25rem;
+      padding: 0.95rem 1.15rem;
       border-bottom: 1px solid rgba(148, 163, 184, 0.08);
       color: #e2e8f0;
       vertical-align: middle;
@@ -471,6 +479,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
       font-size: 0.82rem;
+      white-space: nowrap;
     }
 
     .status-badge-attending {
@@ -480,6 +489,7 @@
       color: #34d399;
       font-size: 0.82rem;
       font-weight: 600;
+      white-space: nowrap;
     }
 
     .status-badge-declined {
@@ -488,6 +498,55 @@
       gap: 0.35rem;
       color: #f87171;
       font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    /* Dedicated Dietary Requirement Badges */
+    .diet-badge-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .diet-std {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+    }
+
+    .diet-veg {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+    }
+
+    .diet-halal {
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #d8b4fe;
+    }
+
+    .diet-vegan {
+      background: rgba(20, 184, 166, 0.15);
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      color: #5eead4;
+    }
+
+    .diet-gluten {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fcd34d;
+    }
+
+    .diet-other {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
     }
 
     .roster-footer {
@@ -541,7 +600,7 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
       <h1 class="auth-title">Organiser Access</h1>
-      <p class="auth-subtitle">Confidential attendee headcount &amp; catering management portal for Ian Kiromo's Graduation Celebration.</p>
+      <p class="auth-subtitle">Confidential attendee headcount &amp; catering dietary management portal for Ian Kiromo's Graduation Celebration.</p>
 
       <form id="organiser-login-form">
         <div class="auth-input-wrap">
@@ -579,12 +638,15 @@
     <div class="admin-header-row">
       <div>
         <h1 class="admin-page-title">Attendee Headcount &amp; Catering Intelligence</h1>
-        <p class="admin-page-desc">Real-time RSVP responses, total human headcount, and dietary breakdown for Saturday, Nov 21, 2026 at Thee Bobians Residence.</p>
+        <p class="admin-page-desc">Real-time RSVP responses, total human headcount, and catering dietary preferences for Saturday, Nov 21, 2026 at Thee Bobians Residence.</p>
       </div>
       <div class="admin-toolbar">
+        <button id="load-sample-btn" class="btn btn-sm btn-outline-cyber" title="Populate with Example Attendees">
+          <span>👥 Load Example Attendees</span>
+        </button>
         <button id="refresh-roster-btn" class="btn btn-sm btn-ghost-tech" title="Refresh data from server or local database">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-          <span>Refresh Data</span>
+          <span>Refresh</span>
         </button>
         <button id="export-catering-csv-btn" class="btn btn-sm btn-primary-tech" title="Download Excel-compatible CSV for catering and budgeting">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -599,7 +661,7 @@
       <div class="kpi-stat-box featured-headcount">
         <span class="stat-label">TOTAL PROPOSING TO ATTEND (HEADCOUNT)</span>
         <span class="stat-value" id="kpi-total-headcount">0</span>
-        <span class="stat-sub">Total human plates &amp; chairs required</span>
+        <span class="stat-sub">Total human plates &amp; seats required for catering</span>
       </div>
 
       <!-- 2. Confirmed Parties -->
@@ -620,18 +682,20 @@
       <div class="kpi-stat-box">
         <span class="stat-label">TOTAL FORM SUBMISSIONS</span>
         <span class="stat-value" id="kpi-total-responses">0</span>
-        <span class="stat-sub">Total database submissions</span>
+        <span class="stat-sub">Total responses recorded</span>
       </div>
     </div>
 
-    <!-- Dietary Preferences Summary -->
+    <!-- Dietary Preferences Summary Ribbon -->
     <div class="dietary-pills-wrap">
-      <span class="dietary-pill-title">Catering Breakdown:</span>
+      <span class="dietary-pill-title">🍽️ Catering Dietary Breakdown:</span>
       <div class="dietary-badges" id="dietary-badges-list">
-        <span class="dietary-badge">Standard Menu: <strong id="diet-standard-count">0</strong></span>
-        <span class="dietary-badge">Vegetarian: <strong id="diet-veg-count">0</strong></span>
-        <span class="dietary-badge">Halal: <strong id="diet-halal-count">0</strong></span>
-        <span class="dietary-badge">Special Notes: <strong id="diet-special-count">0</strong></span>
+        <span class="dietary-counter-badge diet-std">🍽️ Standard: <strong id="diet-standard-count">0</strong></span>
+        <span class="dietary-counter-badge diet-veg">🥗 Vegetarian: <strong id="diet-veg-count">0</strong></span>
+        <span class="dietary-counter-badge diet-halal">🌙 Halal: <strong id="diet-halal-count">0</strong></span>
+        <span class="dietary-counter-badge diet-vegan">🌱 Vegan: <strong id="diet-vegan-count">0</strong></span>
+        <span class="dietary-counter-badge diet-gluten">🌾 Gluten-Free: <strong id="diet-gluten-count">0</strong></span>
+        <span class="dietary-counter-badge diet-other">⚠️ Allergies / Other: <strong id="diet-special-count">0</strong></span>
       </div>
     </div>
 
@@ -640,7 +704,7 @@
       <div class="roster-toolbar">
         <div class="roster-search-shell">
           <span class="search-icon">🔍</span>
-          <input type="text" id="roster-search-input" placeholder="Search guests by name, phone, or notes...">
+          <input type="text" id="roster-search-input" placeholder="Search guests by name, phone, or dietary notes...">
         </div>
         <div class="roster-filter-pills">
           <button class="filter-btn active" data-filter="all">All (<span id="filter-all-count">0</span>)</button>
@@ -657,14 +721,15 @@
               <th>Guest / Group Name</th>
               <th>Proposing Headcount</th>
               <th>Status</th>
+              <th>Dietary Requirements</th>
               <th>Phone Number</th>
-              <th>Dietary &amp; Messages</th>
+              <th>Notes &amp; Messages</th>
               <th>Registered At</th>
             </tr>
           </thead>
           <tbody id="roster-table-body">
             <tr>
-              <td colspan="7" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
+              <td colspan="8" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
             </tr>
           </tbody>
         </table>
@@ -686,7 +751,7 @@
     (function() {
       const PASSWORDS = ['Organiser2026', '2026', 'organizer2026'];
       const AUTH_STORAGE_KEY = 'ikg_organiser_auth_session';
-      const LOCAL_CACHE_KEY = 'ikg_rsvp_cache_v1';
+      const LOCAL_CACHE_KEY = 'ikg_rsvp_admin_cache_v1';
 
       const authGate = document.getElementById('auth-gate-section');
       const dashboard = document.getElementById('admin-dashboard-section');
@@ -704,7 +769,82 @@
       const searchInput = document.getElementById('roster-search-input');
       const exportBtn = document.getElementById('export-catering-csv-btn');
       const refreshBtn = document.getElementById('refresh-roster-btn');
+      const sampleBtn = document.getElementById('load-sample-btn');
       const footerSummary = document.getElementById('roster-footer-summary');
+
+      // 7 Default Realistic Dummy Attendees
+      const SAMPLE_RECORDS = [
+        {
+          referenceCode: "IKG-7482",
+          fullName: "The Wanje Family",
+          phoneNumber: "+254 712 345 678",
+          attending: "yes",
+          guestCount: 4,
+          dietary: "Standard Menu",
+          message: "Excited to celebrate Ian's big milestone! Standard menu is great.",
+          submittedAt: "2026-10-28T09:15:00.000Z"
+        },
+        {
+          referenceCode: "IKG-3921",
+          fullName: "Zablon & Guest",
+          phoneNumber: "+254 722 987 654",
+          attending: "yes",
+          guestCount: 2,
+          dietary: "Vegetarian",
+          message: "Vegetarian meals preferred for both of us. Proud of you brother!",
+          submittedAt: "2026-10-28T10:30:00.000Z"
+        },
+        {
+          referenceCode: "IKG-8104",
+          fullName: "Prof. Sarah Wanjiku",
+          phoneNumber: "+254 733 112 233",
+          attending: "yes",
+          guestCount: 2,
+          dietary: "Standard Menu",
+          message: "Hearty congratulations Ian on your Bachelor's Degree in Applied Computer Science!",
+          submittedAt: "2026-10-28T11:45:00.000Z"
+        },
+        {
+          referenceCode: "IKG-5519",
+          fullName: "Brian Mwangi",
+          phoneNumber: "+254 701 445 566",
+          attending: "yes",
+          guestCount: 2,
+          dietary: "Halal",
+          message: "Halal dietary preference please. Can't wait for Saturday!",
+          submittedAt: "2026-10-28T12:20:00.000Z"
+        },
+        {
+          referenceCode: "IKG-9230",
+          fullName: "Dr. & Mrs. Kimemia",
+          phoneNumber: "+254 720 556 778",
+          attending: "yes",
+          guestCount: 3,
+          dietary: "Standard Menu",
+          message: "Delighted to attend and celebrate this achievement with the family.",
+          submittedAt: "2026-10-28T13:10:00.000Z"
+        },
+        {
+          referenceCode: "IKG-1647",
+          fullName: "Kevin Otieno",
+          phoneNumber: "+254 715 889 900",
+          attending: "no",
+          guestCount: 1,
+          dietary: "Standard Menu",
+          message: "Sending warmest congratulations from Mombasa! Will celebrate with you in spirit.",
+          submittedAt: "2026-10-28T14:05:00.000Z"
+        },
+        {
+          referenceCode: "IKG-6395",
+          fullName: "Daystar CS Alumni Group",
+          phoneNumber: "+254 798 334 455",
+          attending: "yes",
+          guestCount: 5,
+          dietary: "Gluten-Free",
+          message: "Daystar CS Class of 2026 cohort coming through!",
+          submittedAt: "2026-10-28T14:40:00.000Z"
+        }
+      ];
 
       let currentData = [];
       let activeFilter = 'all';
@@ -750,81 +890,18 @@
         loadRosterData();
       }
 
-      const SAMPLE_RECORDS = [
-        {
-          referenceCode: "IKG-7482",
-          fullName: "The Wanje Family",
-          phoneNumber: "+254 712 345 678",
-          attending: "yes",
-          guestCount: 4,
-          message: "Excited to celebrate Ian's big milestone! Standard menu is great.",
-          submittedAt: "2026-10-28T09:15:00.000Z"
-        },
-        {
-          referenceCode: "IKG-3921",
-          fullName: "Zablon & Guest",
-          phoneNumber: "+254 722 987 654",
-          attending: "yes",
-          guestCount: 2,
-          message: "Vegetarian meals preferred for both of us. Proud of you brother!",
-          submittedAt: "2026-10-28T10:30:00.000Z"
-        },
-        {
-          referenceCode: "IKG-8104",
-          fullName: "Prof. Sarah Wanjiku",
-          phoneNumber: "+254 733 112 233",
-          attending: "yes",
-          guestCount: 2,
-          message: "Hearty congratulations Ian on your Bachelor's Degree in Applied Computer Science!",
-          submittedAt: "2026-10-28T11:45:00.000Z"
-        },
-        {
-          referenceCode: "IKG-5519",
-          fullName: "Brian Mwangi",
-          phoneNumber: "+254 701 445 566",
-          attending: "yes",
-          guestCount: 2,
-          message: "Halal dietary preference please. Can't wait for Saturday!",
-          submittedAt: "2026-10-28T12:20:00.000Z"
-        },
-        {
-          referenceCode: "IKG-9230",
-          fullName: "Dr. & Mrs. Kimemia",
-          phoneNumber: "+254 720 556 778",
-          attending: "yes",
-          guestCount: 3,
-          message: "Delighted to attend and celebrate this achievement with the family.",
-          submittedAt: "2026-10-28T13:10:00.000Z"
-        },
-        {
-          referenceCode: "IKG-1647",
-          fullName: "Kevin Otieno",
-          phoneNumber: "+254 715 889 900",
-          attending: "no",
-          guestCount: 1,
-          message: "Sending warmest congratulations from Mombasa! Will celebrate with you in spirit.",
-          submittedAt: "2026-10-28T14:05:00.000Z"
-        },
-        {
-          referenceCode: "IKG-6395",
-          fullName: "Daystar CS Alumni Group",
-          phoneNumber: "+254 798 334 455",
-          attending: "yes",
-          guestCount: 5,
-          message: "Daystar CS Class of 2026 cohort coming through!",
-          submittedAt: "2026-10-28T14:40:00.000Z"
-        }
-      ];
-
       // 5. Data Fetching (Server API + LocalStorage Cache + Sample Fallback)
       async function loadRosterData() {
         let combined = [];
 
         // Check local storage backup first
         try {
-          const cached = localStorage.getItem(LOCAL_CACHE_KEY);
-          if (cached) {
-            combined = JSON.parse(cached);
+          const raw = localStorage.getItem(LOCAL_CACHE_KEY) || localStorage.getItem('ikg_rsvp_cache_v1');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              combined = parsed;
+            }
           }
         } catch (e) {}
 
@@ -841,10 +918,10 @@
             }
           }
         } catch (err) {
-          console.log('Running on static host, utilizing cached attendee database.');
+          console.log('Running on static host; utilizing cached or sample database.');
         }
 
-        // If no records yet, use the realistic sample dummy data
+        // If still empty (e.g., initial visit on GitHub Pages), populate sample records!
         if (!combined || combined.length === 0) {
           combined = [...SAMPLE_RECORDS];
           try {
@@ -864,20 +941,28 @@
         let standardDiet = 0;
         let vegDiet = 0;
         let halalDiet = 0;
+        let veganDiet = 0;
+        let glutenDiet = 0;
         let specialDiet = 0;
 
         currentData.forEach(guest => {
-          const isAttending = guest.attending === 'yes' || guest.attending === true || guest.attending === 'Attending In-Person';
+          const isAttending = guest.attending === 'yes' || guest.attending === true || guest.attending === 'Attending In-Person' || guest.attending === 'Yes';
           const size = parseInt(guest.guestCount, 10) || 1;
 
           if (isAttending) {
             proposedHeadcount += size;
             confirmedParties += 1;
 
-            const notes = (guest.message || guest.dietary || '').toLowerCase();
-            if (notes.includes('veg') || notes.includes('vegan')) vegDiet += size;
+            const diet = (guest.dietary || '').toLowerCase();
+            const notes = (guest.message || '').toLowerCase();
+
+            if (diet.includes('veg') && !diet.includes('vegan')) vegDiet += size;
+            else if (diet.includes('vegan')) veganDiet += size;
+            else if (diet.includes('halal')) halalDiet += size;
+            else if (diet.includes('gluten')) glutenDiet += size;
+            else if (diet.includes('allerg') || diet.includes('other')) specialDiet += size;
+            else if (notes.includes('veg')) vegDiet += size;
             else if (notes.includes('halal')) halalDiet += size;
-            else if (notes.length > 2) specialDiet += size;
             else standardDiet += size;
           } else {
             declinedCount += 1;
@@ -894,6 +979,8 @@
         document.getElementById('diet-standard-count').textContent = standardDiet;
         document.getElementById('diet-veg-count').textContent = vegDiet;
         document.getElementById('diet-halal-count').textContent = halalDiet;
+        document.getElementById('diet-vegan-count').textContent = veganDiet;
+        document.getElementById('diet-gluten-count').textContent = glutenDiet;
         document.getElementById('diet-special-count').textContent = specialDiet;
 
         // Filter pills counts
@@ -904,12 +991,29 @@
         renderFilteredTable();
       }
 
+      // Helper: Render Dietary Badge
+      function getDietaryBadge(dietaryStr) {
+        const d = (dietaryStr || 'Standard Menu').toLowerCase();
+        if (d.includes('vegan')) {
+          return '<span class="diet-badge-cell diet-vegan">🌱 Vegan</span>';
+        } else if (d.includes('veg')) {
+          return '<span class="diet-badge-cell diet-veg">🥗 Vegetarian</span>';
+        } else if (d.includes('halal')) {
+          return '<span class="diet-badge-cell diet-halal">🌙 Halal</span>';
+        } else if (d.includes('gluten')) {
+          return '<span class="diet-badge-cell diet-gluten">🌾 Gluten-Free</span>';
+        } else if (d.includes('allerg') || d.includes('other')) {
+          return '<span class="diet-badge-cell diet-other">⚠️ Food Allergies</span>';
+        }
+        return '<span class="diet-badge-cell diet-std">🍽️ Standard</span>';
+      }
+
       // 7. Render Filtered & Searched Table
       function renderFilteredTable() {
         const query = (searchInput.value || '').toLowerCase().trim();
 
         const filtered = currentData.filter(g => {
-          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person';
+          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person' || g.attending === 'Yes';
           
           if (activeFilter === 'attending' && !isAttending) return false;
           if (activeFilter === 'declined' && isAttending) return false;
@@ -917,9 +1021,10 @@
           if (query) {
             const matchName = (g.fullName || '').toLowerCase().includes(query);
             const matchPhone = (g.phoneNumber || '').toLowerCase().includes(query);
+            const matchDiet = (g.dietary || '').toLowerCase().includes(query);
             const matchMsg = (g.message || '').toLowerCase().includes(query);
             const matchRef = (g.referenceCode || '').toLowerCase().includes(query);
-            return matchName || matchPhone || matchMsg || matchRef;
+            return matchName || matchPhone || matchDiet || matchMsg || matchRef;
           }
           return true;
         });
@@ -929,7 +1034,7 @@
         if (filtered.length === 0) {
           tableBody.innerHTML = `
             <tr>
-              <td colspan="7" class="text-center py-4 text-muted">
+              <td colspan="8" class="text-center py-4 text-muted">
                 No matching attendee records found.
               </td>
             </tr>
@@ -939,7 +1044,7 @@
         }
 
         filtered.forEach(g => {
-          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person';
+          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person' || g.attending === 'Yes';
           const size = parseInt(g.guestCount, 10) || 1;
           const tr = document.createElement('tr');
 
@@ -956,11 +1061,14 @@
                 ? `<span class="status-badge-attending">● Confirmed Attending</span>` 
                 : `<span class="status-badge-declined">✕ Declined</span>`}
             </td>
+            <td>
+              ${isAttending ? getDietaryBadge(g.dietary) : '<span class="text-muted">—</span>'}
+            </td>
             <td><code>${escapeHtml(g.phoneNumber || '—')}</code></td>
-            <td style="max-width: 250px; white-space: normal;">
+            <td style="max-width: 260px; white-space: normal;">
               <small class="text-slate-300">${escapeHtml(g.message || 'No special requirements')}</small>
             </td>
-            <td style="font-size: 0.78rem; color: #94a3b8;">
+            <td style="font-size: 0.78rem; color: #94a3b8; white-space: nowrap;">
               ${g.submittedAt ? new Date(g.submittedAt).toLocaleDateString() : 'Recent'}
             </td>
           `;
@@ -996,21 +1104,33 @@
         loadRosterData();
       });
 
-      // 11. 1-Click Catering CSV Export
+      // 11. Load Sample Guests Button
+      if (sampleBtn) {
+        sampleBtn.addEventListener('click', () => {
+          currentData = [...SAMPLE_RECORDS];
+          try {
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
+          } catch (e) {}
+          updateMetricsAndTable();
+        });
+      }
+
+      // 12. 1-Click Catering CSV Export
       exportBtn.addEventListener('click', () => {
         if (!currentData.length) {
           alert('No RSVP records to export.');
           return;
         }
 
-        const headers = ['Reference Code', 'Full Name / Party Name', 'Proposing Headcount', 'Status', 'Phone Number', 'Dietary / Notes', 'Registered At'];
+        const headers = ['Reference Code', 'Full Name / Party Name', 'Proposing Headcount', 'Status', 'Dietary Requirements', 'Phone Number', 'Dietary Notes & Messages', 'Registered At'];
         const rows = currentData.map(g => {
-          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person';
+          const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person' || g.attending === 'Yes';
           return [
             `"${g.referenceCode || ''}"`,
             `"${(g.fullName || '').replace(/"/g, '""')}"`,
             isAttending ? (g.guestCount || 1) : 0,
             isAttending ? 'Attending In-Person' : 'Declined',
+            `"${g.dietary || 'Standard Menu'}"`,
             `"${(g.phoneNumber || '').replace(/"/g, '""')}"`,
             `"${(g.message || '').replace(/"/g, '""')}"`,
             `"${g.submittedAt || ''}"`

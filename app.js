@@ -295,12 +295,16 @@ function initRSVPForm() {
       } catch (err) {}
     }
 
+    const dietarySelect = document.getElementById('dietaryRequirements');
+    const dietaryVal = dietarySelect ? dietarySelect.value : 'Standard Menu';
+
     const rsvpPayload = {
       referenceCode: refCode,
       fullName: nameVal,
       phoneNumber: phoneVal,
       attending: attendingVal,
       guestCount: guestCountVal,
+      dietary: dietaryVal,
       message: notesVal,
       timestamp: new Date().toISOString()
     };
