@@ -576,7 +576,7 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  // Dynamic font scaling for group names ("The Wanje Family", "Zablon & Guest")
+  // Dynamic font scaling for group names ("The Maina Family", "Alex & Guest")
   let nameSize = Math.round(44 * scale);
   const maxNameWidth = width * 0.72;
   const serifFontFamily = '"Playfair Display", "Cinzel", "Times New Roman", Georgia, serif';
@@ -954,7 +954,7 @@ function initAdminPortal() {
 
   if (sampleDataBtn) {
     sampleDataBtn.addEventListener('click', () => {
-      const sampleNames = ["The Wanje Family", "Zablon & Guest", "Dr. Kenneth Kamau", "Grace Njeri"];
+      const sampleNames = ["The Maina Family", "Alex & Guest", "Dr. Jane Kariuki", "Grace Mwende"];
       const randName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
       const sample = {
         referenceCode: 'IKG-ACS-' + Math.floor(1000 + Math.random() * 9000),

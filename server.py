@@ -138,6 +138,12 @@ class RSVPRequestHandler(http.server.SimpleHTTPRequestHandler):
         parsed_url = urllib.parse.urlparse(self.path)
         path = parsed_url.path
 
+        # POST /api/clear-rsvps - Clear all RSVPs (Admin)
+        if path == "/api/clear-rsvps":
+            save_rsvps([])
+            self.send_json_response({"status": "success", "message": "All RSVP records cleared."})
+            return
+
         # POST /api/rsvp - Save new or updated RSVP
         if path == "/api/rsvp":
             content_length = int(self.headers.get('Content-Length', 0))
