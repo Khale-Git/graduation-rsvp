@@ -747,7 +747,7 @@
     (function() {
       const AUTH_STORAGE_KEY = 'ikg_organiser_auth_session';
       const PASS_HASH_KEY = 'ikg_organiser_pass_hash_v2';
-      const LOCAL_CACHE_KEY = 'ikg_rsvp_admin_cache_v1';
+      const LOCAL_CACHE_KEY = 'ikg_rsvp_admin_cache_v3';
 
       async function sha256(message) {
         const msgBuffer = new TextEncoder().encode(message);
@@ -975,6 +975,19 @@
           try {
             localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
           } catch (e) {}
+        } else {
+          // Upgrade any cached sample records that were missing tea or dietary choices
+          combined = combined.map(item => {
+            const sampleMatch = SAMPLE_RECORDS.find(s => s.referenceCode === item.referenceCode);
+            if (sampleMatch) {
+              return {
+                ...item,
+                dietary: sampleMatch.dietary,
+                teaPreference: sampleMatch.teaPreference
+              };
+            }
+            return item;
+          });
         }
 
         currentData = combined;
