@@ -946,11 +946,15 @@
 
         // Check local storage backup first
         try {
-          const raw = localStorage.getItem(LOCAL_CACHE_KEY) || localStorage.getItem('ikg_rsvp_cache_v1');
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              combined = parsed;
+          const keys = [LOCAL_CACHE_KEY, 'ikg_all_rsvps_cache', 'ikg_rsvp_cache_v1', 'ikg_rsvp_admin_cache_v1'];
+          for (let k of keys) {
+            const raw = localStorage.getItem(k);
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                combined = parsed;
+                break;
+              }
             }
           }
         } catch (e) {}

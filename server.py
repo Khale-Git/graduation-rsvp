@@ -108,7 +108,7 @@ class RSVPRequestHandler(http.server.SimpleHTTPRequestHandler):
             rsvps = load_rsvps()
             output = io.StringIO()
             writer = csv.writer(output)
-            writer.writerow(["Reference Code", "Timestamp", "Full Name", "Phone Number", "Attending", "Party Size (Guests)", "Message"])
+            writer.writerow(["Reference Code", "Timestamp", "Full Name", "Phone Number", "Attending", "Party Size (Guests)", "Dietary Requirements", "Tea & Beverage", "Message"])
 
             for r in rsvps:
                 writer.writerow([
@@ -117,7 +117,9 @@ class RSVPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     r.get("fullName", ""),
                     r.get("phoneNumber", ""),
                     r.get("attending", ""),
-                    r.get("guestCount", "1") if r.get("attending") == "Yes" else "0",
+                    r.get("guestCount", "1") if (r.get("attending") in ["Yes", "yes", True]) else "0",
+                    r.get("dietary", "Standard Menu"),
+                    r.get("teaPreference", "Chai (Tea with Sugar)"),
                     r.get("message", "")
                 ])
 
@@ -166,12 +168,17 @@ class RSVPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json_response({"error": "Full Name and Phone Number are required fields."}, status=400)
                 return
 
+            dietary = data.get("dietary", "Standard Menu")
+            tea_pref = data.get("teaPreference", "Chai (Tea with Sugar)")
+
             record = {
                 "referenceCode": ref_code,
                 "fullName": full_name,
                 "phoneNumber": phone,
                 "attending": attending,
                 "guestCount": guest_count if attending == "Yes" else "0",
+                "dietary": dietary,
+                "teaPreference": tea_pref,
                 "message": message,
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }

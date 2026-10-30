@@ -669,22 +669,26 @@ function renderProceduralCard(ctx, width, height, guestName, partySize) {
 }
 
 function saveToAdminCache(record) {
-  let list = [];
-  try {
-    const raw = localStorage.getItem(CONFIG.ADMIN_CACHE_KEY);
-    if (raw) list = JSON.parse(raw);
-  } catch (e) {}
+  const keys = [CONFIG.ADMIN_CACHE_KEY, 'ikg_rsvp_admin_cache_v3', 'ikg_rsvp_admin_cache_v1'];
+  
+  keys.forEach(key => {
+    let list = [];
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) list = JSON.parse(raw);
+    } catch (e) {}
 
-  const idx = list.findIndex(item => item.referenceCode === record.referenceCode || item.phoneNumber === record.phoneNumber);
-  if (idx >= 0) {
-    list[idx] = record;
-  } else {
-    list.push(record);
-  }
+    const idx = list.findIndex(item => item.referenceCode === record.referenceCode || (record.phoneNumber && item.phoneNumber === record.phoneNumber));
+    if (idx >= 0) {
+      list[idx] = record;
+    } else {
+      list.push(record);
+    }
 
-  try {
-    localStorage.setItem(CONFIG.ADMIN_CACHE_KEY, JSON.stringify(list));
-  } catch (e) {}
+    try {
+      localStorage.setItem(key, JSON.stringify(list));
+    } catch (e) {}
+  });
 }
 
 /* ===================================================================

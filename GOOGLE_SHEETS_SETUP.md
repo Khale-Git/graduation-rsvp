@@ -14,7 +14,9 @@ If you host this website on a static cloud provider (such as GitHub Pages, Netli
    - Column D: `Phone Number`
    - Column E: `Attending`
    - Column F: `Guest Count`
-   - Column G: `Message`
+   - Column G: `Dietary Requirements`
+   - Column H: `Tea & Beverage Urn`
+   - Column I: `Message`
 3. Click **Extensions > Apps Script** from the top menu.
 4. Replace all code in the script editor with the snippet below:
 
@@ -31,6 +33,8 @@ function doPost(e) {
     data.phoneNumber || '',
     data.attending || '',
     data.guestCount || '1',
+    data.dietary || 'Standard Menu',
+    data.teaPreference || 'Chai (Tea with Sugar)',
     data.message || ''
   ]);
   
