@@ -724,11 +724,12 @@
               <th>Phone Number</th>
               <th>Notes &amp; Messages</th>
               <th>Registered At</th>
+              <th style="text-align: center;">Action</th>
             </tr>
           </thead>
           <tbody id="roster-table-body">
             <tr>
-              <td colspan="9" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
+              <td colspan="10" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
             </tr>
           </tbody>
         </table>
@@ -976,10 +977,21 @@
           console.log('Running on static host; utilizing cached or sample database.');
         }
 
-        // If no records yet, keep table empty ready for real registrations
-        if (!combined) {
-          combined = [];
-        }
+        // Automatically purge any old dummy test records that were saved in earlier cache versions!
+        const DUMMY_REF_CODES = ['IKG-7482', 'IKG-3921', 'IKG-8104', 'IKG-5519', 'IKG-9230', 'IKG-1647', 'IKG-6395'];
+        combined = combined.filter(item => {
+          if (!item) return false;
+          const ref = item.referenceCode || '';
+          const name = item.fullName || '';
+          if (DUMMY_REF_CODES.includes(ref)) return false;
+          if (['Victor Ochieng', 'Daystar CS Alumni Cohort', 'The Maina Family', 'Alex & Guest', 'Prof. Jane Kariuki', 'David Mutua', 'Dr. & Mrs. Kilonzo'].includes(name)) return false;
+          return true;
+        });
+
+        // Sync sanitized clean list back to active storage key
+        try {
+          localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
+        } catch (e) {}
 
         currentData = combined;
         updateMetricsAndTable();
@@ -1170,8 +1182,41 @@
             <td style="font-size: 0.78rem; color: #94a3b8; white-space: nowrap;">
               ${g.submittedAt ? new Date(g.submittedAt).toLocaleDateString() : 'Recent'}
             </td>
+            <td style="text-align: center; white-space: nowrap;">
+              <button 
+                class="btn btn-sm delete-entry-btn" 
+                data-ref="${g.referenceCode || ''}" 
+                data-phone="${g.phoneNumber || ''}" 
+                title="Remove this registration"
+                style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem;"
+              >
+                ✕
+              </button>
+            </td>
           `;
           tableBody.appendChild(tr);
+        });
+
+        // Add event listeners for delete buttons
+        document.querySelectorAll('.delete-entry-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const ref = btn.getAttribute('data-ref');
+            const phone = btn.getAttribute('data-phone');
+            if (!confirm(`Delete registration #${ref || phone}?`)) return;
+
+            currentData = currentData.filter(item => {
+              if (ref && item.referenceCode === ref) return false;
+              if (phone && item.phoneNumber === phone) return false;
+              return true;
+            });
+
+            const keys = [LOCAL_CACHE_KEY, 'ikg_all_rsvps_cache', 'ikg_rsvp_cache_v1', 'ikg_rsvp_admin_cache_v1'];
+            keys.forEach(k => {
+              try { localStorage.setItem(k, JSON.stringify(currentData)); } catch(err) {}
+            });
+
+            updateMetricsAndTable();
+          });
         });
 
         footerSummary.textContent = `Displaying ${filtered.length} of ${currentData.length} records`;
