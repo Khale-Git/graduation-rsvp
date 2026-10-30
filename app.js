@@ -141,10 +141,10 @@ function initNetworkBackground() {
 
 /* ===================================================================
    2. FUNCTIONAL COUNTDOWN TIMER
-   Target: Saturday, November 21, 2026, 14:00:00 (EAT / UTC+3)
+   Target: Saturday, November 28, 2026, 14:00:00 (EAT / UTC+3)
    =================================================================== */
 function initCountdownTimer() {
-  const targetDate = new Date('2026-11-21T14:00:00+03:00').getTime();
+  const targetDate = new Date('2026-11-28T14:00:00+03:00').getTime();
 
   const daysEl = document.getElementById('cd-days');
   const hoursEl = document.getElementById('cd-hours');
@@ -665,7 +665,7 @@ function renderProceduralCard(ctx, width, height, guestName, partySize) {
 
   ctx.font = '500 16px "JetBrains Mono", monospace';
   ctx.fillStyle = '#94a3b8';
-  ctx.fillText('SATURDAY, NOVEMBER 21ST, 2026 • 2:00 PM • THEE BOBIANS RESIDENCE', width / 2, height - 85);
+  ctx.fillText('SATURDAY, NOVEMBER 28TH, 2026 • 2:00 PM • THEE BOBIANS RESIDENCE', width / 2, height - 85);
 }
 
 function saveToAdminCache(record) {
@@ -704,15 +704,15 @@ function initCalendarIntegrations() {
   const title = encodeURIComponent("Graduation Celebration of Ian Kiromo Githengu");
   const details = encodeURIComponent(
     "Celebration of Ian Kiromo Githengu's Bachelor's Degree in Applied Computer Science from Daystar University.\n\n" +
-    "Date: Saturday, November 21st, 2026 at 2:00 PM EAT\n" +
+    "Date: Saturday, November 28th, 2026 at 2:00 PM EAT\n" +
     "Venue: Thee Bobians Residence\n" +
     "Google Maps Pin: https://maps.google.com/?q=-1.1562,36.6424\n\n" +
     "We look forward to celebrating this milestone with you!"
   );
   const location = encodeURIComponent("Thee Bobians Residence (https://maps.google.com/?q=-1.1562,36.6424)");
   
-  const startUtc = "20261121T110000Z";
-  const endUtc = "20261121T160000Z";
+  const startUtc = "20261128T110000Z";
+  const endUtc = "20261128T160000Z";
 
   const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startUtc}/${endUtc}&details=${details}&location=${location}`;
   
