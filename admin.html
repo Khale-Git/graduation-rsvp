@@ -976,25 +976,9 @@
           console.log('Running on static host; utilizing cached or sample database.');
         }
 
-        // If still empty (e.g., initial visit on GitHub Pages), populate sample records!
-        if (!combined || combined.length === 0) {
-          combined = [...SAMPLE_RECORDS];
-          try {
-            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
-          } catch (e) {}
-        } else {
-          // Upgrade any cached sample records that were missing tea or dietary choices
-          combined = combined.map(item => {
-            const sampleMatch = SAMPLE_RECORDS.find(s => s.referenceCode === item.referenceCode);
-            if (sampleMatch) {
-              return {
-                ...item,
-                dietary: sampleMatch.dietary,
-                teaPreference: sampleMatch.teaPreference
-              };
-            }
-            return item;
-          });
+        // If no records yet, keep table empty ready for real registrations
+        if (!combined) {
+          combined = [];
         }
 
         currentData = combined;
@@ -1144,8 +1128,10 @@
         if (filtered.length === 0) {
           tableBody.innerHTML = `
             <tr>
-              <td colspan="9" class="text-center py-4 text-muted">
-                No matching attendee records found.
+              <td colspan="9" class="text-center py-4 text-muted" style="padding: 3rem 1rem;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📋</div>
+                <div style="color: #cbd5e1; font-weight: 600; margin-bottom: 0.25rem;">No Registrations Recorded Yet</div>
+                <div style="font-size: 0.85rem; color: #94a3b8;">Guest RSVPs will automatically appear here in real-time as people register on the main page.</div>
               </td>
             </tr>
           `;
