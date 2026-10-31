@@ -13,6 +13,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('ikg_site_theme') || 'dark';
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     body {
       background-color: var(--bg-primary, #0c1626);
@@ -552,6 +560,195 @@
       .roster-toolbar { flex-direction: column; align-items: stretch; }
       .roster-search-shell { max-width: 100%; }
     }
+
+    /* ===================================================================
+       LIGHT THEME OVERRIDES FOR ORGANISER PORTAL
+       =================================================================== */
+    [data-theme="light"] body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .admin-navbar {
+      background: rgba(255, 255, 255, 0.92) !important;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3) !important;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06) !important;
+    }
+
+    [data-theme="light"] .admin-brand {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .admin-brand-tag {
+      background: rgba(2, 132, 199, 0.1) !important;
+      border-color: rgba(2, 132, 199, 0.35) !important;
+      color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .auth-card {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(148, 163, 184, 0.35) !important;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1) !important;
+    }
+
+    [data-theme="light"] .auth-icon-badge {
+      background: rgba(2, 132, 199, 0.1) !important;
+      border-color: rgba(2, 132, 199, 0.35) !important;
+      color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .auth-title {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .auth-subtitle {
+      color: #475569 !important;
+    }
+
+    [data-theme="light"] .auth-input-label {
+      color: #475569 !important;
+    }
+
+    [data-theme="light"] .password-field-shell input {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .password-field-shell input:focus {
+      border-color: #0284c7 !important;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
+    }
+
+    [data-theme="light"] .admin-page-title {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .admin-page-desc {
+      color: #475569 !important;
+    }
+
+    [data-theme="light"] .admin-header-row {
+      border-bottom-color: rgba(148, 163, 184, 0.25) !important;
+    }
+
+    [data-theme="light"] .kpi-stat-box {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(148, 163, 184, 0.35) !important;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06) !important;
+    }
+
+    [data-theme="light"] .kpi-stat-box.featured-headcount {
+      background: linear-gradient(135deg, rgba(238, 246, 255, 0.95), rgba(255, 255, 255, 0.95)) !important;
+      border-color: #0284c7 !important;
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.15) !important;
+    }
+
+    [data-theme="light"] .stat-label {
+      color: #64748b !important;
+    }
+
+    [data-theme="light"] .featured-headcount .stat-label {
+      color: #0369a1 !important;
+    }
+
+    [data-theme="light"] .stat-value {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .featured-headcount .stat-value {
+      color: #0284c7 !important;
+      text-shadow: none !important;
+    }
+
+    [data-theme="light"] .stat-sub {
+      color: #64748b !important;
+    }
+
+    [data-theme="light"] .featured-headcount .stat-sub {
+      color: #334155 !important;
+    }
+
+    [data-theme="light"] .dietary-pills-wrap {
+      background: rgba(255, 255, 255, 0.92) !important;
+      border-color: rgba(148, 163, 184, 0.35) !important;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+    }
+
+    [data-theme="light"] .dietary-pill-title {
+      color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .dietary-counter-badge {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #1e293b !important;
+    }
+
+    [data-theme="light"] .dietary-counter-badge strong {
+      color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .roster-card {
+      background: rgba(255, 255, 255, 0.96) !important;
+      border-color: rgba(148, 163, 184, 0.35) !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    [data-theme="light"] .roster-toolbar {
+      border-bottom-color: #e2e8f0 !important;
+      background: #f8fafc !important;
+    }
+
+    [data-theme="light"] .roster-search-shell input {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .roster-search-shell input:focus {
+      border-color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .filter-btn {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #475569 !important;
+    }
+
+    [data-theme="light"] .filter-btn.active,
+    [data-theme="light"] .filter-btn:hover {
+      background: rgba(2, 132, 199, 0.1) !important;
+      border-color: #0284c7 !important;
+      color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .roster-table th {
+      background: #f1f5f9 !important;
+      color: #334155 !important;
+      border-bottom-color: #cbd5e1 !important;
+    }
+
+    [data-theme="light"] .roster-table td {
+      border-bottom-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+
+    [data-theme="light"] .roster-table tr:hover td {
+      background: rgba(241, 245, 249, 0.75) !important;
+    }
+
+    [data-theme="light"] .roster-footer {
+      background: #f8fafc !important;
+      border-top-color: #e2e8f0 !important;
+      color: #64748b !important;
+    }
+
+    [data-theme="light"] .theme-toggle-btn {
+      background: rgba(15, 23, 42, 0.08) !important;
+      border-color: rgba(148, 163, 184, 0.4) !important;
+      color: #0f172a !important;
+    }
   </style>
 </head>
 <body>
@@ -765,32 +962,51 @@
 
       // Theme Manager (Dark / Light Theme Sync)
       const themeToggleBtn = document.getElementById('theme-toggle-btn');
-      const savedTheme = localStorage.getItem('ikg_site_theme') || 'dark';
+      let savedTheme = 'dark';
+      try {
+        savedTheme = localStorage.getItem('ikg_site_theme') || 'dark';
+      } catch (e) {
+        savedTheme = 'dark';
+      }
 
       function applyTheme(theme) {
-        if (theme === 'light') {
+        const isLight = theme === 'light';
+        if (isLight) {
           document.documentElement.setAttribute('data-theme', 'light');
-          if (themeToggleBtn) {
-            themeToggleBtn.querySelector('.theme-icon').textContent = '🌙';
-            themeToggleBtn.setAttribute('title', 'Switch to Dark Theme');
-          }
         } else {
           document.documentElement.removeAttribute('data-theme');
-          if (themeToggleBtn) {
-            themeToggleBtn.querySelector('.theme-icon').textContent = '☀️';
-            themeToggleBtn.setAttribute('title', 'Switch to Light Theme');
-          }
         }
-        localStorage.setItem('ikg_site_theme', theme);
+
+        if (themeToggleBtn) {
+          const icon = themeToggleBtn.querySelector('.theme-icon') || themeToggleBtn.querySelector('span');
+          const iconChar = isLight ? '🌙' : '☀️';
+          if (icon) {
+            icon.textContent = iconChar;
+          } else {
+            themeToggleBtn.innerHTML = `<span class="theme-icon">${iconChar}</span>`;
+          }
+          themeToggleBtn.setAttribute('title', isLight ? 'Switch to Dark Theme' : 'Switch to Light Theme');
+          themeToggleBtn.setAttribute('aria-label', isLight ? 'Switch to Dark Theme' : 'Switch to Light Theme');
+        }
+
+        try {
+          localStorage.setItem('ikg_site_theme', theme);
+        } catch (e) {}
       }
 
       applyTheme(savedTheme);
 
       if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
+        themeToggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
           const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-          applyTheme(current === 'light' ? 'dark' : 'light');
+          const next = current === 'light' ? 'dark' : 'light';
+          applyTheme(next);
         });
+      }
+
+      function getStoredPassHash() {
+        return localStorage.getItem(PASS_HASH_KEY) || '5c8698a24637e69b445958a9caa0510334344c520d274ce57ad9a16aef235048';
       }
 
       const authGate = document.getElementById('auth-gate-section');

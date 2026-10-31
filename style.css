@@ -217,13 +217,126 @@
 [data-theme="light"] .hero-title,
 [data-theme="light"] .section-title,
 [data-theme="light"] .admin-page-title,
-[data-theme="light"] .auth-title {
+[data-theme="light"] .auth-title,
+[data-theme="light"] .form-title,
+[data-theme="light"] h1, [data-theme="light"] h2, [data-theme="light"] h3, [data-theme="light"] h4 {
   color: #0f172a !important;
 }
 
+[data-theme="light"] .hero-section {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+}
+
+[data-theme="light"] .countdown-section {
+  background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%) !important;
+  border-top-color: rgba(148, 163, 184, 0.3) !important;
+  border-bottom-color: rgba(148, 163, 184, 0.3) !important;
+}
+
+[data-theme="light"] .location-section {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .academic-strip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .academic-primary,
+[data-theme="light"] .highlight-institution {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .card-header-bar {
+  background: #f1f5f9 !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .input-shell {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .input-shell:focus-within {
+  background: #ffffff !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
+}
+
+[data-theme="light"] .btn-secondary-tech {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .btn-secondary-tech:hover {
+  background: #f8fafc !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .btn-ghost-tech {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .btn-ghost-tech:hover {
+  color: #0f172a !important;
+  background: rgba(15, 23, 42, 0.05) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+[data-theme="light"] .info-primary {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .info-secondary,
+[data-theme="light"] .section-description,
+[data-theme="light"] .form-subtitle {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .highlight-date {
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .rsvp-section {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .form-card,
+[data-theme="light"] .rsvp-status-wrap {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .radio-tile {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .radio-tile:hover {
+  background: #f1f5f9 !important;
+  border-color: #0284c7 !important;
+}
+
+[data-theme="light"] .radio-input:checked + .radio-tile {
+  background: rgba(2, 132, 199, 0.08) !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .map-container {
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
 [data-theme="light"] .theme-toggle-btn {
-  background: rgba(15, 23, 42, 0.06);
-  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.4);
   color: #0f172a;
 }
 
