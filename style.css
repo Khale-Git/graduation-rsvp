@@ -215,6 +215,7 @@
 }
 
 [data-theme="light"] .hero-title,
+[data-theme="light"] .hero-headline,
 [data-theme="light"] .section-title,
 [data-theme="light"] .admin-page-title,
 [data-theme="light"] .auth-title,
@@ -223,10 +224,47 @@
   color: #0f172a !important;
 }
 
+/* 1. Hero Light Theme Enhancements */
 [data-theme="light"] .hero-section {
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
 }
 
+[data-theme="light"] .name-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 45%, #0284c7 90%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 2px 10px rgba(2, 132, 199, 0.25)) !important;
+}
+
+[data-theme="light"] .tech-chip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .chip-text {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .chip-code {
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .hero-subtitle,
+[data-theme="light"] .hero-subtext {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .hero-subtitle strong,
+[data-theme="light"] .hero-subtext strong,
+[data-theme="light"] .text-silver {
+  color: #0f172a !important;
+}
+
+/* 2. Sections & Academic Details */
 [data-theme="light"] .countdown-section {
   background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%) !important;
   border-top-color: rgba(148, 163, 184, 0.3) !important;
@@ -253,9 +291,31 @@
   border-bottom-color: #e2e8f0 !important;
 }
 
+/* 3. Form & Interactive Inputs */
+[data-theme="light"] .rsvp-section {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .form-card,
+[data-theme="light"] .rsvp-status-wrap {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .input-label {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .input-hint-sub {
+  color: #64748b !important;
+}
+
 [data-theme="light"] .input-shell {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
 }
 
 [data-theme="light"] .input-shell:focus-within {
@@ -264,6 +324,72 @@
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
 }
 
+[data-theme="light"] .input-icon {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .tech-input,
+[data-theme="light"] .tech-select,
+[data-theme="light"] .tech-textarea {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .tech-input::placeholder,
+[data-theme="light"] .tech-textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+[data-theme="light"] .tech-select option {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Radio Selection Cards (Will you attend?) */
+[data-theme="light"] .radio-card-content {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+}
+
+[data-theme="light"] .radio-card:hover .radio-card-content {
+  background: #f8fafc !important;
+  border-color: #0284c7 !important;
+}
+
+[data-theme="light"] .radio-card input[type="radio"]:checked + .radio-card-content {
+  background: rgba(2, 132, 199, 0.08) !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25) !important;
+}
+
+[data-theme="light"] .radio-title {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .radio-card input[type="radio"]:checked + .radio-card-content .radio-title {
+  color: #0284c7 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .radio-desc {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .radio-indicator {
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] .radio-card input[type="radio"]:checked + .radio-card-content .radio-indicator {
+  border-color: #0284c7 !important;
+}
+
+[data-theme="light"] .radio-card input[type="radio"]:checked + .radio-card-content .radio-indicator::after {
+  background: #0284c7 !important;
+}
+
+/* 4. Buttons, Cards & Location */
 [data-theme="light"] .btn-secondary-tech {
   background: #ffffff !important;
   color: #0f172a !important;
@@ -301,37 +427,102 @@
   color: #0284c7 !important;
 }
 
-[data-theme="light"] .rsvp-section {
-  background: #f8fafc !important;
-}
-
-[data-theme="light"] .form-card,
-[data-theme="light"] .rsvp-status-wrap {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border-color: rgba(148, 163, 184, 0.35) !important;
-  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08) !important;
-}
-
-[data-theme="light"] .radio-tile {
+[data-theme="light"] .map-container,
+[data-theme="light"] .location-details-box {
   background: #ffffff !important;
-  border-color: #cbd5e1 !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* 5. Sleek Portfolio Footer ("Designed by the Graduate") */
+[data-theme="light"] .site-footer {
+  background: #f1f5f9 !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.3) !important;
+}
+
+[data-theme="light"] .portfolio-showcase-box {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .designer-badge {
+  background: rgba(2, 132, 199, 0.1) !important;
+  border-color: rgba(2, 132, 199, 0.35) !important;
+  color: #0284c7 !important;
+}
+
+[data-theme="light"] .tech-indicator-pulse {
+  background: #0284c7 !important;
+  box-shadow: 0 0 8px #0284c7 !important;
+}
+
+[data-theme="light"] .designer-name {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .radio-tile:hover {
-  background: #f1f5f9 !important;
-  border-color: #0284c7 !important;
+[data-theme="light"] .designer-credentials {
+  color: #334155 !important;
+  font-weight: 600 !important;
 }
 
-[data-theme="light"] .radio-input:checked + .radio-tile {
-  background: rgba(2, 132, 199, 0.08) !important;
+[data-theme="light"] .designer-bio {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .portfolio-link-btn {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-theme="light"] .portfolio-link-btn:hover {
+  background: #f8fafc !important;
   border-color: #0284c7 !important;
   color: #0284c7 !important;
 }
 
-[data-theme="light"] .map-container {
-  border-color: rgba(148, 163, 184, 0.35) !important;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+[data-theme="light"] .highlight-cv-btn {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+  border-color: #0284c7 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35) !important;
+}
+
+[data-theme="light"] .highlight-cv-btn:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #075985 100%) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .tech-pill {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .footer-quote code {
+  background: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  color: #0284c7 !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-theme="light"] .footer-bottom-row {
+  border-top-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .footer-copy {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .footer-admin-trigger {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .footer-admin-trigger:hover {
+  color: #0284c7 !important;
 }
 
 [data-theme="light"] .theme-toggle-btn {
