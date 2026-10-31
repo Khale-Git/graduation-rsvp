@@ -568,7 +568,10 @@
         <span>🎓 IKG // GRADUATION CELEBRATION</span>
         <span class="admin-brand-tag">ORGANISER PORTAL</span>
       </a>
-      <div class="admin-nav-actions">
+      <div class="admin-nav-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle Light/Dark Theme" title="Switch Theme (Light / Dark)">
+          <span class="theme-icon">☀️</span>
+        </button>
         <a href="index.html" class="btn btn-sm btn-ghost-tech">
           <span>← Back to Event Site</span>
         </a>
@@ -760,8 +763,34 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
       }
 
-      function getStoredPassHash() {
-        return localStorage.getItem(PASS_HASH_KEY) || '5c8698a24637e69b445958a9caa0510334344c520d274ce57ad9a16aef235048';
+      // Theme Manager (Dark / Light Theme Sync)
+      const themeToggleBtn = document.getElementById('theme-toggle-btn');
+      const savedTheme = localStorage.getItem('ikg_site_theme') || 'dark';
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          if (themeToggleBtn) {
+            themeToggleBtn.querySelector('.theme-icon').textContent = '🌙';
+            themeToggleBtn.setAttribute('title', 'Switch to Dark Theme');
+          }
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          if (themeToggleBtn) {
+            themeToggleBtn.querySelector('.theme-icon').textContent = '☀️';
+            themeToggleBtn.setAttribute('title', 'Switch to Light Theme');
+          }
+        }
+        localStorage.setItem('ikg_site_theme', theme);
+      }
+
+      applyTheme(savedTheme);
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+          applyTheme(current === 'light' ? 'dark' : 'light');
+        });
       }
 
       const authGate = document.getElementById('auth-gate-section');
@@ -1180,7 +1209,15 @@
               <small class="text-slate-300">${escapeHtml(g.message || 'No special requirements')}</small>
             </td>
             <td style="font-size: 0.78rem; color: #94a3b8; white-space: nowrap;">
-              ${g.submittedAt ? new Date(g.submittedAt).toLocaleDateString() : 'Recent'}
+              ${(() => {
+                const rawDate = g.submittedAt || g.timestamp;
+                if (!rawDate) return '<span class="text-muted">Just now</span>';
+                const d = new Date(rawDate);
+                if (isNaN(d.getTime())) return escapeHtml(rawDate);
+                const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                const timeStr = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
+                return `<div><strong>${dateStr}</strong></div><div style="font-size: 0.72rem; color: var(--accent-blue);">${timeStr}</div>`;
+              })()}
             </td>
             <td style="text-align: center; white-space: nowrap;">
               <button 

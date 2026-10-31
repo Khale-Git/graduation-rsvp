@@ -22,6 +22,7 @@ const CONFIG = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeManager();
   initNetworkBackground();
   initCountdownTimer();
   initRSVPForm();
@@ -30,6 +31,42 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initAdminPortal();
 });
+
+/* ===================================================================
+   0. THEME MANAGER (DARK / LIGHT THEME TOGGLE WITH LOCALSTORAGE SYNC)
+   =================================================================== */
+function initThemeManager() {
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  const savedTheme = localStorage.getItem('ikg_site_theme') || 'dark';
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      if (toggleBtn) {
+        toggleBtn.querySelector('.theme-icon').textContent = '🌙';
+        toggleBtn.setAttribute('title', 'Switch to Dark Theme');
+      }
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      if (toggleBtn) {
+        toggleBtn.querySelector('.theme-icon').textContent = '☀️';
+        toggleBtn.setAttribute('title', 'Switch to Light Theme');
+      }
+    }
+    localStorage.setItem('ikg_site_theme', theme);
+  }
+
+  // Initial load
+  applyTheme(savedTheme);
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = current === 'light' ? 'dark' : 'light';
+      applyTheme(next);
+    });
+  }
+}
 
 /* ===================================================================
    1. TECH BACKGROUND: INTERACTIVE NETWORK NODES & CIRCUIT LINES
