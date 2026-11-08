@@ -23,6 +23,7 @@ const CONFIG = {
 
 document.addEventListener('DOMContentLoaded', () => {
   initThemeManager();
+  initBookFlipInteraction();
   initNetworkBackground();
   initCountdownTimer();
   initRSVPForm();
@@ -381,9 +382,10 @@ function initRSVPForm() {
     }
 
     // 2. Send to Remote Webhook (Google Sheets / Formspree) if configured
-    if (CONFIG.REMOTE_WEBHOOK_URL) {
+    const activeRemoteWebhook = CONFIG.REMOTE_WEBHOOK_URL || localStorage.getItem('ikg_cloud_webhook_url') || '';
+    if (activeRemoteWebhook) {
       try {
-        await fetch(CONFIG.REMOTE_WEBHOOK_URL, {
+        await fetch(activeRemoteWebhook, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
@@ -1170,4 +1172,70 @@ function launchConfetti() {
   }
 
   requestAnimationFrame(render);
+}
+
+
+/* ===================================================================
+   3D INVITATION BOOK FLIP-OPEN INTERACTION (Scroll & Tap Trigger)
+   =================================================================== */
+function initBookFlipInteraction() {
+  const book = document.getElementById('book-element');
+  const frontCover = document.getElementById('book-front-cover');
+  const toggleBtn = document.getElementById('toggle-book-flip-btn');
+  const tapPrompt = document.getElementById('cover-tap-prompt');
+  const insideRsvpBtn = document.getElementById('inside-rsvp-btn');
+  if (!book) return;
+
+  function openBook() {
+    book.classList.add('is-open');
+  }
+
+  function closeBook() {
+    book.classList.remove('is-open');
+  }
+
+  if (frontCover) {
+    frontCover.addEventListener('click', () => {
+      openBook();
+    });
+  }
+
+  if (tapPrompt) {
+    tapPrompt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openBook();
+    });
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (book.classList.contains('is-open')) {
+        closeBook();
+      } else {
+        openBook();
+      }
+    });
+  }
+
+  if (insideRsvpBtn) {
+    insideRsvpBtn.addEventListener('click', () => {
+      const rsvpSec = document.getElementById('rsvp');
+      if (rsvpSec) rsvpSec.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // Scroll Trigger: Smoothly flips open as the guest scrolls down the page!
+  let userManuallyClosed = false;
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > 40 && !book.classList.contains('is-open') && !userManuallyClosed) {
+      openBook();
+    } else if (scrollY === 0) {
+      // Re-fold book when returning to top
+      userManuallyClosed = false;
+      closeBook();
+    }
+  }, { passive: true });
 }

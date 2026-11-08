@@ -58,6 +58,85 @@
   </header>
 
   <main id="main-content">
+    <!-- ===================================================================
+         0. 3D CEREMONIAL INVITATION BOOK COVER (Flips open as you scroll)
+         =================================================================== -->
+    <div id="invitation-book-wrap" class="invitation-book-wrap fade-in-up">
+      <div class="book-stage">
+        <div class="book-container" id="book-element">
+          
+          <!-- Back Interior: Official Unfolded Ceremony Invitation Pass -->
+          <div class="book-page book-inside-page">
+            <div class="inside-ornament-border">
+              <div class="inside-seal-badge">
+                <span class="gold-cap-icon">🎓</span>
+                <span class="inside-univ-text">DAYSTAR UNIVERSITY // CLASS OF 2026</span>
+              </div>
+              <h3 class="inside-proclamation">You Are Cordially Invited</h3>
+              <p class="inside-conferral">to celebrate the Academic Commencement &amp; Degree Conferral of</p>
+              <h2 class="inside-graduate-title">Ian Kiromo Githengu</h2>
+              <div class="inside-degree-highlight">
+                <span>Bachelor of Science in Applied Computer Science</span>
+              </div>
+              <div class="inside-datetime-strip">
+                <div class="meta-datetime-box">
+                  <span class="meta-day">SATURDAY</span>
+                  <span class="meta-date">NOV 28, 2026</span>
+                  <span class="meta-time">2:00 PM EAT</span>
+                </div>
+                <div class="meta-venue-box">
+                  <span class="meta-venue-title">RECEPTION VENUE</span>
+                  <span class="meta-venue-name">Thee Bobians Residence</span>
+                  <span class="meta-venue-loc">Gikambura, Kikuyu</span>
+                </div>
+              </div>
+              <div class="inside-actions-row">
+                <a href="#rsvp" class="btn btn-sm btn-primary-tech" id="inside-rsvp-btn">
+                  <span>Confirm RSVP Now</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+                <button type="button" class="btn btn-sm btn-ghost-tech" id="toggle-book-flip-btn" title="Toggle book open / close">
+                  <span>Close Cover ↺</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Front Cover: Flips open on 3D Y-axis -->
+          <div class="book-page book-cover-page" id="book-front-cover" title="Click to open invitation">
+            <div class="cover-leather-texture"></div>
+            <div class="cover-gold-emboss-border">
+              <div class="cover-emblem-wrap">
+                <div class="crest-halo"></div>
+                <svg class="crest-svg" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="1.6">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+              </div>
+              <span class="cover-proclamation">✦ OFFICIAL COMMENCEMENT INVITATION ✦</span>
+              <h1 class="cover-book-title">GRADUATION CELEBRATION</h1>
+              <div class="gold-divider-flourish">
+                <span>✦ ✦ ✦</span>
+              </div>
+              <h2 class="cover-book-name">Ian Kiromo Githengu</h2>
+              <p class="cover-book-sub">B.Sc. in Applied Computer Science • Daystar University</p>
+              <div class="cover-seal-cta" id="cover-tap-prompt">
+                <span class="wax-seal-icon">⚜️</span>
+                <span class="seal-prompt-text">TAP OR SCROLL TO OPEN</span>
+                <svg class="scroll-arrow-bounce" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="book-spine-shadow"></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="book-scroll-indicator">
+        <span>Scroll down to unfold ceremony &amp; RSVP details</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+
     <!-- 1. Hero Section -->
     <section id="hero" class="hero-section">
       <div class="container hero-container">

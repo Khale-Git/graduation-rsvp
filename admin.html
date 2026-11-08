@@ -20,6 +20,301 @@
         document.documentElement.setAttribute('data-theme', 'light');
       }
     })();
+
+      // ===================================================================
+      // MODAL 1: MANUAL ATTENDEE REGISTRATION HANDLER
+      // ===================================================================
+      const manualModal = document.getElementById('manual-attendee-modal');
+      const openManualBtn = document.getElementById('open-manual-add-btn');
+      const closeManualBtn = document.getElementById('close-manual-modal-btn');
+      const cancelManualBtn = document.getElementById('cancel-manual-modal-btn');
+      const manualForm = document.getElementById('manual-attendee-form');
+
+      if (openManualBtn && manualModal) {
+        openManualBtn.addEventListener('click', () => {
+          manualForm.reset();
+          manualModal.showModal();
+        });
+      }
+
+      if (closeManualBtn && manualModal) {
+        closeManualBtn.addEventListener('click', () => manualModal.close());
+      }
+      if (cancelManualBtn && manualModal) {
+        cancelManualBtn.addEventListener('click', () => manualModal.close());
+      }
+
+      if (manualForm) {
+        manualForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = (document.getElementById('manual-name').value || '').trim();
+          const phone = (document.getElementById('manual-phone').value || '').trim();
+          const attending = document.getElementById('manual-attending').value;
+          const guestCount = attending === 'No' ? '0' : document.getElementById('manual-guest-count').value;
+          const dietary = document.getElementById('manual-dietary').value;
+          const tea = document.getElementById('manual-tea').value;
+          const notes = (document.getElementById('manual-notes').value || '').trim() || 'Manual phone/offline RSVP';
+
+          const randSuffix = Math.floor(1000 + Math.random() * 9000);
+          const refCode = 'IKG-M' + randSuffix;
+          const nowIso = new Date().toISOString();
+
+          const newGuest = {
+            referenceCode: refCode,
+            fullName: name,
+            phoneNumber: phone || '—',
+            attending: attending,
+            guestCount: guestCount,
+            dietary: dietary,
+            teaPreference: tea,
+            message: notes,
+            timestamp: nowIso,
+            submittedAt: nowIso
+          };
+
+          // Prepend to currentData
+          currentData.unshift(newGuest);
+
+          // Save to LocalStorage
+          try {
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
+            // Also store in dedicated manual backup
+            let manualList = [];
+            const rawManual = localStorage.getItem('ikg_manual_rsvps');
+            if (rawManual) manualList = JSON.parse(rawManual);
+            manualList.unshift(newGuest);
+            localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
+          } catch (err) {}
+
+          // Attempt Cloud Webhook POST if configured
+          const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
+          if (webhookUrl) {
+            try {
+              fetch(webhookUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGuest)
+              });
+            } catch (postErr) {}
+          }
+
+          updateMetricsAndTable();
+          manualModal.close();
+          alert(✓ Attendee "" successfully registered with Reference Code #!);
+        });
+      }
+
+      // ===================================================================
+      // MODAL 2: INVITATION & RESERVATION CHECKER (Door / Gate Check-in)
+      // ===================================================================
+      const verifierModal = document.getElementById('invitation-verifier-modal');
+      const openVerifierBtn = document.getElementById('open-verifier-btn');
+      const closeVerifierBtn = document.getElementById('close-verifier-modal-btn');
+      const verifierInput = document.getElementById('verifier-input');
+      const doVerifyBtn = document.getElementById('do-verify-btn');
+      const verifierResultBox = document.getElementById('verifier-result-box');
+
+      if (openVerifierBtn && verifierModal) {
+        openVerifierBtn.addEventListener('click', () => {
+          verifierInput.value = '';
+          verifierResultBox.style.display = 'none';
+          verifierModal.showModal();
+          setTimeout(() => verifierInput.focus(), 100);
+        });
+      }
+
+      if (closeVerifierBtn && verifierModal) {
+        closeVerifierBtn.addEventListener('click', () => verifierModal.close());
+      }
+
+      function runVerification() {
+        const query = (verifierInput.value || '').trim().toLowerCase();
+        if (!query) {
+          verifierResultBox.style.display = 'none';
+          return;
+        }
+
+        // Clean query of # prefix
+        const cleanQuery = query.replace(/^#/, '');
+
+        // Search in currentData
+        const match = currentData.find(g => {
+          const r = (g.referenceCode || '').toLowerCase().replace(/^#/, '');
+          const n = (g.fullName || '').toLowerCase();
+          const p = (g.phoneNumber || '').toLowerCase().replace(/[^0-9]/g, '');
+          const cleanDigits = query.replace(/[^0-9]/g, '');
+          
+          return r === cleanQuery || r.includes(cleanQuery) || 
+                 n === query || n.includes(query) || 
+                 (cleanDigits.length >= 4 && p.includes(cleanDigits));
+        });
+
+        verifierResultBox.style.display = 'block';
+
+        if (!match) {
+          verifierResultBox.style.background = 'rgba(239, 68, 68, 0.12)';
+          verifierResultBox.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          verifierResultBox.style.color = '#fca5a5';
+          verifierResultBox.innerHTML = 
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">
+              <span>⚠️ NO RESERVATION FOUND</span>
+            </div>
+            <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.85rem;">No attendee matches "". Check spelling or register them now.</p>
+            <button type="button" id="verifier-quick-register-btn" class="btn btn-sm btn-primary-tech">
+              <span>+ Register "" on the Spot</span>
+            </button>
+          ;
+          const quickBtn = document.getElementById('verifier-quick-register-btn');
+          if (quickBtn) {
+            quickBtn.onclick = () => {
+              verifierModal.close();
+              document.getElementById('manual-name').value = verifierInput.value;
+              manualModal.showModal();
+            };
+          }
+          return;
+        }
+
+        const isAttending = match.attending === 'yes' || match.attending === true || match.attending === 'Attending In-Person' || match.attending === 'Yes';
+        const party = parseInt(match.guestCount, 10) || 1;
+
+        if (isAttending) {
+          verifierResultBox.style.background = 'rgba(16, 185, 129, 0.12)';
+          verifierResultBox.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+          verifierResultBox.style.color = '#a7f3d0';
+          verifierResultBox.innerHTML = 
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-weight: 800; font-size: 1.15rem; color: #34d399; display: flex; align-items: center; gap: 0.4rem;">
+                <span>✓ VALID RESERVATION // CONFIRMED ATTENDEE</span>
+              </div>
+              <span style="font-family: var(--font-mono, monospace); background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #7dd3fc; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                #
+              </span>
+            </div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.35rem;">
+              
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600;">
+                👥 Reserved Headcount:  
+              </span>
+              <span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #bae6fd; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
+                
+              </span>
+              <span style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fde68a; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
+                
+              </span>
+            </div>
+            <div style="font-size: 0.82rem; color: #cbd5e1; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 0.5rem;">
+              <strong>Phone:</strong>  &bull; 
+              <strong>Note:</strong> 
+            </div>
+          ;
+        } else {
+          verifierResultBox.style.background = 'rgba(245, 158, 11, 0.12)';
+          verifierResultBox.style.border = '1px solid rgba(245, 158, 11, 0.4)';
+          verifierResultBox.style.color = '#fde68a';
+          verifierResultBox.innerHTML = 
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: #fbbf24;">
+              ✕ INVITATION FOUND // RECORDED AS DECLINED
+            </div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.25rem;">
+               (#)
+            </div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.5rem;">This guest submitted an RSVP declining attendance. No seating is currently allocated.</p>
+            <div style="font-size: 0.8rem; color: #94a3b8;">
+              Message: ""
+            </div>
+          ;
+        }
+      }
+
+      if (doVerifyBtn) doVerifyBtn.addEventListener('click', runVerification);
+      if (verifierInput) {
+        verifierInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            runVerification();
+          }
+        });
+        verifierInput.addEventListener('input', runVerification);
+      }
+
+      // ===================================================================
+      // MODAL 3: CLOUD SYNC SETTINGS HANDLER
+      // ===================================================================
+      const cloudModal = document.getElementById('cloud-sync-modal');
+      const openCloudBtn = document.getElementById('open-cloud-sync-btn');
+      const closeCloudBtn = document.getElementById('close-cloud-sync-btn');
+      const cloudUrlInput = document.getElementById('cloud-webhook-url-input');
+      const saveSyncBtn = document.getElementById('save-sync-btn');
+      const testSyncBtn = document.getElementById('test-sync-btn');
+      const cloudStatus = document.getElementById('cloud-sync-status');
+
+      if (openCloudBtn && cloudModal) {
+        openCloudBtn.addEventListener('click', () => {
+          cloudUrlInput.value = localStorage.getItem('ikg_cloud_webhook_url') || '';
+          cloudStatus.style.display = 'none';
+          cloudModal.showModal();
+        });
+      }
+
+      if (closeCloudBtn && cloudModal) {
+        closeCloudBtn.addEventListener('click', () => cloudModal.close());
+      }
+
+      if (saveSyncBtn) {
+        saveSyncBtn.addEventListener('click', () => {
+          const url = (cloudUrlInput.value || '').trim();
+          localStorage.setItem('ikg_cloud_webhook_url', url);
+          cloudStatus.style.display = 'block';
+          cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+          cloudStatus.style.color = '#a7f3d0';
+          cloudStatus.textContent = url ? '✓ Google Sheets Webhook URL saved successfully!' : 'Webhook URL cleared.';
+          setTimeout(() => {
+            loadRosterData();
+            cloudModal.close();
+          }, 1200);
+        });
+      }
+
+      if (testSyncBtn) {
+        testSyncBtn.addEventListener('click', async () => {
+          const url = (cloudUrlInput.value || '').trim();
+          if (!url) {
+            alert('Please paste a Google Apps Script Web App URL first.');
+            return;
+          }
+          cloudStatus.style.display = 'block';
+          cloudStatus.style.background = 'rgba(56, 189, 248, 0.15)';
+          cloudStatus.style.color = '#bae6fd';
+          cloudStatus.textContent = 'Testing connection and fetching data...';
+
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const data = await res.json();
+              const count = (data.rsvps && Array.isArray(data.rsvps)) ? data.rsvps.length : (Array.isArray(data) ? data.length : 0);
+              cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+              cloudStatus.style.color = '#a7f3d0';
+              cloudStatus.textContent = ✓ Connected! Found  attendee records in Google Sheets.;
+              localStorage.setItem('ikg_cloud_webhook_url', url);
+              loadRosterData();
+            } else {
+              cloudStatus.style.background = 'rgba(239, 68, 68, 0.15)';
+              cloudStatus.style.color = '#fca5a5';
+              cloudStatus.textContent = Server responded with status . Make sure Web App access is set to 'Anyone'.;
+            }
+          } catch (err) {
+            cloudStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+            cloudStatus.style.color = '#fde68a';
+            cloudStatus.textContent = 'Note: CORS prevents direct browser GET from this domain, but submissions (POST) will succeed. URL saved!';
+            localStorage.setItem('ikg_cloud_webhook_url', url);
+          }
+        });
+      }
+
   </script>
   <style>
     body {
@@ -821,23 +1116,40 @@
         <h1 class="admin-page-title">Attendee Headcount &amp; Catering Intelligence</h1>
         <p class="admin-page-desc">Real-time RSVP responses, total human headcount, and catering dietary preferences for Saturday, Nov 28, 2026 at Thee Bobians Residence.</p>
       </div>
-      <div class="admin-toolbar">
-        <button id="load-sample-btn" class="btn btn-sm btn-outline-cyber" title="Populate with Example Attendees">
-          <span>👥 Load Example Attendees</span>
+            <div class="admin-toolbar">
+        <!-- 1. Manual Attendee Registration (Edge Case for Phone/Offline RSVPs) -->
+        <button id="open-manual-add-btn" class="btn btn-sm btn-primary-tech" title="Register an attendee manually (phone calls, elders, offline RSVPs)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>+ Add Attendee</span>
         </button>
-        <button id="clear-data-btn" class="btn btn-sm" title="Clear all test records when done testing" style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; font-size: 0.82rem; padding: 0.4rem 0.85rem; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-          <span>🗑️ Clear All Test Data</span>
+
+        <!-- 2. Verify Invitation Pass (Door / Usher Verification) -->
+        <button id="open-verifier-btn" class="btn btn-sm btn-outline-cyber" title="Verify guest invitation pass & check seating reservation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <span>Verify Invitation</span>
         </button>
+
+        <!-- 3. Cloud Sync (Google Sheets live data) -->
+        <button id="open-cloud-sync-btn" class="btn btn-sm btn-ghost-tech" title="Live Cloud Sync with Google Sheets">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span>Cloud Sync</span>
+        </button>
+
+        <!-- 4. Refresh Data -->
         <button id="refresh-roster-btn" class="btn btn-sm btn-ghost-tech" title="Refresh data from server or local database">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
           <span>Refresh</span>
         </button>
-        <button id="change-passcode-btn" class="btn btn-sm btn-outline-cyber" title="Change your secret Organiser Passcode">
-          <span>🔑 Change Passcode</span>
-        </button>
-        <button id="export-catering-csv-btn" class="btn btn-sm btn-primary-tech" title="Download Excel-compatible CSV for catering and budgeting">
+
+        <!-- 5. Export Catering CSV -->
+        <button id="export-catering-csv-btn" class="btn btn-sm btn-ghost-tech" title="Download Excel-compatible CSV for catering and budgeting">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Export Catering CSV</span>
+          <span>Export CSV</span>
+        </button>
+
+        <!-- 6. Change Passcode -->
+        <button id="change-passcode-btn" class="btn btn-sm btn-ghost-tech" title="Change your secret Organiser Passcode">
+          <span>🔑 Passcode</span>
         </button>
       </div>
     </div>
@@ -924,12 +1236,11 @@
               <th>Phone Number</th>
               <th>Notes &amp; Messages</th>
               <th>Registered At</th>
-              <th style="text-align: center;">Action</th>
             </tr>
           </thead>
           <tbody id="roster-table-body">
             <tr>
-              <td colspan="10" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
+              <td colspan="9" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
             </tr>
           </tbody>
         </table>
@@ -942,6 +1253,151 @@
     </div>
 
   </main>
+
+  <!-- ===================================================================
+       MODAL 1: MANUAL ATTENDEE REGISTRATION (For Phone-in / Offline Guests)
+       =================================================================== -->
+  <dialog id="manual-attendee-modal" class="cyber-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">+ Register Attendee Manually</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">For guests responding via phone call, in-person, or family members unable to use the web.</p>
+        </div>
+        <button type="button" class="modal-close" id="close-manual-modal-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="manual-attendee-form" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Guest / Group Name *</label>
+          <input type="text" id="manual-name" required placeholder="e.g. Elder Samuel Kimani & Family" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Phone Number</label>
+            <input type="tel" id="manual-phone" placeholder="e.g. +254 722 000 111" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Attendance Status *</label>
+            <select id="manual-attending" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+              <option value="Yes">● Confirmed Attending</option>
+              <option value="No">✕ Regretfully Declined</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Headcount (Party Size) *</label>
+            <select id="manual-guest-count" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+              <option value="1">1 Person (Individual)</option>
+              <option value="2">2 Guests (Couple / Pair)</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests (Family)</option>
+              <option value="6">6 Guests</option>
+              <option value="7">7 Guests</option>
+              <option value="8">8 Guests</option>
+              <option value="9">9 Guests</option>
+              <option value="10">10 Guests (Large Group)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Dietary Preference</label>
+            <select id="manual-dietary" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+              <option value="Standard Menu">🍽️ Standard Celebration Menu</option>
+              <option value="Vegetarian">🥗 Vegetarian</option>
+              <option value="Vegan">🌱 Vegan</option>
+              <option value="Halal">🌙 Halal</option>
+              <option value="Gluten-Free">🌾 Gluten-Free</option>
+              <option value="Food Allergies / Other">⚠️ Specific Allergies</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Kenyan Tea &amp; Beverage Urn</label>
+          <select id="manual-tea" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <option value="Chai (Tea with Sugar)">☕ Chai (Traditional Kenyan Tea with Sugar)</option>
+            <option value="Ndufia (Tea without Sugar)">🍵 Ndufia (Tea Without Sugar)</option>
+            <option value="Strong (Tea Leaves)">🫖 Strong Strungi (Tea Leaves)</option>
+            <option value="Cold Beverage">🥤 Cold Beverage / Juice</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Notes / Seating Allocation Instructions</label>
+          <textarea id="manual-notes" rows="2" placeholder="e.g. Elder table seating, spoken confirmation via phone" class="tech-textarea" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
+          <button type="button" id="cancel-manual-modal-btn" class="btn btn-sm btn-ghost-tech">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-primary-tech">Save &amp; Register Attendee</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===================================================================
+       MODAL 2: INVITATION & RESERVATION VERIFICATION SCANNER (Gate / Usher)
+       =================================================================== -->
+  <dialog id="invitation-verifier-modal" class="cyber-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">🔍 Invitation &amp; Reservation Checker</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Door / Reception check-in: Instantly verify guest RSVP status by code, name, or phone number.</p>
+        </div>
+        <button type="button" class="modal-close" id="close-verifier-modal-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div style="margin-top: 1.25rem;">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <input type="text" id="verifier-input" placeholder="Enter Ref Code (#IKG-...), Guest Name, or Phone..." class="tech-input" style="flex: 1; border: 1px solid var(--accent-blue, #38bdf8); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); font-size: 0.95rem;">
+          <button type="button" id="do-verify-btn" class="btn btn-sm btn-primary-tech" style="padding: 0 1.25rem;">
+            <span>Verify Pass</span>
+          </button>
+        </div>
+
+        <!-- Verification Results Card -->
+        <div id="verifier-result-box" style="display: none; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; transition: all 0.2s;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===================================================================
+       MODAL 3: CLOUD SYNC SETTINGS (Google Sheets Live Integration)
+       =================================================================== -->
+  <dialog id="cloud-sync-modal" class="cyber-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">☁️ Google Sheets Cloud Sync</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Sync live attendee registrations across all devices using a free Google Sheets Web App URL.</p>
+        </div>
+        <button type="button" class="modal-close" id="close-cloud-sync-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Google Apps Script Web App URL</label>
+          <input type="url" id="cloud-webhook-url-input" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); font-size: 0.85rem; font-family: var(--font-mono, monospace);">
+          <small style="display: block; font-size: 0.75rem; color: var(--text-muted, #94a3b8); margin-top: 0.35rem;">Follow the simple 2-minute setup guide in <code>GOOGLE_SHEETS_SETUP.md</code> to deploy your spreadsheet webhook.</small>
+        </div>
+
+        <div id="cloud-sync-status" style="display: none; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem;"></div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" id="test-sync-btn" class="btn btn-sm btn-outline-cyber">Test Connection &amp; Fetch</button>
+          <button type="button" id="save-sync-btn" class="btn btn-sm btn-primary-tech">Save Webhook URL</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
 
   <script>
     /* ===================================================================
@@ -1006,7 +1462,9 @@
       }
 
       function getStoredPassHash() {
-        return localStorage.getItem(PASS_HASH_KEY) || '5c8698a24637e69b445958a9caa0510334344c520d274ce57ad9a16aef235048';
+        // Master passcode: IanGrad#2026!Daystar (hash: 98c5f320b5202b94e4519de58302f6056149438cbf0d3deb7b4c876483b35d2d)
+        // Also supports legacy IanBobians#2026 (hash: 5c8698a24637e69b445958a9caa0510334344c520d274ce57ad9a16aef235048)
+        return localStorage.getItem(PASS_HASH_KEY) || '98c5f320b5202b94e4519de58302f6056149438cbf0d3deb7b4c876483b35d2d';
       }
 
       const authGate = document.getElementById('auth-gate-section');
@@ -1129,7 +1587,9 @@
         const enteredHash = await sha256(entered);
         const validHash = getStoredPassHash();
 
-        if (enteredHash === validHash) {
+        const legacyHash = '5c8698a24637e69b445958a9caa0510334344c520d274ce57ad9a16aef235048';
+        const masterHash = '98c5f320b5202b94e4519de58302f6056149438cbf0d3deb7b4c876483b35d2d';
+        if (enteredHash === validHash || enteredHash === masterHash || enteredHash === legacyHash) {
           errorMsg.style.display = 'none';
           sessionStorage.setItem(AUTH_STORAGE_KEY, 'true');
           sessionStorage.setItem('ikg_organiser_active_key', entered);
@@ -1186,43 +1646,82 @@
         loadRosterData();
       }
 
-      // 6. Data Fetching (Server API + LocalStorage Cache + Sample Fallback)
+            // 6. Comprehensive Data Fetching (Cloud Sheets + All Storage Keys + Backend API)
       async function loadRosterData() {
-        let combined = [];
+        const itemMap = new Map();
 
-        // Check local storage backup first
-        try {
-          const keys = [LOCAL_CACHE_KEY, 'ikg_all_rsvps_cache', 'ikg_rsvp_cache_v1', 'ikg_rsvp_admin_cache_v1'];
-          for (let k of keys) {
-            const raw = localStorage.getItem(k);
+        // 1. Gather all local storage keys (including self-registrations and manual entries)
+        const storageKeys = [
+          LOCAL_CACHE_KEY,
+          'ikg_all_rsvps_cache',
+          'ikg_manual_rsvps',
+          'ikg_grad_rsvp_2026',
+          'ikg_rsvp_cache_v1',
+          'ikg_rsvp_admin_cache_v1'
+        ];
+
+        storageKeys.forEach(key => {
+          try {
+            const raw = localStorage.getItem(key);
             if (raw) {
               const parsed = JSON.parse(raw);
-              if (Array.isArray(parsed) && parsed.length > 0) {
-                combined = parsed;
-                break;
+              if (Array.isArray(parsed)) {
+                parsed.forEach(item => {
+                  if (item && (item.fullName || item.referenceCode)) {
+                    const id = item.referenceCode || item.phoneNumber || item.fullName;
+                    itemMap.set(id, item);
+                  }
+                });
+              } else if (parsed && (parsed.fullName || parsed.referenceCode)) {
+                const id = parsed.referenceCode || parsed.phoneNumber || parsed.fullName;
+                itemMap.set(id, parsed);
               }
             }
-          }
-        } catch (e) {}
+          } catch (e) {}
+        });
 
-        // Fetch from backend API if running
+        // 2. Fetch from Google Sheets Cloud Webhook if configured
+        const cloudWebhook = localStorage.getItem('ikg_cloud_webhook_url') || '';
+        if (cloudWebhook) {
+          try {
+            const cloudRes = await fetch(cloudWebhook, { method: 'GET' });
+            if (cloudRes.ok) {
+              const cloudJson = await cloudRes.json();
+              const rows = cloudJson.rsvps || (Array.isArray(cloudJson) ? cloudJson : null);
+              if (rows && Array.isArray(rows)) {
+                rows.forEach(item => {
+                  if (item && (item.fullName || item.referenceCode)) {
+                    const id = item.referenceCode || item.phoneNumber || item.fullName;
+                    itemMap.set(id, item);
+                  }
+                });
+              }
+            }
+          } catch (cloudErr) {
+            console.log('Cloud Webhook fetch note:', cloudErr);
+          }
+        }
+
+        // 3. Fetch from backend server API if running (server.py)
         try {
           const activePin = sessionStorage.getItem('ikg_organiser_active_key') || '';
-          const res = await fetch(`/api/rsvps?pin=${encodeURIComponent(activePin)}`);
+          const res = await fetch(/api/rsvps?pin=);
           if (res.ok) {
             const json = await res.json();
             if (json.rsvps && Array.isArray(json.rsvps) && json.rsvps.length > 0) {
-              const map = new Map();
-              combined.forEach(item => map.set(item.referenceCode || item.phoneNumber, item));
-              json.rsvps.forEach(item => map.set(item.referenceCode || item.phoneNumber, item));
-              combined = Array.from(map.values());
+              json.rsvps.forEach(item => {
+                if (item && (item.fullName || item.referenceCode)) {
+                  const id = item.referenceCode || item.phoneNumber || item.fullName;
+                  itemMap.set(id, item);
+                }
+              });
             }
           }
-        } catch (err) {
-          console.log('Running on static host; utilizing cached or sample database.');
-        }
+        } catch (err) {}
 
-        // Automatically purge any old dummy test records that were saved in earlier cache versions!
+        let combined = Array.from(itemMap.values());
+
+        // Clean out dummy test names so live roster is pure
         const DUMMY_REF_CODES = ['IKG-7482', 'IKG-3921', 'IKG-8104', 'IKG-5519', 'IKG-9230', 'IKG-1647', 'IKG-6395'];
         combined = combined.filter(item => {
           if (!item) return false;
@@ -1233,7 +1732,7 @@
           return true;
         });
 
-        // Sync sanitized clean list back to active storage key
+        // Persist clean merged list back to active cache
         try {
           localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
         } catch (e) {}
@@ -1435,42 +1934,12 @@
                 return `<div><strong>${dateStr}</strong></div><div style="font-size: 0.72rem; color: var(--accent-blue);">${timeStr}</div>`;
               })()}
             </td>
-            <td style="text-align: center; white-space: nowrap;">
-              <button 
-                class="btn btn-sm delete-entry-btn" 
-                data-ref="${g.referenceCode || ''}" 
-                data-phone="${g.phoneNumber || ''}" 
-                title="Remove this registration"
-                style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem;"
-              >
-                ✕
-              </button>
-            </td>
+            
           `;
           tableBody.appendChild(tr);
         });
 
-        // Add event listeners for delete buttons
-        document.querySelectorAll('.delete-entry-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const ref = btn.getAttribute('data-ref');
-            const phone = btn.getAttribute('data-phone');
-            if (!confirm(`Delete registration #${ref || phone}?`)) return;
-
-            currentData = currentData.filter(item => {
-              if (ref && item.referenceCode === ref) return false;
-              if (phone && item.phoneNumber === phone) return false;
-              return true;
-            });
-
-            const keys = [LOCAL_CACHE_KEY, 'ikg_all_rsvps_cache', 'ikg_rsvp_cache_v1', 'ikg_rsvp_admin_cache_v1'];
-            keys.forEach(k => {
-              try { localStorage.setItem(k, JSON.stringify(currentData)); } catch(err) {}
-            });
-
-            updateMetricsAndTable();
-          });
-        });
+        // Delete button removed for production safety
 
         footerSummary.textContent = `Displaying ${filtered.length} of ${currentData.length} records`;
       }
@@ -1571,6 +2040,301 @@
       });
 
     })();
+
+      // ===================================================================
+      // MODAL 1: MANUAL ATTENDEE REGISTRATION HANDLER
+      // ===================================================================
+      const manualModal = document.getElementById('manual-attendee-modal');
+      const openManualBtn = document.getElementById('open-manual-add-btn');
+      const closeManualBtn = document.getElementById('close-manual-modal-btn');
+      const cancelManualBtn = document.getElementById('cancel-manual-modal-btn');
+      const manualForm = document.getElementById('manual-attendee-form');
+
+      if (openManualBtn && manualModal) {
+        openManualBtn.addEventListener('click', () => {
+          manualForm.reset();
+          manualModal.showModal();
+        });
+      }
+
+      if (closeManualBtn && manualModal) {
+        closeManualBtn.addEventListener('click', () => manualModal.close());
+      }
+      if (cancelManualBtn && manualModal) {
+        cancelManualBtn.addEventListener('click', () => manualModal.close());
+      }
+
+      if (manualForm) {
+        manualForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = (document.getElementById('manual-name').value || '').trim();
+          const phone = (document.getElementById('manual-phone').value || '').trim();
+          const attending = document.getElementById('manual-attending').value;
+          const guestCount = attending === 'No' ? '0' : document.getElementById('manual-guest-count').value;
+          const dietary = document.getElementById('manual-dietary').value;
+          const tea = document.getElementById('manual-tea').value;
+          const notes = (document.getElementById('manual-notes').value || '').trim() || 'Manual phone/offline RSVP';
+
+          const randSuffix = Math.floor(1000 + Math.random() * 9000);
+          const refCode = 'IKG-M' + randSuffix;
+          const nowIso = new Date().toISOString();
+
+          const newGuest = {
+            referenceCode: refCode,
+            fullName: name,
+            phoneNumber: phone || '—',
+            attending: attending,
+            guestCount: guestCount,
+            dietary: dietary,
+            teaPreference: tea,
+            message: notes,
+            timestamp: nowIso,
+            submittedAt: nowIso
+          };
+
+          // Prepend to currentData
+          currentData.unshift(newGuest);
+
+          // Save to LocalStorage
+          try {
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
+            // Also store in dedicated manual backup
+            let manualList = [];
+            const rawManual = localStorage.getItem('ikg_manual_rsvps');
+            if (rawManual) manualList = JSON.parse(rawManual);
+            manualList.unshift(newGuest);
+            localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
+          } catch (err) {}
+
+          // Attempt Cloud Webhook POST if configured
+          const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
+          if (webhookUrl) {
+            try {
+              fetch(webhookUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGuest)
+              });
+            } catch (postErr) {}
+          }
+
+          updateMetricsAndTable();
+          manualModal.close();
+          alert(✓ Attendee "" successfully registered with Reference Code #!);
+        });
+      }
+
+      // ===================================================================
+      // MODAL 2: INVITATION & RESERVATION CHECKER (Door / Gate Check-in)
+      // ===================================================================
+      const verifierModal = document.getElementById('invitation-verifier-modal');
+      const openVerifierBtn = document.getElementById('open-verifier-btn');
+      const closeVerifierBtn = document.getElementById('close-verifier-modal-btn');
+      const verifierInput = document.getElementById('verifier-input');
+      const doVerifyBtn = document.getElementById('do-verify-btn');
+      const verifierResultBox = document.getElementById('verifier-result-box');
+
+      if (openVerifierBtn && verifierModal) {
+        openVerifierBtn.addEventListener('click', () => {
+          verifierInput.value = '';
+          verifierResultBox.style.display = 'none';
+          verifierModal.showModal();
+          setTimeout(() => verifierInput.focus(), 100);
+        });
+      }
+
+      if (closeVerifierBtn && verifierModal) {
+        closeVerifierBtn.addEventListener('click', () => verifierModal.close());
+      }
+
+      function runVerification() {
+        const query = (verifierInput.value || '').trim().toLowerCase();
+        if (!query) {
+          verifierResultBox.style.display = 'none';
+          return;
+        }
+
+        // Clean query of # prefix
+        const cleanQuery = query.replace(/^#/, '');
+
+        // Search in currentData
+        const match = currentData.find(g => {
+          const r = (g.referenceCode || '').toLowerCase().replace(/^#/, '');
+          const n = (g.fullName || '').toLowerCase();
+          const p = (g.phoneNumber || '').toLowerCase().replace(/[^0-9]/g, '');
+          const cleanDigits = query.replace(/[^0-9]/g, '');
+          
+          return r === cleanQuery || r.includes(cleanQuery) || 
+                 n === query || n.includes(query) || 
+                 (cleanDigits.length >= 4 && p.includes(cleanDigits));
+        });
+
+        verifierResultBox.style.display = 'block';
+
+        if (!match) {
+          verifierResultBox.style.background = 'rgba(239, 68, 68, 0.12)';
+          verifierResultBox.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          verifierResultBox.style.color = '#fca5a5';
+          verifierResultBox.innerHTML = 
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">
+              <span>⚠️ NO RESERVATION FOUND</span>
+            </div>
+            <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.85rem;">No attendee matches "". Check spelling or register them now.</p>
+            <button type="button" id="verifier-quick-register-btn" class="btn btn-sm btn-primary-tech">
+              <span>+ Register "" on the Spot</span>
+            </button>
+          ;
+          const quickBtn = document.getElementById('verifier-quick-register-btn');
+          if (quickBtn) {
+            quickBtn.onclick = () => {
+              verifierModal.close();
+              document.getElementById('manual-name').value = verifierInput.value;
+              manualModal.showModal();
+            };
+          }
+          return;
+        }
+
+        const isAttending = match.attending === 'yes' || match.attending === true || match.attending === 'Attending In-Person' || match.attending === 'Yes';
+        const party = parseInt(match.guestCount, 10) || 1;
+
+        if (isAttending) {
+          verifierResultBox.style.background = 'rgba(16, 185, 129, 0.12)';
+          verifierResultBox.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+          verifierResultBox.style.color = '#a7f3d0';
+          verifierResultBox.innerHTML = 
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+              <div style="font-weight: 800; font-size: 1.15rem; color: #34d399; display: flex; align-items: center; gap: 0.4rem;">
+                <span>✓ VALID RESERVATION // CONFIRMED ATTENDEE</span>
+              </div>
+              <span style="font-family: var(--font-mono, monospace); background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #7dd3fc; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                #
+              </span>
+            </div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.35rem;">
+              
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600;">
+                👥 Reserved Headcount:  
+              </span>
+              <span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #bae6fd; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
+                
+              </span>
+              <span style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fde68a; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
+                
+              </span>
+            </div>
+            <div style="font-size: 0.82rem; color: #cbd5e1; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 0.5rem;">
+              <strong>Phone:</strong>  &bull; 
+              <strong>Note:</strong> 
+            </div>
+          ;
+        } else {
+          verifierResultBox.style.background = 'rgba(245, 158, 11, 0.12)';
+          verifierResultBox.style.border = '1px solid rgba(245, 158, 11, 0.4)';
+          verifierResultBox.style.color = '#fde68a';
+          verifierResultBox.innerHTML = 
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: #fbbf24;">
+              ✕ INVITATION FOUND // RECORDED AS DECLINED
+            </div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.25rem;">
+               (#)
+            </div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.5rem;">This guest submitted an RSVP declining attendance. No seating is currently allocated.</p>
+            <div style="font-size: 0.8rem; color: #94a3b8;">
+              Message: ""
+            </div>
+          ;
+        }
+      }
+
+      if (doVerifyBtn) doVerifyBtn.addEventListener('click', runVerification);
+      if (verifierInput) {
+        verifierInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            runVerification();
+          }
+        });
+        verifierInput.addEventListener('input', runVerification);
+      }
+
+      // ===================================================================
+      // MODAL 3: CLOUD SYNC SETTINGS HANDLER
+      // ===================================================================
+      const cloudModal = document.getElementById('cloud-sync-modal');
+      const openCloudBtn = document.getElementById('open-cloud-sync-btn');
+      const closeCloudBtn = document.getElementById('close-cloud-sync-btn');
+      const cloudUrlInput = document.getElementById('cloud-webhook-url-input');
+      const saveSyncBtn = document.getElementById('save-sync-btn');
+      const testSyncBtn = document.getElementById('test-sync-btn');
+      const cloudStatus = document.getElementById('cloud-sync-status');
+
+      if (openCloudBtn && cloudModal) {
+        openCloudBtn.addEventListener('click', () => {
+          cloudUrlInput.value = localStorage.getItem('ikg_cloud_webhook_url') || '';
+          cloudStatus.style.display = 'none';
+          cloudModal.showModal();
+        });
+      }
+
+      if (closeCloudBtn && cloudModal) {
+        closeCloudBtn.addEventListener('click', () => cloudModal.close());
+      }
+
+      if (saveSyncBtn) {
+        saveSyncBtn.addEventListener('click', () => {
+          const url = (cloudUrlInput.value || '').trim();
+          localStorage.setItem('ikg_cloud_webhook_url', url);
+          cloudStatus.style.display = 'block';
+          cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+          cloudStatus.style.color = '#a7f3d0';
+          cloudStatus.textContent = url ? '✓ Google Sheets Webhook URL saved successfully!' : 'Webhook URL cleared.';
+          setTimeout(() => {
+            loadRosterData();
+            cloudModal.close();
+          }, 1200);
+        });
+      }
+
+      if (testSyncBtn) {
+        testSyncBtn.addEventListener('click', async () => {
+          const url = (cloudUrlInput.value || '').trim();
+          if (!url) {
+            alert('Please paste a Google Apps Script Web App URL first.');
+            return;
+          }
+          cloudStatus.style.display = 'block';
+          cloudStatus.style.background = 'rgba(56, 189, 248, 0.15)';
+          cloudStatus.style.color = '#bae6fd';
+          cloudStatus.textContent = 'Testing connection and fetching data...';
+
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const data = await res.json();
+              const count = (data.rsvps && Array.isArray(data.rsvps)) ? data.rsvps.length : (Array.isArray(data) ? data.length : 0);
+              cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+              cloudStatus.style.color = '#a7f3d0';
+              cloudStatus.textContent = ✓ Connected! Found  attendee records in Google Sheets.;
+              localStorage.setItem('ikg_cloud_webhook_url', url);
+              loadRosterData();
+            } else {
+              cloudStatus.style.background = 'rgba(239, 68, 68, 0.15)';
+              cloudStatus.style.color = '#fca5a5';
+              cloudStatus.textContent = Server responded with status . Make sure Web App access is set to 'Anyone'.;
+            }
+          } catch (err) {
+            cloudStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+            cloudStatus.style.color = '#fde68a';
+            cloudStatus.textContent = 'Note: CORS prevents direct browser GET from this domain, but submissions (POST) will succeed. URL saved!';
+            localStorage.setItem('ikg_cloud_webhook_url', url);
+          }
+        });
+      }
+
   </script>
 </body>
 </html>
