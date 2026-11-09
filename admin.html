@@ -20,301 +20,6 @@
         document.documentElement.setAttribute('data-theme', 'light');
       }
     })();
-
-      // ===================================================================
-      // MODAL 1: MANUAL ATTENDEE REGISTRATION HANDLER
-      // ===================================================================
-      const manualModal = document.getElementById('manual-attendee-modal');
-      const openManualBtn = document.getElementById('open-manual-add-btn');
-      const closeManualBtn = document.getElementById('close-manual-modal-btn');
-      const cancelManualBtn = document.getElementById('cancel-manual-modal-btn');
-      const manualForm = document.getElementById('manual-attendee-form');
-
-      if (openManualBtn && manualModal) {
-        openManualBtn.addEventListener('click', () => {
-          manualForm.reset();
-          manualModal.showModal();
-        });
-      }
-
-      if (closeManualBtn && manualModal) {
-        closeManualBtn.addEventListener('click', () => manualModal.close());
-      }
-      if (cancelManualBtn && manualModal) {
-        cancelManualBtn.addEventListener('click', () => manualModal.close());
-      }
-
-      if (manualForm) {
-        manualForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const name = (document.getElementById('manual-name').value || '').trim();
-          const phone = (document.getElementById('manual-phone').value || '').trim();
-          const attending = document.getElementById('manual-attending').value;
-          const guestCount = attending === 'No' ? '0' : document.getElementById('manual-guest-count').value;
-          const dietary = document.getElementById('manual-dietary').value;
-          const tea = document.getElementById('manual-tea').value;
-          const notes = (document.getElementById('manual-notes').value || '').trim() || 'Manual phone/offline RSVP';
-
-          const randSuffix = Math.floor(1000 + Math.random() * 9000);
-          const refCode = 'IKG-M' + randSuffix;
-          const nowIso = new Date().toISOString();
-
-          const newGuest = {
-            referenceCode: refCode,
-            fullName: name,
-            phoneNumber: phone || '—',
-            attending: attending,
-            guestCount: guestCount,
-            dietary: dietary,
-            teaPreference: tea,
-            message: notes,
-            timestamp: nowIso,
-            submittedAt: nowIso
-          };
-
-          // Prepend to currentData
-          currentData.unshift(newGuest);
-
-          // Save to LocalStorage
-          try {
-            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
-            // Also store in dedicated manual backup
-            let manualList = [];
-            const rawManual = localStorage.getItem('ikg_manual_rsvps');
-            if (rawManual) manualList = JSON.parse(rawManual);
-            manualList.unshift(newGuest);
-            localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
-          } catch (err) {}
-
-          // Attempt Cloud Webhook POST if configured
-          const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
-          if (webhookUrl) {
-            try {
-              fetch(webhookUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newGuest)
-              });
-            } catch (postErr) {}
-          }
-
-          updateMetricsAndTable();
-          manualModal.close();
-          alert(✓ Attendee "" successfully registered with Reference Code #!);
-        });
-      }
-
-      // ===================================================================
-      // MODAL 2: INVITATION & RESERVATION CHECKER (Door / Gate Check-in)
-      // ===================================================================
-      const verifierModal = document.getElementById('invitation-verifier-modal');
-      const openVerifierBtn = document.getElementById('open-verifier-btn');
-      const closeVerifierBtn = document.getElementById('close-verifier-modal-btn');
-      const verifierInput = document.getElementById('verifier-input');
-      const doVerifyBtn = document.getElementById('do-verify-btn');
-      const verifierResultBox = document.getElementById('verifier-result-box');
-
-      if (openVerifierBtn && verifierModal) {
-        openVerifierBtn.addEventListener('click', () => {
-          verifierInput.value = '';
-          verifierResultBox.style.display = 'none';
-          verifierModal.showModal();
-          setTimeout(() => verifierInput.focus(), 100);
-        });
-      }
-
-      if (closeVerifierBtn && verifierModal) {
-        closeVerifierBtn.addEventListener('click', () => verifierModal.close());
-      }
-
-      function runVerification() {
-        const query = (verifierInput.value || '').trim().toLowerCase();
-        if (!query) {
-          verifierResultBox.style.display = 'none';
-          return;
-        }
-
-        // Clean query of # prefix
-        const cleanQuery = query.replace(/^#/, '');
-
-        // Search in currentData
-        const match = currentData.find(g => {
-          const r = (g.referenceCode || '').toLowerCase().replace(/^#/, '');
-          const n = (g.fullName || '').toLowerCase();
-          const p = (g.phoneNumber || '').toLowerCase().replace(/[^0-9]/g, '');
-          const cleanDigits = query.replace(/[^0-9]/g, '');
-          
-          return r === cleanQuery || r.includes(cleanQuery) || 
-                 n === query || n.includes(query) || 
-                 (cleanDigits.length >= 4 && p.includes(cleanDigits));
-        });
-
-        verifierResultBox.style.display = 'block';
-
-        if (!match) {
-          verifierResultBox.style.background = 'rgba(239, 68, 68, 0.12)';
-          verifierResultBox.style.border = '1px solid rgba(239, 68, 68, 0.4)';
-          verifierResultBox.style.color = '#fca5a5';
-          verifierResultBox.innerHTML = 
-            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">
-              <span>⚠️ NO RESERVATION FOUND</span>
-            </div>
-            <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.85rem;">No attendee matches "". Check spelling or register them now.</p>
-            <button type="button" id="verifier-quick-register-btn" class="btn btn-sm btn-primary-tech">
-              <span>+ Register "" on the Spot</span>
-            </button>
-          ;
-          const quickBtn = document.getElementById('verifier-quick-register-btn');
-          if (quickBtn) {
-            quickBtn.onclick = () => {
-              verifierModal.close();
-              document.getElementById('manual-name').value = verifierInput.value;
-              manualModal.showModal();
-            };
-          }
-          return;
-        }
-
-        const isAttending = match.attending === 'yes' || match.attending === true || match.attending === 'Attending In-Person' || match.attending === 'Yes';
-        const party = parseInt(match.guestCount, 10) || 1;
-
-        if (isAttending) {
-          verifierResultBox.style.background = 'rgba(16, 185, 129, 0.12)';
-          verifierResultBox.style.border = '1px solid rgba(16, 185, 129, 0.45)';
-          verifierResultBox.style.color = '#a7f3d0';
-          verifierResultBox.innerHTML = 
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-              <div style="font-weight: 800; font-size: 1.15rem; color: #34d399; display: flex; align-items: center; gap: 0.4rem;">
-                <span>✓ VALID RESERVATION // CONFIRMED ATTENDEE</span>
-              </div>
-              <span style="font-family: var(--font-mono, monospace); background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #7dd3fc; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
-                #
-              </span>
-            </div>
-            <div style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.35rem;">
-              
-            </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
-              <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600;">
-                👥 Reserved Headcount:  
-              </span>
-              <span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #bae6fd; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
-                
-              </span>
-              <span style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fde68a; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
-                
-              </span>
-            </div>
-            <div style="font-size: 0.82rem; color: #cbd5e1; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 0.5rem;">
-              <strong>Phone:</strong>  &bull; 
-              <strong>Note:</strong> 
-            </div>
-          ;
-        } else {
-          verifierResultBox.style.background = 'rgba(245, 158, 11, 0.12)';
-          verifierResultBox.style.border = '1px solid rgba(245, 158, 11, 0.4)';
-          verifierResultBox.style.color = '#fde68a';
-          verifierResultBox.innerHTML = 
-            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: #fbbf24;">
-              ✕ INVITATION FOUND // RECORDED AS DECLINED
-            </div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.25rem;">
-               (#)
-            </div>
-            <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.5rem;">This guest submitted an RSVP declining attendance. No seating is currently allocated.</p>
-            <div style="font-size: 0.8rem; color: #94a3b8;">
-              Message: ""
-            </div>
-          ;
-        }
-      }
-
-      if (doVerifyBtn) doVerifyBtn.addEventListener('click', runVerification);
-      if (verifierInput) {
-        verifierInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            runVerification();
-          }
-        });
-        verifierInput.addEventListener('input', runVerification);
-      }
-
-      // ===================================================================
-      // MODAL 3: CLOUD SYNC SETTINGS HANDLER
-      // ===================================================================
-      const cloudModal = document.getElementById('cloud-sync-modal');
-      const openCloudBtn = document.getElementById('open-cloud-sync-btn');
-      const closeCloudBtn = document.getElementById('close-cloud-sync-btn');
-      const cloudUrlInput = document.getElementById('cloud-webhook-url-input');
-      const saveSyncBtn = document.getElementById('save-sync-btn');
-      const testSyncBtn = document.getElementById('test-sync-btn');
-      const cloudStatus = document.getElementById('cloud-sync-status');
-
-      if (openCloudBtn && cloudModal) {
-        openCloudBtn.addEventListener('click', () => {
-          cloudUrlInput.value = localStorage.getItem('ikg_cloud_webhook_url') || '';
-          cloudStatus.style.display = 'none';
-          cloudModal.showModal();
-        });
-      }
-
-      if (closeCloudBtn && cloudModal) {
-        closeCloudBtn.addEventListener('click', () => cloudModal.close());
-      }
-
-      if (saveSyncBtn) {
-        saveSyncBtn.addEventListener('click', () => {
-          const url = (cloudUrlInput.value || '').trim();
-          localStorage.setItem('ikg_cloud_webhook_url', url);
-          cloudStatus.style.display = 'block';
-          cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
-          cloudStatus.style.color = '#a7f3d0';
-          cloudStatus.textContent = url ? '✓ Google Sheets Webhook URL saved successfully!' : 'Webhook URL cleared.';
-          setTimeout(() => {
-            loadRosterData();
-            cloudModal.close();
-          }, 1200);
-        });
-      }
-
-      if (testSyncBtn) {
-        testSyncBtn.addEventListener('click', async () => {
-          const url = (cloudUrlInput.value || '').trim();
-          if (!url) {
-            alert('Please paste a Google Apps Script Web App URL first.');
-            return;
-          }
-          cloudStatus.style.display = 'block';
-          cloudStatus.style.background = 'rgba(56, 189, 248, 0.15)';
-          cloudStatus.style.color = '#bae6fd';
-          cloudStatus.textContent = 'Testing connection and fetching data...';
-
-          try {
-            const res = await fetch(url);
-            if (res.ok) {
-              const data = await res.json();
-              const count = (data.rsvps && Array.isArray(data.rsvps)) ? data.rsvps.length : (Array.isArray(data) ? data.length : 0);
-              cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
-              cloudStatus.style.color = '#a7f3d0';
-              cloudStatus.textContent = ✓ Connected! Found  attendee records in Google Sheets.;
-              localStorage.setItem('ikg_cloud_webhook_url', url);
-              loadRosterData();
-            } else {
-              cloudStatus.style.background = 'rgba(239, 68, 68, 0.15)';
-              cloudStatus.style.color = '#fca5a5';
-              cloudStatus.textContent = Server responded with status . Make sure Web App access is set to 'Anyone'.;
-            }
-          } catch (err) {
-            cloudStatus.style.background = 'rgba(245, 158, 11, 0.15)';
-            cloudStatus.style.color = '#fde68a';
-            cloudStatus.textContent = 'Note: CORS prevents direct browser GET from this domain, but submissions (POST) will succeed. URL saved!';
-            localStorage.setItem('ikg_cloud_webhook_url', url);
-          }
-        });
-      }
-
   </script>
   <style>
     body {
@@ -1705,7 +1410,7 @@
         // 3. Fetch from backend server API if running (server.py)
         try {
           const activePin = sessionStorage.getItem('ikg_organiser_active_key') || '';
-          const res = await fetch(/api/rsvps?pin=);
+          const res = await fetch(`/api/rsvps?pin=${encodeURIComponent(activePin)}`);
           if (res.ok) {
             const json = await res.json();
             if (json.rsvps && Array.isArray(json.rsvps) && json.rsvps.length > 0) {
@@ -2121,7 +1826,7 @@
 
           updateMetricsAndTable();
           manualModal.close();
-          alert(✓ Attendee "" successfully registered with Reference Code #!);
+          alert(`✓ Attendee "${newEntry.name}" successfully registered with Reference Code #${newEntry.refCode}!`);
         });
       }
 
@@ -2160,9 +1865,9 @@
 
         // Search in currentData
         const match = currentData.find(g => {
-          const r = (g.referenceCode || '').toLowerCase().replace(/^#/, '');
-          const n = (g.fullName || '').toLowerCase();
-          const p = (g.phoneNumber || '').toLowerCase().replace(/[^0-9]/g, '');
+          const r = (g.refCode || g.referenceCode || '').toLowerCase().replace(/^#/, '');
+          const n = (g.name || g.fullName || '').toLowerCase();
+          const p = (g.phone || g.phoneNumber || '').toLowerCase().replace(/[^0-9]/g, '');
           const cleanDigits = query.replace(/[^0-9]/g, '');
           
           return r === cleanQuery || r.includes(cleanQuery) || 
@@ -2176,15 +1881,15 @@
           verifierResultBox.style.background = 'rgba(239, 68, 68, 0.12)';
           verifierResultBox.style.border = '1px solid rgba(239, 68, 68, 0.4)';
           verifierResultBox.style.color = '#fca5a5';
-          verifierResultBox.innerHTML = 
+          verifierResultBox.innerHTML = `
             <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">
               <span>⚠️ NO RESERVATION FOUND</span>
             </div>
-            <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.85rem;">No attendee matches "". Check spelling or register them now.</p>
+            <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.85rem;">No attendee matches "${query}". Check spelling or register them now.</p>
             <button type="button" id="verifier-quick-register-btn" class="btn btn-sm btn-primary-tech">
-              <span>+ Register "" on the Spot</span>
+              <span>+ Register "${query}" on the Spot</span>
             </button>
-          ;
+          `;
           const quickBtn = document.getElementById('verifier-quick-register-btn');
           if (quickBtn) {
             quickBtn.onclick = () => {
@@ -2203,53 +1908,52 @@
           verifierResultBox.style.background = 'rgba(16, 185, 129, 0.12)';
           verifierResultBox.style.border = '1px solid rgba(16, 185, 129, 0.45)';
           verifierResultBox.style.color = '#a7f3d0';
-          verifierResultBox.innerHTML = 
+          verifierResultBox.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
               <div style="font-weight: 800; font-size: 1.15rem; color: #34d399; display: flex; align-items: center; gap: 0.4rem;">
                 <span>✓ VALID RESERVATION // CONFIRMED ATTENDEE</span>
               </div>
               <span style="font-family: var(--font-mono, monospace); background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #7dd3fc; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
-                #
+                #${match.refCode || match.referenceCode || 'N/A'}
               </span>
             </div>
             <div style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.35rem;">
-              
+              ${match.name || match.fullName}
             </div>
             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
               <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600;">
-                👥 Reserved Headcount:  
+                👥 Reserved Headcount: ${party} ${party === 1 ? 'Seat' : 'Seats'}
               </span>
               <span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #bae6fd; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
-                
+                🍽️ ${match.dietary || 'Standard'}
               </span>
               <span style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fde68a; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
-                
+                ☕ Tea: ${match.chaiStyle || 'Kenyan Classic'}
               </span>
             </div>
             <div style="font-size: 0.82rem; color: #cbd5e1; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 0.5rem;">
-              <strong>Phone:</strong>  &bull; 
-              <strong>Note:</strong> 
+              <strong>Phone:</strong> ${match.phone || match.phoneNumber || 'Not recorded'} &bull; 
+              <strong>Note:</strong> ${match.notes || 'None'}
             </div>
-          ;
+          `;
         } else {
           verifierResultBox.style.background = 'rgba(245, 158, 11, 0.12)';
           verifierResultBox.style.border = '1px solid rgba(245, 158, 11, 0.4)';
           verifierResultBox.style.color = '#fde68a';
-          verifierResultBox.innerHTML = 
+          verifierResultBox.innerHTML = `
             <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem; color: #fbbf24;">
               ✕ INVITATION FOUND // RECORDED AS DECLINED
             </div>
             <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.25rem;">
-               (#)
+              ${match.name || match.fullName} (#${match.refCode || match.referenceCode || 'N/A'})
             </div>
             <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.5rem;">This guest submitted an RSVP declining attendance. No seating is currently allocated.</p>
             <div style="font-size: 0.8rem; color: #94a3b8;">
-              Message: ""
+              Message: "${match.notes || 'None'}"
             </div>
-          ;
+          `;
         }
       }
-
       if (doVerifyBtn) doVerifyBtn.addEventListener('click', runVerification);
       if (verifierInput) {
         verifierInput.addEventListener('keydown', (e) => {
@@ -2318,13 +2022,13 @@
               const count = (data.rsvps && Array.isArray(data.rsvps)) ? data.rsvps.length : (Array.isArray(data) ? data.length : 0);
               cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
               cloudStatus.style.color = '#a7f3d0';
-              cloudStatus.textContent = ✓ Connected! Found  attendee records in Google Sheets.;
+              cloudStatus.textContent = `✓ Connected! Found ${count} attendee records in Google Sheets.`;
               localStorage.setItem('ikg_cloud_webhook_url', url);
               loadRosterData();
             } else {
               cloudStatus.style.background = 'rgba(239, 68, 68, 0.15)';
               cloudStatus.style.color = '#fca5a5';
-              cloudStatus.textContent = Server responded with status . Make sure Web App access is set to 'Anyone'.;
+              cloudStatus.textContent = `Server responded with status ${res.status}. Make sure Web App access is set to 'Anyone'.`;
             }
           } catch (err) {
             cloudStatus.style.background = 'rgba(245, 158, 11, 0.15)';

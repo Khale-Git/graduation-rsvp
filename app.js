@@ -1087,16 +1087,20 @@ function initScrollAnimations() {
   const fadeEls = document.querySelectorAll('.fade-in-up');
   if (!fadeEls.length) return;
 
+  // Immediate visibility guarantee: ensure all elements have .appear right away
+  fadeEls.forEach(el => el.classList.add('appear'));
+
+  if (!('IntersectionObserver' in window)) return;
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('appear');
-        observer.unobserve(entry.target);
       }
     });
   }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
+    threshold: 0.05,
+    rootMargin: '40px 0px 40px 0px'
   });
 
   fadeEls.forEach((el) => observer.observe(el));
@@ -1184,14 +1188,25 @@ function initBookFlipInteraction() {
   const toggleBtn = document.getElementById('toggle-book-flip-btn');
   const tapPrompt = document.getElementById('cover-tap-prompt');
   const insideRsvpBtn = document.getElementById('inside-rsvp-btn');
+  const hintText = document.getElementById('book-hint-text');
   if (!book) return;
 
   function openBook() {
     book.classList.add('is-open');
+    if (hintText) hintText.textContent = 'Invitation card open • Scroll down for RSVP form';
   }
 
   function closeBook() {
     book.classList.remove('is-open');
+    if (hintText) hintText.textContent = 'Scroll or tap to flip invitation card';
+  }
+
+  function toggleBook() {
+    if (book.classList.contains('is-open')) {
+      closeBook();
+    } else {
+      openBook();
+    }
   }
 
   if (frontCover) {
@@ -1211,11 +1226,7 @@ function initBookFlipInteraction() {
     toggleBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      if (book.classList.contains('is-open')) {
-        closeBook();
-      } else {
-        openBook();
-      }
+      toggleBook();
     });
   }
 
@@ -1226,15 +1237,18 @@ function initBookFlipInteraction() {
     });
   }
 
-  // Scroll Trigger: Smoothly flips open as the guest scrolls down the page!
-  let userManuallyClosed = false;
+  // Smooth scroll trigger: flips open as guest scrolls down the page!
+  let userManuallyToggled = false;
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => { userManuallyToggled = true; });
+  }
+
   window.addEventListener('scroll', () => {
+    if (userManuallyToggled) return;
     const scrollY = window.scrollY || window.pageYOffset;
-    if (scrollY > 40 && !book.classList.contains('is-open') && !userManuallyClosed) {
+    if (scrollY > 30 && !book.classList.contains('is-open')) {
       openBook();
-    } else if (scrollY === 0) {
-      // Re-fold book when returning to top
-      userManuallyClosed = false;
+    } else if (scrollY === 0 && book.classList.contains('is-open')) {
       closeBook();
     }
   }, { passive: true });
