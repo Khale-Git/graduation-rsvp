@@ -12,7 +12,7 @@ const CONFIG = {
   
   // Optional remote Webhook for cloud hosting (e.g., Google Apps Script Web App or Formspree)
   // See GOOGLE_SHEETS_SETUP.md for 2-minute free setup instructions
-  REMOTE_WEBHOOK_URL: '',
+  REMOTE_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec',
 
   // Storage keys & Security
   STORAGE_KEY: 'ikg_grad_rsvp_2026',

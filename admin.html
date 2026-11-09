@@ -1394,7 +1394,7 @@
         });
 
         // 2. Fetch from Google Sheets Cloud Webhook if configured (skip human document viewer URLs like 1drv.ms)
-        const cloudWebhook = (localStorage.getItem('ikg_cloud_webhook_url') || '').trim();
+        const cloudWebhook = (localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec').trim();
         const isHumanDocLink = cloudWebhook.includes('1drv.ms') || 
                                cloudWebhook.includes('onedrive') || 
                                cloudWebhook.includes('sharepoint.com') || 
@@ -1992,7 +1992,7 @@
 
       if (openCloudBtn && cloudModal) {
         openCloudBtn.addEventListener('click', () => {
-          cloudUrlInput.value = localStorage.getItem('ikg_cloud_webhook_url') || '';
+          cloudUrlInput.value = localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec';
           cloudStatus.style.display = 'none';
           cloudModal.showModal();
         });

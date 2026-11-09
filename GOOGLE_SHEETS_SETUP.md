@@ -1,26 +1,16 @@
-# Cloud Backend Setup Guide (Google Sheets & Formspree)
+# Cloud Backend Setup Guide (Google Sheets Live Sync)
 
-If you host this website on a static cloud provider (such as GitHub Pages, Netlify, or Vercel), you can easily pipe all RSVPs directly into a **Google Sheet** or **Formspree** with zero cost.
+Your live RSVP web application is now configured with your Google Apps Script Web App:
+**`https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec`**
 
 ---
 
-## Option A: Free Google Sheets Ingestion (Recommended)
+## Google Sheet Script (`Code.gs`)
 
-1. Open [Google Sheets](https://sheets.new) and create a new spreadsheet named **"Ian Kiromo Graduation RSVPs"**.
-2. Add these column headers in Row 1:
-   - Column A: `Timestamp`
-   - Column B: `Reference Code`
-   - Column C: `Full Name`
-   - Column D: `Phone Number`
-   - Column E: `Attending`
-   - Column F: `Guest Count`
-   - Column G: `Dietary Requirements`
-   - Column H: `Tea & Beverage Urn`
-   - Column I: `Message`
-3. Click **Extensions > Apps Script** from the top menu.
-4. Replace all code in the script editor with the snippet below:
+In your Google Sheet (**Extensions > Apps Script**), make sure `Code.gs` contains this code:
 
 ```javascript
+// 1. Receives RSVPs submitted from guest phones/browsers and appends a row
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var rawData = e.postData.contents;
@@ -43,37 +33,42 @@ function doPost(e) {
     message: 'RSVP recorded in Google Sheet'
   })).setMimeType(ContentService.MimeType.JSON);
 }
-```
 
-5. Click **Deploy > New Deployment**:
-   - Select Type: **Web app**
-   - Description: `Graduation RSVP Ingestion API`
-   - Execute as: **Me**
-   - Who has access: **Anyone** *(Crucial for public web form submissions)*
-6. Click **Deploy** and copy the **Web App URL** (e.g., `https://script.google.com/macros/s/AKfyc.../exec`).
-7. Open `app.js` and set:
-   ```javascript
-   CONFIG.REMOTE_WEBHOOK_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
-   ```
+// 2. Returns all attendee rows so the Organiser Portal can read them live
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  var rsvps = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    if (row[1] || row[2]) {
+      rsvps.push({
+        submittedAt: row[0] ? new Date(row[0]).toISOString() : new Date().toISOString(),
+        referenceCode: row[1] || '',
+        fullName: row[2] || '',
+        name: row[2] || '',
+        phoneNumber: row[3] || '',
+        phone: row[3] || '',
+        attending: row[4] || 'yes',
+        guestCount: parseInt(row[5], 10) || 1,
+        dietary: row[6] || 'Standard Menu',
+        teaPreference: row[7] || 'Chai (Tea with Sugar)',
+        chaiStyle: row[7] || 'Chai (Tea with Sugar)',
+        message: row[8] || '',
+        notes: row[8] || ''
+      });
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({
+    status: 'success',
+    rsvps: rsvps
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+```
 
 ---
 
-## Option B: Formspree (Instant Setup)
-
-1. Create a free account at [Formspree.io](https://formspree.io).
-2. Create a new form (e.g., "Graduation RSVP").
-3. Copy your Form ID (e.g., `https://formspree.io/f/mqkrzyov`).
-4. Set in `app.js`:
-   ```javascript
-   CONFIG.REMOTE_WEBHOOK_URL = 'https://formspree.io/f/your_form_id';
-   ```
-
----
-
-## Option C: Self-Hosted Python Server (Already Built!)
-
-Run on your local machine or VPS:
-```bash
-python server.py
-```
-This stores all responses locally in `rsvps.json`, provides live statistics, and allows 1-click CSV exports.
+## Note on Testing in Apps Script:
+When you click **"Run"** directly inside the Apps Script editor, you will see `TypeError: Cannot read properties of undefined (reading 'postData')`. **This is normal and expected**, because clicking "Run" manually does not pass web form data. The script triggers automatically when a real RSVP is submitted from the website!
