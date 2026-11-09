@@ -748,6 +748,15 @@ function saveToAdminCache(record) {
    5. CALENDAR INTEGRATION (GOOGLE CALENDAR + APPLE/OUTLOOK .ICS)
    =================================================================== */
 function initCalendarIntegrations() {
+  const spotlightCalBtn = document.getElementById('spotlight-calendar-btn');
+  if (spotlightCalBtn) {
+    spotlightCalBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const calBtn = document.getElementById('add-to-calendar-btn');
+      if (calBtn) calBtn.click();
+    });
+  }
+
   const modal = document.getElementById('calendar-modal');
   const heroBtn = document.getElementById('add-to-calendar-btn');
   const closeBtn = document.getElementById('close-modal-btn');
@@ -1193,12 +1202,12 @@ function initBookFlipInteraction() {
 
   function openBook() {
     book.classList.add('is-open');
-    if (hintText) hintText.textContent = 'Invitation card open • Scroll down for RSVP form';
+    if (hintText) hintText.textContent = 'Invitation book open • Scroll down for ceremony details & RSVP';
   }
 
   function closeBook() {
     book.classList.remove('is-open');
-    if (hintText) hintText.textContent = 'Scroll or tap to flip invitation card';
+    if (hintText) hintText.textContent = 'Scroll down or tap to open invitation book';
   }
 
   function toggleBook() {

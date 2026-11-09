@@ -834,7 +834,13 @@
           <span>Verify Invitation</span>
         </button>
 
-        <!-- 3. Cloud Sync (Google Sheets live data) -->
+        <!-- Live Excel Online Workbook Direct Access -->
+        <a href="https://1drv.ms/x/c/cd40dbc2a44d889f/IQCsR5WIP84VRoAnpeadLP4kAeAZ-rnn0pSxNw1Vt39Z9KA?e=zjcF1P" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost-tech" id="open-excel-toolbar-btn" style="color: #34d399; border-color: rgba(52, 211, 153, 0.45); text-decoration: none;" title="Open your live attendee spreadsheet on Microsoft Excel Online">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Open Excel Sheet ↗</span>
+        </a>
+
+        <!-- Cloud Sync Settings -->
         <button id="open-cloud-sync-btn" class="btn btn-sm btn-ghost-tech" title="Live Cloud Sync with Google Sheets">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
           <span>Cloud Sync</span>
@@ -1080,8 +1086,8 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">☁️ Google Sheets Cloud Sync</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Sync live attendee registrations across all devices using a free Google Sheets Web App URL.</p>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">📊 Cloud Spreadsheet Sync (Excel Online & Google Sheets)</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Sync or link your live attendee registrations on Microsoft Excel Online or Google Sheets.</p>
         </div>
         <button type="button" class="modal-close" id="close-cloud-sync-btn" aria-label="Close modal">&times;</button>
       </div>
@@ -2007,7 +2013,25 @@
         testSyncBtn.addEventListener('click', async () => {
           const url = (cloudUrlInput.value || '').trim();
           if (!url) {
-            alert('Please paste a Google Apps Script Web App URL first.');
+            alert('Please paste an Excel Online or Google Apps Script URL first.');
+            return;
+          }
+
+          if (url.includes('1drv.ms') || url.includes('onedrive') || url.includes('office.com') || url.includes('sharepoint.com')) {
+            cloudStatus.style.display = 'block';
+            cloudStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+            cloudStatus.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+            cloudStatus.style.color = '#a7f3d0';
+            cloudStatus.innerHTML = `
+              <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.35rem;">✓ Microsoft Excel Online Connected!</div>
+              <p style="margin: 0 0 0.65rem 0; font-size: 0.8rem; color: #cbd5e1;">Your OneDrive Excel workbook is linked. Click below to view and edit your live spreadsheet:</p>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary-tech" style="text-decoration: none;">
+                  Open Live Excel Sheet ↗
+                </a>
+              </div>
+            `;
+            localStorage.setItem('ikg_cloud_webhook_url', url);
             return;
           }
           cloudStatus.style.display = 'block';
