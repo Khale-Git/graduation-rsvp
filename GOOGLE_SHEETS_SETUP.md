@@ -16,16 +16,23 @@ function doPost(e) {
   var rawData = e.postData.contents;
   var data = JSON.parse(rawData);
   
+  // Format phone number as plain text with leading apostrophe to prevent Google Sheets #ERROR! formula parsing
+  var rawPhone = data.phoneNumber || data.phone || '';
+  var cleanPhone = rawPhone.toString().trim();
+  if (cleanPhone.indexOf('+') === 0 && cleanPhone.indexOf("'") !== 0) {
+    cleanPhone = "'" + cleanPhone;
+  }
+
   sheet.appendRow([
     data.timestamp || new Date().toISOString(),
     data.referenceCode || '',
-    data.fullName || '',
-    data.phoneNumber || '',
+    data.fullName || data.name || '',
+    cleanPhone,
     data.attending || '',
     data.guestCount || '1',
     data.dietary || 'Standard Menu',
-    data.teaPreference || 'Chai (Tea with Sugar)',
-    data.message || ''
+    data.teaPreference || data.chaiStyle || 'Chai (Tea with Sugar)',
+    data.message || data.notes || ''
   ]);
   
   return ContentService.createTextOutput(JSON.stringify({

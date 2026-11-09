@@ -385,11 +385,21 @@ function initRSVPForm() {
     const activeRemoteWebhook = CONFIG.REMOTE_WEBHOOK_URL || localStorage.getItem('ikg_cloud_webhook_url') || '';
     if (activeRemoteWebhook) {
       try {
+        // Prepend leading apostrophe to phone numbers starting with + to prevent Google Sheets #ERROR! formula parsing
+        const safePhoneForSheets = (rsvpPayload.phoneNumber || '').startsWith('+') && !(rsvpPayload.phoneNumber || '').startsWith("'")
+          ? `'${rsvpPayload.phoneNumber}`
+          : rsvpPayload.phoneNumber;
+
+        const remotePayload = {
+          ...rsvpPayload,
+          phoneNumber: safePhoneForSheets
+        };
+
         await fetch(activeRemoteWebhook, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(rsvpPayload)
+          body: JSON.stringify(remotePayload)
         });
         backendSuccess = true;
         console.log('✓ RSVP transmitted to remote webhook.');

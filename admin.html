@@ -1829,11 +1829,18 @@
           const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
           if (webhookUrl) {
             try {
+              const safePhoneForSheets = (newGuest.phoneNumber || '').startsWith('+') && !(newGuest.phoneNumber || '').startsWith("'")
+                ? `'${newGuest.phoneNumber}`
+                : newGuest.phoneNumber;
+
               fetch(webhookUrl, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newGuest)
+                body: JSON.stringify({
+                  ...newGuest,
+                  phoneNumber: safePhoneForSheets
+                })
               });
             } catch (postErr) {}
           }
