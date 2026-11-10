@@ -15,6 +15,9 @@ const CONFIG = {
   // See GOOGLE_SHEETS_SETUP.md for 2-minute free setup instructions
   REMOTE_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec',
 
+  // Shared Family & Guest Google Photos Album
+  SHARED_PHOTO_ALBUM_URL: 'https://photos.app.goo.gl/C8mnt8H8n8MxnXJa6',
+
   // Storage keys & Security
   STORAGE_KEY: 'ikg_grad_rsvp_2026',
   ADMIN_CACHE_KEY: 'ikg_all_rsvps_cache',
