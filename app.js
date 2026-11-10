@@ -361,7 +361,7 @@ function initRSVPForm() {
           if (Array.isArray(parsed)) allCandidates.push(...parsed);
           else if (parsed && typeof parsed === 'object') allCandidates.push(parsed);
         }
-      } catch (e) {}
+      } catch (e) { }
     });
 
     // Match candidate
@@ -372,8 +372,8 @@ function initRSVPForm() {
       const phone = (g.phoneNumber || g.phone || '').replace(/[^0-9]/g, '');
 
       return ref === clean || ref.includes(clean) ||
-             name === clean || name.includes(clean) ||
-             (cleanDigits.length >= 4 && phone.includes(cleanDigits));
+        name === clean || name.includes(clean) ||
+        (cleanDigits.length >= 4 && phone.includes(cleanDigits));
     });
 
     // If not found in local memory, try fetching from Google Sheets webhook
@@ -389,11 +389,11 @@ function initRSVPForm() {
             const name = (g.fullName || g.name || '').toLowerCase();
             const phone = (g.phoneNumber || g.phone || '').replace(/[^0-9]/g, '');
             return ref === clean || ref.includes(clean) ||
-                   name === clean || name.includes(clean) ||
-                   (cleanDigits.length >= 4 && phone.includes(cleanDigits));
+              name === clean || name.includes(clean) ||
+              (cleanDigits.length >= 4 && phone.includes(cleanDigits));
           });
         }
-      } catch (err) {}
+      } catch (err) { }
     }
 
     return match;

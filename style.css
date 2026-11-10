@@ -3125,6 +3125,12 @@ body {
     margin: 1rem auto;
     padding: 1.25rem 1rem !important;
   }
+
+  .faithaccess-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    gap: 1.5rem !important;
+  }
 }
 
 /* DEVICE ORIENTATION TIER 4: PHONE LANDSCAPE (Height <= 500px) */
