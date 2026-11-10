@@ -12,7 +12,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css?v=2026.3">
+  <link rel="stylesheet" href="style.css?v=2026.5">
+
+  <!-- QR Code Generation Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <!-- QR Code Scanner Library -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
   <script>
     (function() {
       const saved = localStorage.getItem('ikg_site_theme') || 'dark';
@@ -836,6 +842,18 @@
           <span>Verify Invitation</span>
         </button>
 
+        <!-- 2b. Generate Invitation Card -->
+        <button id="open-card-gen-btn" class="btn btn-sm btn-outline-cyber" title="Generate a shareable invitation card with QR code" style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>🎫 Generate Card</span>
+        </button>
+
+        <!-- 2c. Scan QR Code at Door -->
+        <button id="open-qr-scanner-btn" class="btn btn-sm btn-outline-cyber" title="Scan a guest's QR code at the door for instant verification" style="border-color: rgba(16, 185, 129, 0.5); color: #34d399;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><line x1="21" y1="14" x2="21" y2="21"/><line x1="14" y1="21" x2="21" y2="21"/></svg>
+          <span>📷 Scan QR</span>
+        </button>
+
         <!-- Live Excel Online Workbook Direct Access -->
         <a href="https://1drv.ms/x/c/cd40dbc2a44d889f/IQCsR5WIP84VRoAnpeadLP4kAeAZ-rnn0pSxNw1Vt39Z9KA?e=zjcF1P" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost-tech" id="open-excel-toolbar-btn" style="color: #34d399; border-color: rgba(52, 211, 153, 0.45); text-decoration: none;" title="Open your live attendee spreadsheet on Microsoft Excel Online">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -949,11 +967,12 @@
               <th>Phone Number</th>
               <th>Notes &amp; Messages</th>
               <th>Registered At</th>
+              <th>Card Pass</th>
             </tr>
           </thead>
           <tbody id="roster-table-body">
             <tr>
-              <td colspan="9" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
+              <td colspan="10" class="text-center py-4 text-muted">No RSVP records loaded yet.</td>
             </tr>
           </tbody>
         </table>
@@ -1106,6 +1125,174 @@
         <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
           <button type="button" id="test-sync-btn" class="btn btn-sm btn-outline-cyber">Test Connection &amp; Fetch</button>
           <button type="button" id="save-sync-btn" class="btn btn-sm btn-primary-tech">Save Webhook URL</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+
+  <!-- ===================================================================
+       MODAL 4: INVITATION CARD GENERATOR (Create & Share Cards with QR)
+       =================================================================== -->
+  <dialog id="card-generator-modal" class="cyber-modal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">🎫 Invitation Card Generator</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Create a beautiful invitation card with a unique QR code. Share it via WhatsApp, SMS, or download.</p>
+        </div>
+        <button type="button" class="modal-close" id="close-card-gen-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <!-- Card Input Form -->
+      <div id="card-gen-form-section" style="margin-top: 1.25rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Guest / Group Name *</label>
+            <input type="text" id="card-guest-name" required placeholder="e.g. The Maina Family" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Number of Guests *</label>
+            <select id="card-guest-count" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+              <option value="1">1 Guest</option>
+              <option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests (Family)</option>
+              <option value="6">6 Guests</option>
+              <option value="7">7 Guests</option>
+              <option value="8">8 Guests</option>
+              <option value="9">9 Guests</option>
+              <option value="10">10 Guests (Large Group)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Phone Number (Optional)</label>
+            <input type="tel" id="card-guest-phone" placeholder="+254 7XX XXX XXX" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Dietary Preference</label>
+            <select id="card-guest-dietary" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+              <option value="Standard Menu">🍽️ Standard Menu</option>
+              <option value="Vegetarian">🥗 Vegetarian</option>
+              <option value="Vegan">🌱 Vegan</option>
+              <option value="Halal">🌙 Halal</option>
+              <option value="Gluten-Free">🌾 Gluten-Free</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" id="generate-card-btn" class="btn btn-sm btn-primary-tech" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #ffffff;">
+            🎫 Generate Invitation Card
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated Card Preview -->
+      <div id="card-preview-section" style="display: none; margin-top: 1.5rem;">
+        <div id="invitation-card-render" style="
+          background: linear-gradient(135deg, #091322 0%, #15263d 50%, #0c182b 100%);
+          border: 2px solid #d97706;
+          border-radius: 16px;
+          padding: 2rem 1.5rem;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          color: #ffffff;
+        ">
+          <!-- Gold corner accents -->
+          <div style="position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 16px 0 0 0;"></div>
+          <div style="position: absolute; top: 0; right: 0; width: 40px; height: 40px; border-top: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 16px 0 0;"></div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 40px; height: 40px; border-bottom: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 0 0 0 16px;"></div>
+          <div style="position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; border-bottom: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 0 16px 0;"></div>
+
+          <!-- Header -->
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #fbbf24; font-weight: 700; margin-bottom: 0.3rem;">DAYSTAR UNIVERSITY • CLASS OF 2026</div>
+          <div style="font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-bottom: 0.15rem;">Graduation Celebration</div>
+          <div style="color: #fbbf24; font-size: 0.85rem; letter-spacing: 0.5em; margin-bottom: 0.75rem;">✦ ✦ ✦</div>
+
+          <!-- Graduate Name -->
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 20%, #bae6fd 60%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.15rem;">Ian Kiromo Githengu</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #38bdf8;">B.Sc. Applied Computer Science</div>
+
+          <!-- Divider -->
+          <div style="width: 60%; height: 1px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); margin: 0.85rem auto;"></div>
+
+          <!-- Cordially Invites -->
+          <div style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.25rem;">Cordially invites</div>
+          <div id="card-render-guest-name" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fde68a; margin-bottom: 0.15rem;"></div>
+          <div id="card-render-guest-count" style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.85rem;"></div>
+
+          <!-- Event Details Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 1rem; text-align: left;">
+            <div style="background: rgba(14, 26, 45, 0.65); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 0.6rem 0.75rem;">
+              <div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📅 DATE & TIME</div>
+              <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Sat, Nov 28, 2026</div>
+              <div style="font-size: 0.78rem; color: #38bdf8;">2:00 PM EAT</div>
+            </div>
+            <div style="background: rgba(14, 26, 45, 0.65); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 0.6rem 0.75rem;">
+              <div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📍 VENUE</div>
+              <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Thee Bobians Residence</div>
+              <div style="font-size: 0.78rem; color: #cbd5e1;">Rironi, Limuru</div>
+            </div>
+          </div>
+
+          <!-- QR Code -->
+          <div style="background: #ffffff; border-radius: 12px; padding: 10px; display: inline-block; margin-bottom: 0.65rem;">
+            <div id="card-qr-code"></div>
+          </div>
+          <div id="card-render-ref-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.25rem;"></div>
+          <div style="font-size: 0.72rem; color: #64748b;">Scan QR code at the venue for verification</div>
+        </div>
+
+        <!-- Share & Download Actions -->
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap;">
+          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-primary-tech" style="flex: 1; background: #25D366; border: none; color: #fff;">
+            📱 Share via WhatsApp
+          </button>
+          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1;">
+            📤 Share Card
+          </button>
+          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1;">
+            💾 Download Card
+          </button>
+          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">
+            + New Card
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===================================================================
+       MODAL 5: QR CODE SCANNER (Camera-Based Door Verification)
+       =================================================================== -->
+  <dialog id="qr-scanner-modal" class="cyber-modal">
+    <div class="modal-card" style="max-width: 560px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">📷 QR Code Scanner — Door Verification</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Point the camera at a guest's invitation QR code for instant verification.</p>
+        </div>
+        <button type="button" class="modal-close" id="close-qr-scanner-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div style="margin-top: 1.25rem;">
+        <!-- Camera viewport -->
+        <div id="qr-reader" style="width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.4); background: #000;"></div>
+
+        <!-- Scanner status message -->
+        <div id="qr-scanner-status" style="text-align: center; padding: 0.85rem; font-size: 0.88rem; color: #94a3b8; margin-top: 0.75rem;">
+          📸 Camera will activate when you open this scanner. Allow camera access if prompted.
+        </div>
+
+        <!-- Scan Result -->
+        <div id="qr-scan-result" style="display: none; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; transition: all 0.2s;">
+          <!-- Dynamically populated by scan results -->
         </div>
       </div>
     </div>
@@ -1282,6 +1469,10 @@
 
       let currentData = [];
       let activeFilter = 'all';
+
+      // Expose to outer scope for Card Generator & QR Scanner
+      window._ikg_currentData = () => currentData;
+      window._ikg_setCurrentData = (d) => { currentData = d; };
 
       // 1. Password Visibility Toggle
       pwToggle.addEventListener('click', () => {
@@ -1462,6 +1653,8 @@
 
       // 6. Metrics & Headcount Calculations
       function updateMetricsAndTable() {
+        // Expose for Card Generator & QR Scanner
+        window._ikg_updateMetrics = updateMetricsAndTable;
         let proposedHeadcount = 0;
         let confirmedParties = 0;
         let declinedCount = 0;
@@ -1603,7 +1796,7 @@
         if (filtered.length === 0) {
           tableBody.innerHTML = `
             <tr>
-              <td colspan="9" class="text-center py-4 text-muted" style="padding: 3rem 1rem;">
+              <td colspan="10" class="text-center py-4 text-muted" style="padding: 3rem 1rem;">
                 <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">📋</div>
                 <div style="color: #cbd5e1; font-weight: 600; margin-bottom: 0.25rem;">No Registrations Recorded Yet</div>
                 <div style="font-size: 0.85rem; color: #94a3b8;">Guest RSVPs will automatically appear here in real-time as people register on the main page.</div>
@@ -1653,7 +1846,11 @@
                 return `<div><strong>${dateStr}</strong></div><div style="font-size: 0.72rem; color: var(--accent-blue);">${timeStr}</div>`;
               })()}
             </td>
-            
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-cyber view-row-pass-btn" data-ref="${escapeHtml(g.referenceCode || '')}" data-name="${escapeHtml(g.fullName || '')}" data-count="${size}" data-phone="${escapeHtml(g.phoneNumber || '')}" data-diet="${escapeHtml(g.dietary || 'Standard Menu')}" style="padding: 0.25rem 0.6rem; font-size: 0.74rem; border-color: rgba(245, 158, 11, 0.45); color: #fbbf24; white-space: nowrap;" title="View & share digital pass with QR code">
+                🎫 Card
+              </button>
+            </td>
           `;
           tableBody.appendChild(tr);
         });
@@ -1758,8 +1955,6 @@
         document.body.removeChild(link);
       });
 
-    })();
-
       // ===================================================================
       // MODAL 1: MANUAL ATTENDEE REGISTRATION HANDLER
       // ===================================================================
@@ -1847,7 +2042,7 @@
 
           updateMetricsAndTable();
           manualModal.close();
-          alert(`✓ Attendee "${newEntry.name}" successfully registered with Reference Code #${newEntry.refCode}!`);
+          alert(`✓ Attendee "${name}" successfully registered with Reference Code #${refCode}!`);
         });
       }
 
@@ -2086,6 +2281,493 @@
           }
         });
       }
+
+      // ===================================================================
+      // MODAL 4: INVITATION CARD GENERATOR WITH QR CODE
+      // ===================================================================
+      const cardGenModal = document.getElementById('card-generator-modal');
+      const openCardGenBtn = document.getElementById('open-card-gen-btn');
+      const closeCardGenBtn = document.getElementById('close-card-gen-btn');
+      const generateCardBtn = document.getElementById('generate-card-btn');
+      const cardFormSection = document.getElementById('card-gen-form-section');
+      const cardPreviewSection = document.getElementById('card-preview-section');
+      const newCardBtn = document.getElementById('new-card-btn');
+
+      if (openCardGenBtn && cardGenModal) {
+        openCardGenBtn.addEventListener('click', () => {
+          cardFormSection.style.display = 'block';
+          cardPreviewSection.style.display = 'none';
+          cardGenModal.showModal();
+        });
+      }
+
+      if (closeCardGenBtn && cardGenModal) {
+        closeCardGenBtn.addEventListener('click', () => cardGenModal.close());
+      }
+
+      if (newCardBtn) {
+        newCardBtn.addEventListener('click', () => {
+          cardFormSection.style.display = 'block';
+          cardPreviewSection.style.display = 'none';
+          document.getElementById('card-guest-name').value = '';
+          document.getElementById('card-guest-phone').value = '';
+        });
+      }
+
+      if (generateCardBtn) {
+        generateCardBtn.addEventListener('click', () => {
+          const guestName = (document.getElementById('card-guest-name').value || '').trim();
+          if (!guestName) {
+            alert('Please enter the guest name.');
+            return;
+          }
+
+          const guestCount = document.getElementById('card-guest-count').value;
+          const guestPhone = (document.getElementById('card-guest-phone').value || '').trim();
+          const guestDietary = document.getElementById('card-guest-dietary').value;
+
+          // Generate reference code
+          const randSuffix = Math.floor(1000 + Math.random() * 9000);
+          const refCode = 'IKG-C' + randSuffix;
+          const nowIso = new Date().toISOString();
+
+          // Create the guest entry and add to roster
+          const newGuest = {
+            referenceCode: refCode,
+            fullName: guestName,
+            phoneNumber: guestPhone || '—',
+            attending: 'Yes',
+            guestCount: guestCount,
+            dietary: guestDietary,
+            teaPreference: 'Chai (Tea with Sugar)',
+            message: 'Invitation card generated by organiser',
+            timestamp: nowIso,
+            submittedAt: nowIso
+          };
+
+          // Add to currentData & update roster immediately
+          const currentData = window._ikg_currentData ? window._ikg_currentData() : [];
+          currentData.unshift(newGuest);
+          if (window._ikg_setCurrentData) window._ikg_setCurrentData(currentData);
+          try {
+            localStorage.setItem('ikg_rsvp_admin_cache_v3', JSON.stringify(currentData));
+            let manualList = [];
+            const rawManual = localStorage.getItem('ikg_manual_rsvps');
+            if (rawManual) manualList = JSON.parse(rawManual);
+            manualList.unshift(newGuest);
+            localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
+          } catch (err) {}
+
+          // Cloud Webhook POST
+          const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
+          if (webhookUrl) {
+            try {
+              const safePhone = (newGuest.phoneNumber || '').startsWith('+') ? `'${newGuest.phoneNumber}` : newGuest.phoneNumber;
+              fetch(webhookUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...newGuest, phoneNumber: safePhone })
+              });
+            } catch (e) {}
+          }
+
+          if (window._ikg_updateMetrics) {
+            window._ikg_updateMetrics();
+          }
+
+          // Populate the card preview
+          document.getElementById('card-render-guest-name').textContent = guestName;
+          document.getElementById('card-render-guest-count').textContent = 
+            `Party of ${guestCount} ${parseInt(guestCount) === 1 ? 'Guest' : 'Guests'}`;
+          document.getElementById('card-render-ref-code').textContent = `Ref: #${refCode}`;
+
+          // Generate QR Code
+          const qrContainer = document.getElementById('card-qr-code');
+          qrContainer.innerHTML = '';
+          const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${refCode}`;
+          
+          if (typeof QRCode !== 'undefined') {
+            new QRCode(qrContainer, {
+              text: verifyUrl,
+              width: 140,
+              height: 140,
+              colorDark: '#0f172a',
+              colorLight: '#ffffff',
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } else {
+            // Fallback: show text code
+            qrContainer.innerHTML = `<div style="width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; color: #0f172a; word-break: break-all; padding: 8px;">${verifyUrl}</div>`;
+          }
+
+          // Store refCode for sharing
+          cardPreviewSection.dataset.refCode = refCode;
+          cardPreviewSection.dataset.guestName = guestName;
+          cardPreviewSection.dataset.guestCount = guestCount;
+
+          // Show preview, hide form
+          cardFormSection.style.display = 'none';
+          cardPreviewSection.style.display = 'block';
+        });
+      }
+
+      // Share via WhatsApp
+      const shareWhatsAppBtn = document.getElementById('share-card-whatsapp-btn');
+      if (shareWhatsAppBtn) {
+        shareWhatsAppBtn.addEventListener('click', () => {
+          const name = cardPreviewSection.dataset.guestName || 'Guest';
+          const count = cardPreviewSection.dataset.guestCount || '1';
+          const refCode = cardPreviewSection.dataset.refCode || '';
+          const rsvpLink = 'https://khale-git.github.io/graduation-rsvp/';
+
+          const message = `🎓 *GRADUATION CELEBRATION INVITATION*\n\n` +
+            `Dear *${name}*,\n\n` +
+            `You are cordially invited to the Graduation Celebration of\n` +
+            `*Ian Kiromo Githengu*\n` +
+            `B.Sc. Applied Computer Science — Daystar University, Class of 2026\n\n` +
+            `📅 *Date:* Saturday, November 28, 2026\n` +
+            `⏰ *Time:* 2:00 PM EAT\n` +
+            `📍 *Venue:* Thee Bobians Residence, Rironi, Limuru\n\n` +
+            `🎫 *Your Invitation Code:* #${refCode}\n` +
+            `👥 *Reserved Seats:* ${count}\n\n` +
+            `Please RSVP at:\n${rsvpLink}\n\n` +
+            `_Show this message or your QR code at the venue entrance._\n\n` +
+            `We look forward to celebrating with you! 🎉`;
+
+          const guestPhone = (document.getElementById('card-guest-phone').value || '').replace(/\s/g, '');
+          const waUrl = guestPhone 
+            ? `https://wa.me/${guestPhone.replace('+', '')}?text=${encodeURIComponent(message)}`
+            : `https://wa.me/?text=${encodeURIComponent(message)}`;
+          
+          window.open(waUrl, '_blank');
+        });
+      }
+
+      // Native Share API
+      const shareNativeBtn = document.getElementById('share-card-native-btn');
+      if (shareNativeBtn) {
+        shareNativeBtn.addEventListener('click', async () => {
+          const name = cardPreviewSection.dataset.guestName || 'Guest';
+          const refCode = cardPreviewSection.dataset.refCode || '';
+          const count = cardPreviewSection.dataset.guestCount || '1';
+
+          const shareData = {
+            title: 'Graduation Invitation — Ian Kiromo Githengu',
+            text: `🎓 You're invited! ${name}, party of ${count}. Ref: #${refCode}. RSVP: https://khale-git.github.io/graduation-rsvp/`,
+            url: 'https://khale-git.github.io/graduation-rsvp/'
+          };
+
+          if (navigator.share) {
+            try {
+              await navigator.share(shareData);
+            } catch (e) {
+              // User cancelled
+            }
+          } else {
+            // Fallback: copy to clipboard
+            const text = `${shareData.title}\n${shareData.text}`;
+            try {
+              await navigator.clipboard.writeText(text);
+              alert('✓ Invitation details copied to clipboard!');
+            } catch (e) {
+              alert('Share not supported on this device. Please copy the invitation manually.');
+            }
+          }
+        });
+      }
+
+      // Download card as image
+      const downloadCardBtn = document.getElementById('download-card-btn');
+      if (downloadCardBtn) {
+        downloadCardBtn.addEventListener('click', () => {
+          const cardEl = document.getElementById('invitation-card-render');
+          const refCode = cardPreviewSection.dataset.refCode || 'card';
+          const guestName = (cardPreviewSection.dataset.guestName || 'Guest').replace(/\s+/g, '_');
+
+          // Use html2canvas-like approach via canvas
+          // Since we can't rely on html2canvas being loaded, offer a print-friendly approach
+          const printWin = window.open('', '_blank', 'width=700,height=900');
+          if (printWin) {
+            printWin.document.write(`
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <title>Invitation Card - ${guestName}</title>
+                <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+                <style>
+                  body { margin: 0; padding: 2rem; background: #1e293b; display: flex; justify-content: center; }
+                  @media print { body { background: white; padding: 0; } }
+                </style>
+              </head>
+              <body>${cardEl.outerHTML}
+                <script>
+                  setTimeout(() => { window.print(); }, 500);
+                <\/script>
+              </body>
+              </html>
+            `);
+            printWin.document.close();
+          }
+        });
+      }
+
+      // ===================================================================
+      // MODAL 5: QR CODE SCANNER (Camera-Based Door Verification)
+      // ===================================================================
+      const qrScannerModal = document.getElementById('qr-scanner-modal');
+      const openQrScannerBtn = document.getElementById('open-qr-scanner-btn');
+      const closeQrScannerBtn = document.getElementById('close-qr-scanner-btn');
+      const qrScanResult = document.getElementById('qr-scan-result');
+      const qrScannerStatus = document.getElementById('qr-scanner-status');
+      let html5QrScanner = null;
+
+      if (openQrScannerBtn && qrScannerModal) {
+        openQrScannerBtn.addEventListener('click', () => {
+          qrScanResult.style.display = 'none';
+          qrScannerStatus.textContent = '📸 Initializing camera...';
+          qrScannerModal.showModal();
+          startQrScanner();
+        });
+      }
+
+      if (closeQrScannerBtn && qrScannerModal) {
+        closeQrScannerBtn.addEventListener('click', () => {
+          stopQrScanner();
+          qrScannerModal.close();
+        });
+      }
+
+      // Also stop scanner when modal is closed via ESC
+      if (qrScannerModal) {
+        qrScannerModal.addEventListener('close', () => {
+          stopQrScanner();
+        });
+      }
+
+      function startQrScanner() {
+        if (typeof Html5Qrcode === 'undefined') {
+          qrScannerStatus.innerHTML = '⚠️ QR Scanner library not loaded. Please check your internet connection and reload.<br><small style="color:#94a3b8;">You can still verify manually using the "Verify Invitation" button.</small>';
+          return;
+        }
+
+        try {
+          html5QrScanner = new Html5Qrcode('qr-reader');
+          html5QrScanner.start(
+            { facingMode: 'environment' },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            onQrScanSuccess,
+            (errorMessage) => {
+              // Ignore frame-level scan errors
+            }
+          ).then(() => {
+            qrScannerStatus.textContent = '📸 Camera active — point at a QR code...';
+          }).catch(err => {
+            qrScannerStatus.innerHTML = `⚠️ Camera access denied or unavailable.<br><small style="color:#fca5a5;">${err}</small>`;
+          });
+        } catch (e) {
+          qrScannerStatus.textContent = '⚠️ Could not initialize scanner: ' + e.message;
+        }
+      }
+
+      function stopQrScanner() {
+        if (html5QrScanner) {
+          try {
+            html5QrScanner.stop().then(() => {
+              html5QrScanner.clear();
+            }).catch(() => {});
+          } catch (e) {}
+          html5QrScanner = null;
+        }
+      }
+
+      function onQrScanSuccess(decodedText) {
+        // Stop scanning after successful read
+        stopQrScanner();
+        qrScannerStatus.innerHTML = '<span style="color: #34d399; font-weight: 700;">✓ QR Code detected!</span>';
+
+        // Extract ref code from the URL or plain text
+        let refCode = decodedText;
+        const verifyMatch = decodedText.match(/[?&]verify=([A-Z0-9-]+)/i);
+        if (verifyMatch) {
+          refCode = verifyMatch[1];
+        }
+        // Also handle plain ref codes like "IKG-C1234"
+        const plainMatch = decodedText.match(/(IKG-[A-Z]?\d+)/i);
+        if (plainMatch) {
+          refCode = plainMatch[1];
+        }
+
+        // Look up guest in currentData
+        const cleanRef = refCode.toUpperCase().replace(/^#/, '');
+        const scanData = window._ikg_currentData ? window._ikg_currentData() : [];
+        const match = scanData.find(g => {
+          const r = (g.referenceCode || '').toUpperCase();
+          return r === cleanRef || r === '#' + cleanRef;
+        });
+
+        qrScanResult.style.display = 'block';
+
+        if (match) {
+          const isAttending = match.attending === 'yes' || match.attending === true || match.attending === 'Attending In-Person' || match.attending === 'Yes';
+          const party = parseInt(match.guestCount, 10) || 1;
+
+          if (isAttending) {
+            qrScanResult.style.background = 'rgba(16, 185, 129, 0.12)';
+            qrScanResult.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+            qrScanResult.style.color = '#a7f3d0';
+            qrScanResult.innerHTML = `
+              <div style="font-weight: 800; font-size: 1.3rem; color: #34d399; margin-bottom: 0.5rem;">
+                ✓ VERIFIED — WELCOME!
+              </div>
+              <div style="font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-bottom: 0.35rem;">
+                ${match.fullName || match.name}
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 0.5rem;">
+                <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600;">
+                  👥 ${party} ${party === 1 ? 'Seat' : 'Seats'}
+                </span>
+                <span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #bae6fd; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.82rem;">
+                  🍽️ ${match.dietary || 'Standard'}
+                </span>
+                <span style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #7dd3fc; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-family: monospace;">
+                  #${match.referenceCode}
+                </span>
+              </div>
+              <button type="button" onclick="qrScanResult.style.display='none'; startQrScanner();" class="btn btn-sm btn-outline-cyber" style="margin-top: 0.5rem;">
+                📷 Scan Next Guest
+              </button>
+            `;
+          } else {
+            qrScanResult.style.background = 'rgba(245, 158, 11, 0.12)';
+            qrScanResult.style.border = '1px solid rgba(245, 158, 11, 0.4)';
+            qrScanResult.style.color = '#fde68a';
+            qrScanResult.innerHTML = `
+              <div style="font-weight: 700; font-size: 1.1rem; color: #fbbf24; margin-bottom: 0.35rem;">
+                ✕ DECLINED INVITATION
+              </div>
+              <div style="font-size: 1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">
+                ${match.fullName || match.name} (#${match.referenceCode})
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1;">This guest declined the invitation. No seats allocated.</p>
+              <button type="button" onclick="qrScanResult.style.display='none'; startQrScanner();" class="btn btn-sm btn-outline-cyber" style="margin-top: 0.5rem;">
+                📷 Scan Next Guest
+              </button>
+            `;
+          }
+        } else {
+          qrScanResult.style.background = 'rgba(239, 68, 68, 0.12)';
+          qrScanResult.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          qrScanResult.style.color = '#fca5a5';
+          qrScanResult.innerHTML = `
+            <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.35rem;">
+              ⚠️ NOT FOUND
+            </div>
+            <p style="font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.5rem;">
+              No reservation found for code: <code style="color: #38bdf8;">${refCode}</code>
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" onclick="qrScanResult.style.display='none'; startQrScanner();" class="btn btn-sm btn-outline-cyber">
+                📷 Scan Again
+              </button>
+              <button type="button" id="qr-quick-register-btn" class="btn btn-sm btn-primary-tech">
+                + Register on the Spot
+              </button>
+            </div>
+          `;
+          const qrQuickBtn = document.getElementById('qr-quick-register-btn');
+          if (qrQuickBtn) {
+            qrQuickBtn.onclick = () => {
+              stopQrScanner();
+              qrScannerModal.close();
+              if (manualModal) {
+                document.getElementById('manual-name').value = refCode;
+                manualModal.showModal();
+              }
+            };
+          }
+        }
+      }
+
+      // ===================================================================
+      // ROW "🎫 CARD" ACTION: OPEN & SHARE ANY GUEST'S PASS
+      // ===================================================================
+      if (tableBody) {
+        tableBody.addEventListener('click', (e) => {
+          const btn = e.target.closest('.view-row-pass-btn');
+          if (!btn) return;
+          const ref = btn.dataset.ref || 'IKG-C2026';
+          const name = btn.dataset.name || 'Honored Guest';
+          const count = btn.dataset.count || '1';
+          const phone = btn.dataset.phone || '';
+          const diet = btn.dataset.diet || 'Standard Menu';
+
+          // Prefill card generator form
+          document.getElementById('card-guest-name').value = name;
+          document.getElementById('card-guest-count').value = count;
+          document.getElementById('card-guest-phone').value = (phone === '—' || phone === '-') ? '' : phone;
+          document.getElementById('card-guest-dietary').value = diet;
+
+          // Populate the card render
+          document.getElementById('card-render-guest-name').textContent = name;
+          document.getElementById('card-render-guest-count').textContent = 
+            `Party of ${count} ${parseInt(count) === 1 ? 'Guest' : 'Guests'}`;
+          document.getElementById('card-render-ref-code').textContent = `Ref: #${ref}`;
+
+          // Generate QR Code
+          const qrContainer = document.getElementById('card-qr-code');
+          qrContainer.innerHTML = '';
+          const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${ref}`;
+          if (typeof QRCode !== 'undefined') {
+            new QRCode(qrContainer, {
+              text: verifyUrl,
+              width: 140,
+              height: 140,
+              colorDark: '#0f172a',
+              colorLight: '#ffffff',
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } else {
+            qrContainer.innerHTML = `<div style="width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; color: #0f172a; word-break: break-all; padding: 8px;">${verifyUrl}</div>`;
+          }
+
+          cardPreviewSection.dataset.refCode = ref;
+          cardPreviewSection.dataset.guestName = name;
+          cardPreviewSection.dataset.guestCount = count;
+
+          cardFormSection.style.display = 'none';
+          cardPreviewSection.style.display = 'block';
+          cardGenModal.showModal();
+        });
+      }
+
+      // ===================================================================
+      // AUTO-VERIFY FROM URL PARAMETER (when scanning QR opens the page)
+      // ===================================================================
+      (function autoVerifyFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const verifyCode = urlParams.get('verify');
+        if (verifyCode) {
+          // Wait for dashboard to be unlocked, then auto-verify
+          const checkInterval = setInterval(() => {
+            const dashboard = document.getElementById('admin-dashboard-section');
+            if (dashboard && dashboard.style.display !== 'none') {
+              clearInterval(checkInterval);
+              const verifierInput = document.getElementById('verifier-input');
+              if (verifierInput && typeof runVerification === 'function') {
+                verifierInput.value = verifyCode;
+                const verifierModal = document.getElementById('invitation-verifier-modal');
+                if (verifierModal) verifierModal.showModal();
+                runVerification();
+              }
+            }
+          }, 500);
+          // Stop checking after 30 seconds
+          setTimeout(() => clearInterval(checkInterval), 30000);
+        }
+      })();
+
+    })();
 
   </script>
 </body>

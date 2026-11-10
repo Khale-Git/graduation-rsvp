@@ -1,3 +1,4 @@
+
 /**
  * Graduation RSVP Web Application & Management Portal
  * Ian Kiromo Githengu - B.Sc. Applied Computer Science
@@ -9,7 +10,7 @@ const CONFIG = {
   LOCAL_API_ENDPOINT: '/api/rsvp',
   ADMIN_API_ENDPOINT: '/api/rsvps',
   EXPORT_CSV_ENDPOINT: '/api/export-csv',
-  
+
   // Optional remote Webhook for cloud hosting (e.g., Google Apps Script Web App or Formspree)
   // See GOOGLE_SHEETS_SETUP.md for 2-minute free setup instructions
   REMOTE_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec',
@@ -67,7 +68,7 @@ function initThemeManager() {
 
     try {
       localStorage.setItem('ikg_site_theme', theme);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // Initial load
@@ -344,7 +345,7 @@ function initRSVPForm() {
       try {
         const p = JSON.parse(savedData);
         if (p.referenceCode) refCode = p.referenceCode;
-      } catch (err) {}
+      } catch (err) { }
     }
 
     const dietarySelect = document.getElementById('dietaryRequirements');
@@ -385,21 +386,11 @@ function initRSVPForm() {
     const activeRemoteWebhook = CONFIG.REMOTE_WEBHOOK_URL || localStorage.getItem('ikg_cloud_webhook_url') || '';
     if (activeRemoteWebhook) {
       try {
-        // Prepend leading apostrophe to phone numbers starting with + to prevent Google Sheets #ERROR! formula parsing
-        const safePhoneForSheets = (rsvpPayload.phoneNumber || '').startsWith('+') && !(rsvpPayload.phoneNumber || '').startsWith("'")
-          ? `'${rsvpPayload.phoneNumber}`
-          : rsvpPayload.phoneNumber;
-
-        const remotePayload = {
-          ...rsvpPayload,
-          phoneNumber: safePhoneForSheets
-        };
-
         await fetch(activeRemoteWebhook, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(remotePayload)
+          body: JSON.stringify(rsvpPayload)
         });
         backendSuccess = true;
         console.log('✓ RSVP transmitted to remote webhook.');
@@ -437,11 +428,11 @@ function initRSVPForm() {
 
     document.getElementById('confirmed-name').textContent = data.fullName;
     document.getElementById('confirmed-phone').textContent = data.phoneNumber;
-    
+
     const statusEl = document.getElementById('confirmed-status');
     const partyRow = document.getElementById('confirmed-party-row');
     const dbStatusEl = document.getElementById('confirmed-db-status');
-    
+
     if (data.attending === 'Yes') {
       statusEl.textContent = 'ATTENDING (CONFIRMED)';
       statusEl.style.color = '#38bdf8';
@@ -502,7 +493,7 @@ function initRSVPForm() {
           congratsMsgInput.value = parsed.message || '';
           if (dietarySelect && parsed.dietary) dietarySelect.value = parsed.dietary;
           if (teaSelect && parsed.teaPreference) teaSelect.value = parsed.teaPreference;
-          
+
           if (parsed.attending === 'No') {
             document.getElementById('attending-no').checked = true;
             guestCountGroup.style.display = 'none';
@@ -511,7 +502,7 @@ function initRSVPForm() {
             guestCountGroup.style.display = 'block';
             guestCountSelect.value = parsed.guestCount || '1';
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       successCard.style.display = 'none';
@@ -549,12 +540,12 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
 
   bgImg.onload = async () => {
     if (spinner) spinner.style.display = 'none';
-    
+
     // Ensure custom web fonts (Playfair Display, Montserrat) are ready
     if (document.fonts && document.fonts.ready) {
       try {
         await document.fonts.ready;
-      } catch (e) {}
+      } catch (e) { }
     }
 
     // Set high-res canvas dimensions matching the background card
@@ -733,13 +724,13 @@ function renderProceduralCard(ctx, width, height, guestName, partySize) {
 
 function saveToAdminCache(record) {
   const keys = [CONFIG.ADMIN_CACHE_KEY, 'ikg_rsvp_admin_cache_v3', 'ikg_rsvp_admin_cache_v1'];
-  
+
   keys.forEach(key => {
     let list = [];
     try {
       const raw = localStorage.getItem(key);
       if (raw) list = JSON.parse(raw);
-    } catch (e) {}
+    } catch (e) { }
 
     const idx = list.findIndex(item => item.referenceCode === record.referenceCode || (record.phoneNumber && item.phoneNumber === record.phoneNumber));
     if (idx >= 0) {
@@ -750,7 +741,7 @@ function saveToAdminCache(record) {
 
     try {
       localStorage.setItem(key, JSON.stringify(list));
-    } catch (e) {}
+    } catch (e) { }
   });
 }
 
@@ -770,10 +761,10 @@ function initCalendarIntegrations() {
   const modal = document.getElementById('calendar-modal');
   const heroBtn = document.getElementById('add-to-calendar-btn');
   const closeBtn = document.getElementById('close-modal-btn');
-  
+
   const googleLink = document.getElementById('cal-google');
   const icsBtn = document.getElementById('cal-ics');
-  
+
   const postGoogleLink = document.getElementById('post-rsvp-cal-google');
   const postIcsBtn = document.getElementById('post-rsvp-cal-ics');
 
@@ -786,12 +777,12 @@ function initCalendarIntegrations() {
     "We look forward to celebrating this milestone with you!"
   );
   const location = encodeURIComponent("Thee Bobians Residence (https://maps.google.com/?q=-1.1562,36.6424)");
-  
+
   const startUtc = "20261128T110000Z";
   const endUtc = "20261128T160000Z";
 
   const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startUtc}/${endUtc}&details=${details}&location=${location}`;
-  
+
   if (googleLink) googleLink.href = gcalUrl;
   if (postGoogleLink) postGoogleLink.href = gcalUrl;
 
@@ -893,7 +884,7 @@ function initAdminPortal() {
 
   async function loadAdminData() {
     let rsvps = [];
-    
+
     try {
       const res = await fetch(`${CONFIG.ADMIN_API_ENDPOINT}?pin=${CONFIG.ADMIN_PIN}`);
       if (res.ok) {
@@ -924,7 +915,7 @@ function initAdminPortal() {
           rsvps.push(p);
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     activeRsvps = rsvps;
     renderAdminView(activeRsvps);
@@ -988,7 +979,7 @@ function initAdminPortal() {
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       const q = searchInput.value.toLowerCase().trim();
-      const filtered = activeRsvps.filter(r => 
+      const filtered = activeRsvps.filter(r =>
         (r.fullName && r.fullName.toLowerCase().includes(q)) ||
         (r.phoneNumber && r.phoneNumber.includes(q)) ||
         (r.referenceCode && r.referenceCode.toLowerCase().includes(q))
@@ -1043,12 +1034,12 @@ function initAdminPortal() {
       };
 
       saveToAdminCache(sample);
-      
+
       fetch(CONFIG.LOCAL_API_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sample)
-      }).catch(() => {});
+      }).catch(() => { });
 
       loadAdminData();
     });
@@ -1079,7 +1070,7 @@ function initCopyCoordinates() {
       await navigator.clipboard.writeText(coords);
       if (copyText) copyText.textContent = "✓ Coordinates Copied!";
       copyBtn.style.borderColor = "var(--accent-blue)";
-      
+
       setTimeout(() => {
         if (copyText) copyText.textContent = "Copy Coordinates";
         copyBtn.style.borderColor = "";
