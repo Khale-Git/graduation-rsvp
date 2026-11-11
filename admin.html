@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css?v=2026.5">
+  <link rel="stylesheet" href="style.css?v=2026.6">
 
   <!-- QR Code Generation Library -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -563,10 +563,27 @@
     }
 
     @media (max-width: 768px) {
-      .auth-card { padding: 1.75rem; }
-      .admin-header-row { flex-direction: column; align-items: flex-start; }
-      .roster-toolbar { flex-direction: column; align-items: stretch; }
+      .admin-nav-container { flex-direction: column; gap: 0.65rem; align-items: stretch; padding: 0 1rem; }
+      .admin-brand { justify-content: space-between; font-size: 0.96rem; }
+      .admin-nav-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+      .auth-card { padding: 1.5rem 1.15rem; }
+      .admin-main-wrap { padding: 1.25rem 0.9rem 3rem; }
+      .admin-page-title { font-size: 1.32rem; }
+      .admin-header-row { flex-direction: column; align-items: stretch; gap: 1rem; }
+      .admin-toolbar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; width: 100%; }
+      .admin-toolbar .btn { width: 100%; justify-content: center; text-align: center; padding: 0.55rem 0.45rem; font-size: 0.78rem; white-space: normal; line-height: 1.25; }
+      .headcount-kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .headcount-kpi-grid .featured-headcount { grid-column: 1 / -1; }
+      .kpi-stat-box { padding: 1rem 0.85rem; }
+      .stat-value { font-size: 1.85rem; }
+      .dietary-pills-wrap { flex-direction: column; align-items: flex-start; padding: 1rem; gap: 0.75rem; }
+      .roster-toolbar { flex-direction: column; align-items: stretch; padding: 1rem; }
       .roster-search-shell { max-width: 100%; }
+      .roster-filter-pills { flex-wrap: wrap; }
+      .roster-footer { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.85rem 1rem; }
+      #invitation-card-render { padding: 1.25rem 0.9rem !important; }
+      #invitation-card-render > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+      #card-render-guest-name { font-size: 1.25rem !important; }
     }
 
     /* ===================================================================
@@ -1258,17 +1275,22 @@
         </div>
 
         <!-- Share & Download Actions -->
-        <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap;">
-          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-primary-tech" style="flex: 1; background: #25D366; border: none; color: #fff;">
-            📱 Share via WhatsApp
+        <div id="card-share-feedback" style="display: none; margin-top: 1rem; padding: 0.7rem 0.9rem; border-radius: 8px; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.45); color: #a7f3d0; font-size: 0.82rem; line-height: 1.45;"></div>
+
+        <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
+          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-primary-tech" style="flex: 1 1 180px; background: #25D366; border: none; color: #fff; justify-content: center;">
+            📱 Share Card + Text (WhatsApp)
           </button>
-          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1;">
-            📤 Share Card
+          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1 1 140px; justify-content: center;">
+            📤 Share Image + Text
           </button>
-          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1;">
-            💾 Download Card
+          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 140px; justify-content: center;">
+            💾 Download PNG Card
           </button>
-          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">
+          <button type="button" id="print-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 100px; justify-content: center;">
+            🖨️ Print
+          </button>
+          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 110px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center;">
             + New Card
           </button>
         </div>
@@ -2537,81 +2559,338 @@
         });
       }
 
-      // Share via WhatsApp
+      // Clean, emoji-free WhatsApp text builder (prevents  diamond/square characters across devices)
+      function buildCleanInviteMessage(name, count, refCode) {
+        const inviteUrl = `https://khale-git.github.io/graduation-rsvp/?ref=${encodeURIComponent(refCode)}#rsvp`;
+        return `*GRADUATION CELEBRATION INVITATION*\n\n` +
+          `Dear *${name}*,\n\n` +
+          `You are cordially invited to the Graduation Celebration of\n` +
+          `*Ian Kiromo Githengu*\n` +
+          `B.Sc. Applied Computer Science - Daystar University, Class of 2026\n\n` +
+          `- *Date:* Saturday, November 28, 2026\n` +
+          `- *Time:* 2:00 PM EAT\n` +
+          `- *Venue:* Thee Bobians Residence, Rironi, Limuru\n\n` +
+          `- *Invitation Code:* #${refCode}\n` +
+          `- *Reserved Seats:* ${count} ${parseInt(count, 10) === 1 ? 'Guest' : 'Guests'}\n\n` +
+          `Verify or update your RSVP (party size, meals & tea) here:\n${inviteUrl}\n\n` +
+          `_Please present the attached invitation card & QR code at the venue entrance._\n\n` +
+          `We look forward to celebrating with you!`;
+      }
+
+      // Render Royal Navy & Gold Invitation Card PNG with Live QR Code
+      function buildAdminCardCanvas(name, count, refCode) {
+        const w = 900;
+        const h = 1160;
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        // Background Navy Radial Gradient
+        const grad = ctx.createRadialGradient(w / 2, h * 0.45, 60, w / 2, h / 2, w * 0.78);
+        grad.addColorStop(0, '#162b4a');
+        grad.addColorStop(1, '#091322');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Outer & Inner Gold Frames
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 5;
+        ctx.strokeRect(24, 24, w - 48, h - 48);
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(40, 40, w - 80, h - 80);
+
+        // Corner Gold L-Accents
+        const cLen = 46;
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 5;
+        [
+          [[24, 24 + cLen], [24, 24], [24 + cLen, 24]],
+          [[w - 24 - cLen, 24], [w - 24, 24], [w - 24, 24 + cLen]],
+          [[24, h - 24 - cLen], [24, h - 24], [24 + cLen, h - 24]],
+          [[w - 24 - cLen, h - 24], [w - 24, h - 24], [w - 24, h - 24 - cLen]]
+        ].forEach(pts => {
+          ctx.beginPath();
+          ctx.moveTo(pts[0][0], pts[0][1]);
+          ctx.lineTo(pts[1][0], pts[1][1]);
+          ctx.lineTo(pts[2][0], pts[2][1]);
+          ctx.stroke();
+        });
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Header
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '700 20px "JetBrains Mono", monospace';
+        ctx.fillText('DAYSTAR UNIVERSITY  |  CLASS OF 2026', w / 2, 108);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 50px "Cinzel", Georgia, serif';
+        ctx.fillText('Graduation Celebration', w / 2, 175);
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '700 22px Georgia, serif';
+        ctx.fillText('*   *   *', w / 2, 224);
+
+        // Graduate Name & Degree
+        ctx.fillStyle = '#e0f2fe';
+        ctx.font = '800 36px "Space Grotesk", Arial, sans-serif';
+        ctx.fillText('Ian Kiromo Githengu', w / 2, 286);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '600 21px "JetBrains Mono", monospace';
+        ctx.fillText('B.Sc. Applied Computer Science', w / 2, 326);
+
+        // Gold Divider Line
+        const divGrad = ctx.createLinearGradient(w * 0.2, 0, w * 0.8, 0);
+        divGrad.addColorStop(0, 'transparent');
+        divGrad.addColorStop(0.5, '#fbbf24');
+        divGrad.addColorStop(1, 'transparent');
+        ctx.fillStyle = divGrad;
+        ctx.fillRect(w * 0.2, 368, w * 0.6, 2);
+
+        // Cordially Invites + Guest Name
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 22px "Inter", Arial, sans-serif';
+        ctx.fillText('CORDIALLY INVITES', w / 2, 418);
+
+        let gSize = 48;
+        ctx.font = `800 ${gSize}px "Space Grotesk", Georgia, serif`;
+        while (ctx.measureText(name).width > w * 0.78 && gSize > 24) {
+          gSize -= 2;
+          ctx.font = `800 ${gSize}px "Space Grotesk", Georgia, serif`;
+        }
+        ctx.fillStyle = '#fde68a';
+        ctx.fillText(name, w / 2, 476);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '600 23px "Inter", Arial, sans-serif';
+        ctx.fillText(`Party of ${count} ${parseInt(count, 10) === 1 ? 'Guest' : 'Guests'}`, w / 2, 526);
+
+        // Event Info Boxes
+        const boxW = 370;
+        const boxH = 128;
+        const gap = 36;
+        const leftX = (w - (boxW * 2 + gap)) / 2;
+        const rightX = leftX + boxW + gap;
+        const boxY = 576;
+
+        [leftX, rightX].forEach(bx => {
+          ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+          ctx.lineWidth = 2;
+          ctx.fillRect(bx, boxY, boxW, boxH);
+          ctx.strokeRect(bx, boxY, boxW, boxH);
+        });
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 16px "JetBrains Mono", monospace';
+        ctx.fillText('DATE & TIME', leftX + 24, boxY + 34);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 24px "Inter", Arial, sans-serif';
+        ctx.fillText('Sat, Nov 28, 2026', leftX + 24, boxY + 68);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '600 20px "Inter", Arial, sans-serif';
+        ctx.fillText('2:00 PM EAT', leftX + 24, boxY + 100);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 16px "JetBrains Mono", monospace';
+        ctx.fillText('VENUE', rightX + 24, boxY + 34);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 24px "Inter", Arial, sans-serif';
+        ctx.fillText('Thee Bobians Residence', rightX + 24, boxY + 68);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 20px "Inter", Arial, sans-serif';
+        ctx.fillText('Rironi, Limuru', rightX + 24, boxY + 100);
+
+        // QR Code Container
+        ctx.textAlign = 'center';
+        const qrContainer = document.getElementById('card-qr-code');
+        const qrSrcCanvas = qrContainer ? qrContainer.querySelector('canvas') : null;
+        const qrSrcImg = qrContainer ? qrContainer.querySelector('img') : null;
+        const qrSize = 240;
+        const qrPad = 20;
+        const qrBoxSize = qrSize + qrPad * 2;
+        const qrBoxX = (w - qrBoxSize) / 2;
+        const qrBoxY = 742;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
+
+        if (qrSrcCanvas) {
+          ctx.drawImage(qrSrcCanvas, qrBoxX + qrPad, qrBoxY + qrPad, qrSize, qrSize);
+        } else if (qrSrcImg && qrSrcImg.complete) {
+          ctx.drawImage(qrSrcImg, qrBoxX + qrPad, qrBoxY + qrPad, qrSize, qrSize);
+        }
+
+        // Reference Code & Gate Instruction
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '700 24px "JetBrains Mono", monospace';
+        ctx.fillText(`Ref: #${refCode}`, w / 2, 1054);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 18px "Inter", Arial, sans-serif';
+        ctx.fillText('Present this QR pass at the venue entrance for verification', w / 2, 1094);
+
+        return canvas;
+      }
+
+      function getAdminCardBlobAndFile(name, count, refCode) {
+        return new Promise((resolve) => {
+          const canvas = buildAdminCardCanvas(name, count, refCode);
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              resolve({ blob: null, file: null, canvas });
+              return;
+            }
+            const cleanRef = (refCode || 'card').replace(/[^a-zA-Z0-9-_]/g, '');
+            const file = new File([blob], `Ian_Kiromo_Invite_${cleanRef}.png`, { type: 'image/png' });
+            resolve({ blob, file, canvas });
+          }, 'image/png', 1.0);
+        });
+      }
+
+      function showCardShareFeedback(htmlMsg) {
+        const fb = document.getElementById('card-share-feedback');
+        if (!fb) return;
+        fb.innerHTML = htmlMsg;
+        fb.style.display = 'block';
+      }
+
+      // Share via WhatsApp (Sends Card Image + Clean Invitation Text together)
       const shareWhatsAppBtn = document.getElementById('share-card-whatsapp-btn');
       if (shareWhatsAppBtn) {
-        shareWhatsAppBtn.addEventListener('click', () => {
+        shareWhatsAppBtn.addEventListener('click', async () => {
           const name = cardPreviewSection.dataset.guestName || 'Guest';
           const count = cardPreviewSection.dataset.guestCount || '1';
           const refCode = cardPreviewSection.dataset.refCode || '';
-          const rsvpLink = 'https://khale-git.github.io/graduation-rsvp/';
+          const message = buildCleanInviteMessage(name, count, refCode);
+          const { blob, file, canvas } = await getAdminCardBlobAndFile(name, count, refCode);
 
-          const message = `🎓 *GRADUATION CELEBRATION INVITATION*\n\n` +
-            `Dear *${name}*,\n\n` +
-            `You are cordially invited to the Graduation Celebration of\n` +
-            `*Ian Kiromo Githengu*\n` +
-            `B.Sc. Applied Computer Science — Daystar University, Class of 2026\n\n` +
-            `📅 *Date:* Saturday, November 28, 2026\n` +
-            `⏰ *Time:* 2:00 PM EAT\n` +
-            `📍 *Venue:* Thee Bobians Residence, Rironi, Limuru\n\n` +
-            `🎫 *Your Invitation Code:* #${refCode}\n` +
-            `👥 *Reserved Seats:* ${count}\n\n` +
-            `Please RSVP at:\n${rsvpLink}\n\n` +
-            `_Show this message or your QR code at the venue entrance._\n\n` +
-            `We look forward to celebrating with you! 🎉`;
+          // 1. Best experience (Mobile / Android / iOS / supported Share targets): Send Image File + Clean Text together
+          if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).catch(() => {});
+              }
+              await navigator.share({
+                files: [file],
+                title: `Graduation Invitation - ${name}`,
+                text: message
+              });
+              showCardShareFeedback('✓ Invitation card image & clean text shared!');
+              return;
+            } catch (e) {
+              if (e && e.name === 'AbortError') return;
+            }
+          }
+
+          // 2. Desktop / Fallback: Download card PNG + copy image to clipboard + open WhatsApp with clean text
+          if (canvas) {
+            const link = document.createElement('a');
+            link.download = `Ian_Kiromo_Invite_${refCode || 'card'}.png`;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+
+          let copiedImg = false;
+          if (blob && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+            try {
+              await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+              copiedImg = true;
+            } catch (err) {}
+          }
+
+          showCardShareFeedback(
+            copiedImg
+              ? '✓ Card PNG <strong>downloaded &amp; copied to clipboard</strong>! In WhatsApp, simply press <strong>Ctrl+V</strong> (or attach the downloaded PNG) to send the card image together with the text.'
+              : '✓ Card PNG <strong>downloaded</strong>! Attach <code>Ian_Kiromo_Invite_' + escapeHtml(refCode) + '.png</code> in WhatsApp along with the invitation message.'
+          );
 
           const guestPhone = (document.getElementById('card-guest-phone').value || '').replace(/\s/g, '');
-          const waUrl = guestPhone 
+          const waUrl = guestPhone
             ? `https://wa.me/${guestPhone.replace('+', '')}?text=${encodeURIComponent(message)}`
             : `https://wa.me/?text=${encodeURIComponent(message)}`;
-          
+
           window.open(waUrl, '_blank');
         });
       }
 
-      // Native Share API
+      // Native Share API (Image + Clean Text)
       const shareNativeBtn = document.getElementById('share-card-native-btn');
       if (shareNativeBtn) {
         shareNativeBtn.addEventListener('click', async () => {
           const name = cardPreviewSection.dataset.guestName || 'Guest';
           const refCode = cardPreviewSection.dataset.refCode || '';
           const count = cardPreviewSection.dataset.guestCount || '1';
+          const message = buildCleanInviteMessage(name, count, refCode);
+          const { file } = await getAdminCardBlobAndFile(name, count, refCode);
 
-          const shareData = {
-            title: 'Graduation Invitation — Ian Kiromo Githengu',
-            text: `🎓 You're invited! ${name}, party of ${count}. Ref: #${refCode}. RSVP: https://khale-git.github.io/graduation-rsvp/`,
-            url: 'https://khale-git.github.io/graduation-rsvp/'
-          };
+          if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: `Graduation Invitation - Ian Kiromo Githengu`,
+                text: message
+              });
+              return;
+            } catch (e) {
+              if (e && e.name === 'AbortError') return;
+            }
+          } else if (navigator.share) {
+            try {
+              await navigator.share({
+                title: 'Graduation Invitation - Ian Kiromo Githengu',
+                text: message
+              });
+              return;
+            } catch (e) {
+              if (e && e.name === 'AbortError') return;
+            }
+          }
 
-          if (navigator.share) {
-            try {
-              await navigator.share(shareData);
-            } catch (e) {
-              // User cancelled
-            }
-          } else {
-            // Fallback: copy to clipboard
-            const text = `${shareData.title}\n${shareData.text}`;
-            try {
-              await navigator.clipboard.writeText(text);
-              alert('✓ Invitation details copied to clipboard!');
-            } catch (e) {
-              alert('Share not supported on this device. Please copy the invitation manually.');
-            }
+          try {
+            await navigator.clipboard.writeText(message);
+            showCardShareFeedback('✓ Clean invitation text copied! Click "Download PNG Card" to save the image.');
+          } catch (e) {
+            alert('Please use the Download PNG Card and Copy tools.');
           }
         });
       }
 
-      // Download card as image
+      // Download card directly as high-res PNG image (with QR code)
       const downloadCardBtn = document.getElementById('download-card-btn');
       if (downloadCardBtn) {
         downloadCardBtn.addEventListener('click', () => {
-          const cardEl = document.getElementById('invitation-card-render');
+          const name = cardPreviewSection.dataset.guestName || 'Guest';
+          const count = cardPreviewSection.dataset.guestCount || '1';
           const refCode = cardPreviewSection.dataset.refCode || 'card';
-          const guestName = (cardPreviewSection.dataset.guestName || 'Guest').replace(/\s+/g, '_');
+          const canvas = buildAdminCardCanvas(name, count, refCode);
+          const link = document.createElement('a');
+          const safeName = name.replace(/[^a-zA-Z0-9]+/g, '_');
+          link.download = `Ian_Kiromo_Invite_${safeName}_${refCode}.png`;
+          link.href = canvas.toDataURL('image/png', 1.0);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          showCardShareFeedback('✓ High-res Invitation Card PNG downloaded!');
+        });
+      }
 
-          // Use html2canvas-like approach via canvas
-          // Since we can't rely on html2canvas being loaded, offer a print-friendly approach
+      // Print Card Handler
+      const printCardBtn = document.getElementById('print-card-btn');
+      if (printCardBtn) {
+        printCardBtn.addEventListener('click', () => {
+          const cardEl = document.getElementById('invitation-card-render');
+          const guestName = (cardPreviewSection.dataset.guestName || 'Guest').replace(/\s+/g, '_');
           const printWin = window.open('', '_blank', 'width=700,height=900');
           if (printWin) {
             printWin.document.write(`

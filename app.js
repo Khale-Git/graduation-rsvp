@@ -701,19 +701,45 @@ function initRSVPForm() {
       if (teaRow) teaRow.style.display = 'flex';
     }
 
-    document.getElementById('confirmed-ref').textContent = data.referenceCode || 'IKG-2026-ACS-DAYSTAR';
+    const refCode = data.referenceCode || 'IKG-2026-ACS-DAYSTAR';
+    document.getElementById('confirmed-ref').textContent = refCode;
 
     if (dbStatusEl) {
       dbStatusEl.textContent = '✓ Recorded in Guest Database';
       dbStatusEl.className = 'ticket-val text-green';
     }
 
+    // Generate Live Gate Verification QR Pass on the confirmation ticket
+    const qrBox = document.getElementById('user-pass-qr-box');
+    const qrTarget = document.getElementById('user-pass-qrcode');
+    if (qrBox && qrTarget) {
+      if (data.attending === 'No') {
+        qrBox.style.display = 'none';
+      } else {
+        qrBox.style.display = 'flex';
+        qrTarget.innerHTML = '';
+        const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${encodeURIComponent(refCode)}`;
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(qrTarget, {
+            text: verifyUrl,
+            width: 148,
+            height: 148,
+            colorDark: '#0f172a',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        } else {
+          qrTarget.innerHTML = `<div style="padding:8px; font-family:monospace; font-size:0.75rem; color:#0f172a;">#${refCode}</div>`;
+        }
+      }
+    }
+
     if (feedbackBanner) {
       feedbackBanner.style.display = 'none';
     }
 
-    // Render the Dynamic Personalized Invitation Card onto HTML5 Canvas
-    renderPersonalizedInvitationCard(data.fullName, data.guestCount, data.attending);
+    // Render the Dynamic Personalized Invitation Card onto HTML5 Canvas (with live Verification QR)
+    renderPersonalizedInvitationCard(data.fullName, data.guestCount, data.attending, refCode);
 
     if (isNewSubmission) {
       successCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -761,7 +787,48 @@ function initRSVPForm() {
 /* ===================================================================
    4. DYNAMIC PERSONALIZED INVITATION CARD GENERATOR (HTML5 CANVAS)
    =================================================================== */
-function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus) {
+function createOffscreenQrCanvas(verifyUrl, sizePx) {
+  if (typeof QRCode === 'undefined') return null;
+  try {
+    const tmp = document.createElement('div');
+    tmp.style.position = 'fixed';
+    tmp.style.left = '-9999px';
+    tmp.style.top = '-9999px';
+    document.body.appendChild(tmp);
+    new QRCode(tmp, {
+      text: verifyUrl,
+      width: sizePx,
+      height: sizePx,
+      colorDark: '#0f172a',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+    const qrCanvas = tmp.querySelector('canvas');
+    let resultCanvas = null;
+    if (qrCanvas) {
+      resultCanvas = document.createElement('canvas');
+      resultCanvas.width = qrCanvas.width;
+      resultCanvas.height = qrCanvas.height;
+      resultCanvas.getContext('2d').drawImage(qrCanvas, 0, 0);
+    }
+    document.body.removeChild(tmp);
+    return resultCanvas;
+  } catch (e) {
+    return null;
+  }
+}
+
+function drawRoundedRectPath(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus, referenceCode) {
   const canvas = document.getElementById('invitation-card-canvas');
   const spinner = document.getElementById('canvas-loading-spinner');
   const downloadBtn = document.getElementById('download-invitation-btn');
@@ -772,6 +839,9 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
 
   const cleanGuestName = (guestName || 'Honored Guest').trim();
   const partySize = parseInt(guestCount, 10) || 1;
+  const refCode = (referenceCode || 'IKG-2026-CONF').trim();
+  const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${encodeURIComponent(refCode)}`;
+  const qrCanvas = createOffscreenQrCanvas(verifyUrl, 220);
 
   const bgImg = new Image();
   bgImg.crossOrigin = 'anonymous';
@@ -794,8 +864,8 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
     // 1. Draw the background card
     ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
 
-    // 2. Draw the Personalized Guest/Family Name
-    drawPersonalizedOverlay(ctx, canvas.width, canvas.height, cleanGuestName, partySize);
+    // 2. Draw the Personalized Guest/Family Name + Live Verification QR Code
+    drawPersonalizedOverlay(ctx, canvas.width, canvas.height, cleanGuestName, partySize, refCode, qrCanvas);
   };
 
   bgImg.onerror = () => {
@@ -803,7 +873,7 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
     if (spinner) spinner.style.display = 'none';
     canvas.width = 1536;
     canvas.height = 1024;
-    renderProceduralCard(ctx, canvas.width, canvas.height, cleanGuestName, partySize);
+    renderProceduralCard(ctx, canvas.width, canvas.height, cleanGuestName, partySize, refCode, qrCanvas);
   };
 
   // Wire up the 1-Click Card Download Button
@@ -825,18 +895,19 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
   }
 }
 
-function drawPersonalizedOverlay(ctx, width, height, guestName, partySize) {
+function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCode, qrCanvas) {
   ctx.save();
 
   // Position: Perfectly centered in the open dark space below 'IAN KIROMO GITHENGU'
   const centerX = width * 0.50;
-  const centerY = height * 0.625; // y ≈ 790 on 1264h poster
+  const centerY = height * 0.615;
   const scale = width / 848;
 
   // Vertical positions with elegant, balanced spacing
   const cordiallyY = centerY - Math.round(65 * scale);
   const nameY = centerY - Math.round(10 * scale);
-  const badgeY = centerY + Math.round(55 * scale);
+  const badgeY = centerY + Math.round(52 * scale);
+  const refY = centerY + Math.round(88 * scale);
 
   // -------------------------------------------------------------
   // 1. 'CORDIALLY INVITING' (Clean, heavily letter-spaced, #A0ABC0)
@@ -894,7 +965,7 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize) {
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 3. '[ RESERVED PARTY: X GUESTS ]' (Small, tech-elegant, #8A9BB4)
+  // 3. '[ RESERVED PARTY: X GUESTS ]' & Pass Reference Code
   // -------------------------------------------------------------
   ctx.save();
   const badgeSize = Math.max(11, Math.round(13 * scale));
@@ -915,13 +986,57 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize) {
     : `[ RESERVED: 1 GUEST ]`;
 
   ctx.fillText(partyText, centerX, badgeY);
+
+  if (refCode) {
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = `700 ${Math.max(11, Math.round(13 * scale))}px "JetBrains Mono", monospace`;
+    ctx.fillText(`PASS REF: #${refCode}`, centerX, refY);
+  }
   ctx.restore();
+
+  // -------------------------------------------------------------
+  // 4. PERSONALIZED GATE VERIFICATION QR CODE (Bottom-Right Pass)
+  // -------------------------------------------------------------
+  if (qrCanvas) {
+    ctx.save();
+    const qrInnerSize = Math.round(86 * scale);
+    const pad = Math.round(8 * scale);
+    const labelH = Math.round(16 * scale);
+    const boxW = qrInnerSize + pad * 2;
+    const boxH = qrInnerSize + pad * 2 + labelH;
+    const boxX = width - boxW - Math.round(22 * scale);
+    const boxY = height - boxH - Math.round(20 * scale);
+
+    // Mask out any underlying static placeholder QR behind the badge
+    ctx.fillStyle = '#0d1a2e';
+    drawRoundedRectPath(ctx, boxX - Math.round(6 * scale), boxY - Math.round(6 * scale), boxW + Math.round(12 * scale), boxH + Math.round(12 * scale), Math.round(10 * scale));
+    ctx.fill();
+
+    // White high-contrast QR container with gold outline
+    ctx.fillStyle = '#ffffff';
+    drawRoundedRectPath(ctx, boxX, boxY, boxW, boxH, Math.round(8 * scale));
+    ctx.fill();
+    ctx.lineWidth = Math.max(1.5, 2 * scale);
+    ctx.strokeStyle = '#fbbf24';
+    ctx.stroke();
+
+    // Stamp live QR code
+    ctx.drawImage(qrCanvas, boxX + pad, boxY + pad, qrInnerSize, qrInnerSize);
+
+    // Verification caption
+    ctx.fillStyle = '#0f172a';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `800 ${Math.max(8, Math.round(9 * scale))}px "JetBrains Mono", monospace`;
+    ctx.fillText('SCAN TO VERIFY', boxX + boxW / 2, boxY + pad + qrInnerSize + labelH / 2 + Math.round(1 * scale));
+    ctx.restore();
+  }
 
   ctx.restore();
 }
 
 // Procedural Fallback in case image asset cannot be loaded
-function renderProceduralCard(ctx, width, height, guestName, partySize) {
+function renderProceduralCard(ctx, width, height, guestName, partySize, refCode, qrCanvas) {
   // Slate Blue Background
   const bgGrad = ctx.createRadialGradient(width / 2, height / 2, 50, width / 2, height / 2, width * 0.7);
   bgGrad.addColorStop(0, '#1c304f');
@@ -948,8 +1063,8 @@ function renderProceduralCard(ctx, width, height, guestName, partySize) {
   ctx.fillStyle = '#94a3b8';
   ctx.fillText('YOU ARE INVITED TO THE GRADUATION CELEBRATION OF IAN KIROMO GITHENGU', width / 2, 180);
 
-  // Elegant Floating Guest Name (No box)
-  drawPersonalizedOverlay(ctx, width, height, guestName, partySize);
+  // Elegant Floating Guest Name & QR Code
+  drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCode, qrCanvas);
 
   // Footer Details
   ctx.font = '600 20px "Space Grotesk", sans-serif';
