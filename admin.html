@@ -18,6 +18,8 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <!-- QR Code Scanner Library -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <!-- SheetJS (Excel .xlsx / .xls / .csv Reader) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <script>
     (function() {
@@ -860,6 +862,12 @@
           <span>Open Excel Sheet ↗</span>
         </a>
 
+        <!-- Read / Import Excel or CSV Spreadsheet into Web -->
+        <button id="open-excel-import-btn" class="btn btn-sm btn-outline-cyber" style="border-color: rgba(16, 185, 129, 0.55); color: #6ee7b7; background: rgba(16, 185, 129, 0.1);" title="Import and read an Excel (.xlsx, .xls, .csv) or Google Sheet directly into the web roster">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>📥 Read Excel Sheet</span>
+        </button>
+
         <!-- Cloud Sync Settings -->
         <button id="open-cloud-sync-btn" class="btn btn-sm btn-ghost-tech" title="Live Cloud Sync with Google Sheets">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
@@ -1298,6 +1306,75 @@
     </div>
   </dialog>
 
+  <!-- ===================================================================
+       MODAL 6: EXCEL & SPREADSHEET READER (Read .xlsx / .xls / .csv & Cloud Sheets)
+       =================================================================== -->
+  <dialog id="excel-import-modal" class="cyber-modal">
+    <div class="modal-card" style="max-width: 640px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">📥 Read Excel / Spreadsheet Data</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Import guests directly from your Excel workbook (<code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>) or Google Sheet so gate verification &amp; headcount stay in sync.</p>
+        </div>
+        <button type="button" class="modal-close" id="close-excel-import-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1.15rem;">
+
+        <!-- Option A: Upload / Read Local Excel File -->
+        <div id="excel-drop-zone" style="border: 2px dashed rgba(16, 185, 129, 0.45); border-radius: 14px; padding: 1.5rem 1.25rem; text-align: center; background: rgba(16, 185, 129, 0.06); cursor: pointer; transition: all 0.2s;">
+          <div style="font-size: 2rem; margin-bottom: 0.35rem;">📊</div>
+          <div style="font-weight: 700; color: #ffffff; font-size: 0.98rem; margin-bottom: 0.25rem;">
+            Drop your Excel Sheet here, or click to browse
+          </div>
+          <p style="font-size: 0.78rem; color: #94a3b8; margin: 0 0 0.9rem 0;">
+            Supports <code>.xlsx</code>, <code>.xls</code>, and <code>.csv</code> files (including copies downloaded from OneDrive Excel Online or Google Sheets)
+          </p>
+          <input type="file" id="excel-file-input" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" style="display: none;">
+          <button type="button" id="browse-excel-btn" class="btn btn-sm btn-primary-tech" style="background: linear-gradient(135deg, #10b981, #059669); border: none;">
+            📂 Choose Excel / CSV File
+          </button>
+        </div>
+
+        <!-- Option B: Quick Fetch from Cloud Sheet Link -->
+        <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 1rem;">
+          <label style="display: block; font-size: 0.76rem; font-family: var(--font-mono, monospace); color: #7dd3fc; margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 700;">
+            Or Read Directly from Google Sheet / Published CSV Link
+          </label>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input type="url" id="excel-sheet-url-input" placeholder="Paste Google Sheet URL (https://docs.google.com/spreadsheets/d/...) or CSV link" class="tech-input" style="flex: 1; min-width: 220px; border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; padding: 0.6rem 0.85rem; background: rgba(10, 20, 36, 0.9); color: #ffffff; font-size: 0.82rem; font-family: var(--font-mono, monospace);">
+            <button type="button" id="fetch-sheet-url-btn" class="btn btn-sm btn-outline-cyber" style="white-space: nowrap;">
+              ⚡ Read Link
+            </button>
+          </div>
+          <small style="display: block; font-size: 0.72rem; color: #94a3b8; margin-top: 0.45rem;">
+            Tip: For Microsoft Excel Online (<code>1drv.ms</code>), click <strong>File &rarr; Save As &rarr; Download a Copy (.xlsx)</strong> and select it above. For Google Sheets, set sharing to "Anyone with the link" or use your Apps Script webhook.
+          </small>
+        </div>
+
+        <!-- Status & Parsed Preview -->
+        <div id="excel-import-status" style="display: none; padding: 0.85rem 1rem; border-radius: 10px; font-size: 0.85rem;"></div>
+
+        <div id="excel-preview-box" style="display: none; background: rgba(10, 20, 36, 0.85); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 1rem; max-height: 220px; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <strong style="color: #fbbf24; font-size: 0.85rem;" id="excel-preview-title">Previewing Parsed Records</strong>
+            <span style="font-family: var(--font-mono, monospace); font-size: 0.75rem; color: #34d399;" id="excel-preview-headcount"></span>
+          </div>
+          <div id="excel-preview-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem; color: #cbd5e1;"></div>
+        </div>
+
+        <!-- Action Footer -->
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; border-top: 1px solid rgba(148, 163, 184, 0.15); padding-top: 0.85rem;">
+          <button type="button" id="cancel-excel-import-btn" class="btn btn-sm btn-ghost-tech">Close</button>
+          <button type="button" id="confirm-excel-merge-btn" class="btn btn-sm btn-primary-tech" style="display: none; background: linear-gradient(135deg, #10b981, #059669); border: none;">
+            ✓ Merge &amp; Update Web Roster
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </dialog>
+
 
   <script>
     /* ===================================================================
@@ -1642,7 +1719,7 @@
               if (rows && Array.isArray(rows)) {
                 rows.forEach(item => {
                   if (item && (item.fullName || item.referenceCode)) {
-                    const id = item.referenceCode || item.phoneNumber || item.fullName;
+                    const id = String(item.referenceCode || item.phoneNumber || item.fullName).toUpperCase();
                     itemMap.set(id, item);
                   }
                 });
@@ -1662,7 +1739,7 @@
             if (json.rsvps && Array.isArray(json.rsvps) && json.rsvps.length > 0) {
               json.rsvps.forEach(item => {
                 if (item && (item.fullName || item.referenceCode)) {
-                  const id = item.referenceCode || item.phoneNumber || item.fullName;
+                  const id = String(item.referenceCode || item.phoneNumber || item.fullName).toUpperCase();
                   itemMap.set(id, item);
                 }
               });
@@ -1683,9 +1760,10 @@
           return true;
         });
 
-        // Persist clean merged list back to active cache
+        // Persist clean merged list back to active caches (admin + guest lookup)
         try {
           localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
+          localStorage.setItem('ikg_all_rsvps_cache', JSON.stringify(combined));
         } catch (e) {}
 
         currentData = combined;
@@ -2813,6 +2891,328 @@
           setTimeout(() => clearInterval(checkInterval), 30000);
         }
       })();
+
+      // ===================================================================
+      // MODAL 6: EXCEL & SPREADSHEET READER HANDLER
+      // ===================================================================
+      const excelModal = document.getElementById('excel-import-modal');
+      const openExcelImportBtn = document.getElementById('open-excel-import-btn');
+      const closeExcelImportBtn = document.getElementById('close-excel-import-btn');
+      const cancelExcelImportBtn = document.getElementById('cancel-excel-import-btn');
+      const excelDropZone = document.getElementById('excel-drop-zone');
+      const excelFileInput = document.getElementById('excel-file-input');
+      const browseExcelBtn = document.getElementById('browse-excel-btn');
+      const excelUrlInput = document.getElementById('excel-sheet-url-input');
+      const fetchSheetUrlBtn = document.getElementById('fetch-sheet-url-btn');
+      const excelStatusBox = document.getElementById('excel-import-status');
+      const excelPreviewBox = document.getElementById('excel-preview-box');
+      const excelPreviewTitle = document.getElementById('excel-preview-title');
+      const excelPreviewHeadcount = document.getElementById('excel-preview-headcount');
+      const excelPreviewList = document.getElementById('excel-preview-list');
+      const confirmExcelMergeBtn = document.getElementById('confirm-excel-merge-btn');
+
+      let parsedExcelRecords = [];
+
+      function showExcelStatus(message, type = 'info') {
+        if (!excelStatusBox) return;
+        excelStatusBox.style.display = 'block';
+        if (type === 'success') {
+          excelStatusBox.style.background = 'rgba(16, 185, 129, 0.14)';
+          excelStatusBox.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+          excelStatusBox.style.color = '#a7f3d0';
+        } else if (type === 'error') {
+          excelStatusBox.style.background = 'rgba(239, 68, 68, 0.14)';
+          excelStatusBox.style.border = '1px solid rgba(239, 68, 68, 0.45)';
+          excelStatusBox.style.color = '#fca5a5';
+        } else {
+          excelStatusBox.style.background = 'rgba(56, 189, 248, 0.14)';
+          excelStatusBox.style.border = '1px solid rgba(56, 189, 248, 0.4)';
+          excelStatusBox.style.color = '#bae6fd';
+        }
+        excelStatusBox.innerHTML = message;
+      }
+
+      // Normalize arbitrary Excel/CSV column headers to canonical RSVP fields
+      function mapSheetRowToRSVP(rawRow, idx) {
+        if (!rawRow || typeof rawRow !== 'object') return null;
+
+        const normalized = {};
+        Object.keys(rawRow).forEach(k => {
+          const cleanKey = String(k).toLowerCase().replace(/[^a-z0-9]/g, '');
+          normalized[cleanKey] = rawRow[k];
+        });
+
+        const pick = (...keys) => {
+          for (const k of keys) {
+            if (normalized[k] !== undefined && normalized[k] !== null && String(normalized[k]).trim() !== '') {
+              return String(normalized[k]).trim();
+            }
+          }
+          return '';
+        };
+
+        const fullName = pick('fullname', 'fullnamename', 'fullnamepartyname', 'name', 'guestname', 'partyname', 'party', 'guest', 'attendee');
+        let refCode = pick('referencecode', 'reference', 'refcode', 'ref', 'code', 'passcode', 'pass').replace(/^#/, '');
+
+        // Skip empty rows or header duplicates
+        if (!fullName && !refCode) return null;
+        if (fullName.toLowerCase() === 'full name' || refCode.toLowerCase() === 'reference code') return null;
+
+        if (!refCode) {
+          refCode = `IKG-XL-${String(1000 + idx)}`;
+        }
+
+        let phone = pick('phonenumber', 'phone', 'telephone', 'tel', 'mobile', 'contact').replace(/^'/, '');
+        if (!phone) phone = '—';
+
+        const rawAttending = pick('attending', 'status', 'rsvp', 'confirmation').toLowerCase();
+        const isDeclined = rawAttending === 'no' || rawAttending.includes('declin') || rawAttending === 'false' || rawAttending === '0';
+        const attending = isDeclined ? 'no' : 'Yes';
+
+        const rawCount = parseInt(pick('guestcount', 'proposingheadcount', 'headcount', 'guests', 'count', 'partysize', 'seats', 'size'), 10);
+        const guestCount = isDeclined ? 0 : (!isNaN(rawCount) && rawCount > 0 ? rawCount : 1);
+
+        const dietary = pick('dietaryrequirements', 'dietary', 'diet', 'menu', 'food') || 'Standard Menu';
+        const teaPreference = pick('teabeverageurn', 'teapreference', 'tea', 'beverage', 'chai', 'urn') || 'Chai (Tea with Sugar)';
+        const message = pick('message', 'dietarynotesmessages', 'notes', 'note', 'comments', 'wishes') || 'Imported from Excel sheet';
+        const submittedAt = pick('timestamp', 'submittedat', 'registeredat', 'date', 'time') || new Date().toISOString();
+
+        return {
+          referenceCode: refCode.toUpperCase(),
+          fullName: fullName || 'Honored Guest',
+          phoneNumber: phone,
+          attending,
+          guestCount,
+          dietary,
+          teaPreference,
+          message,
+          submittedAt
+        };
+      }
+
+      // Lightweight fallback CSV parser when SheetJS CDN is unavailable
+      function parseCsvFallback(csvText) {
+        const lines = csvText.split(/\r?\n/).filter(l => l.trim().length > 0);
+        if (lines.length < 2) return [];
+
+        const splitCsvLine = (line) => {
+          const cols = [];
+          let cur = '';
+          let inQuotes = false;
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"' && line[i + 1] === '"') {
+              cur += '"';
+              i++;
+            } else if (ch === '"') {
+              inQuotes = !inQuotes;
+            } else if (ch === ',' && !inQuotes) {
+              cols.push(cur.trim());
+              cur = '';
+            } else {
+              cur += ch;
+            }
+          }
+          cols.push(cur.trim());
+          return cols;
+        };
+
+        const headers = splitCsvLine(lines[0]);
+        const objects = [];
+        for (let i = 1; i < lines.length; i++) {
+          const vals = splitCsvLine(lines[i]);
+          const rowObj = {};
+          headers.forEach((h, colIdx) => {
+            rowObj[h] = vals[colIdx] || '';
+          });
+          objects.push(rowObj);
+        }
+        return objects;
+      }
+
+      function renderParsedPreview(records, sourceLabel) {
+        parsedExcelRecords = records;
+        if (!records.length) {
+          excelPreviewBox.style.display = 'none';
+          confirmExcelMergeBtn.style.display = 'none';
+          showExcelStatus('⚠️ No valid attendee rows were detected in that sheet. Make sure row 1 has headers like Full Name, Reference Code, Guest Count.', 'error');
+          return;
+        }
+
+        const totalHeads = records.reduce((acc, r) => acc + (r.attending === 'no' ? 0 : (parseInt(r.guestCount, 10) || 1)), 0);
+        showExcelStatus(`✓ Successfully read <strong>${records.length}</strong> guest rows from <strong>${escapeHtml(sourceLabel)}</strong>!`, 'success');
+
+        excelPreviewTitle.textContent = `Ready to Merge: ${records.length} Records`;
+        excelPreviewHeadcount.textContent = `Total Attending Headcount: ${totalHeads}`;
+        excelPreviewList.innerHTML = records.slice(0, 12).map(r => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.3rem 0.5rem; background: rgba(14, 26, 45, 0.7); border-radius: 6px;">
+            <span><code style="color: #38bdf8;">#${escapeHtml(r.referenceCode)}</code> <strong>${escapeHtml(r.fullName)}</strong></span>
+            <span style="color: ${r.attending === 'no' ? '#fca5a5' : '#6ee7b7'}; font-family: monospace;">
+              ${r.attending === 'no' ? 'Declined' : `${r.guestCount} Guest(s)`}
+            </span>
+          </div>
+        `).join('') + (records.length > 12 ? `<div style="text-align:center; color:#94a3b8; font-size:0.75rem; padding-top:0.25rem;">...and ${records.length - 12} more rows</div>` : '');
+
+        excelPreviewBox.style.display = 'block';
+        confirmExcelMergeBtn.style.display = 'inline-flex';
+      }
+
+      function processWorkbookArrayBuffer(buffer, fileName) {
+        try {
+          if (typeof XLSX !== 'undefined') {
+            const workbook = XLSX.read(buffer, { type: 'array', cellDates: true });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const rawRows = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+            const mapped = rawRows.map((row, idx) => mapSheetRowToRSVP(row, idx)).filter(Boolean);
+            renderParsedPreview(mapped, fileName);
+          } else if (fileName.toLowerCase().endsWith('.csv')) {
+            const text = new TextDecoder().decode(buffer);
+            const rawRows = parseCsvFallback(text);
+            const mapped = rawRows.map((row, idx) => mapSheetRowToRSVP(row, idx)).filter(Boolean);
+            renderParsedPreview(mapped, fileName);
+          } else {
+            showExcelStatus('⚠️ Excel (.xlsx) reader library did not load. Please check internet connection or export the file as .csv.', 'error');
+          }
+        } catch (err) {
+          console.error('Excel read error:', err);
+          showExcelStatus(`⚠️ Could not parse spreadsheet: ${escapeHtml(err.message || 'Unknown format')}`, 'error');
+        }
+      }
+
+      if (openExcelImportBtn && excelModal) {
+        openExcelImportBtn.addEventListener('click', () => {
+          parsedExcelRecords = [];
+          excelStatusBox.style.display = 'none';
+          excelPreviewBox.style.display = 'none';
+          confirmExcelMergeBtn.style.display = 'none';
+          if (excelFileInput) excelFileInput.value = '';
+          excelModal.showModal();
+        });
+      }
+
+      if (closeExcelImportBtn) closeExcelImportBtn.addEventListener('click', () => excelModal.close());
+      if (cancelExcelImportBtn) cancelExcelImportBtn.addEventListener('click', () => excelModal.close());
+
+      if (browseExcelBtn && excelFileInput) {
+        browseExcelBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          excelFileInput.click();
+        });
+      }
+
+      if (excelDropZone && excelFileInput) {
+        excelDropZone.addEventListener('click', () => excelFileInput.click());
+        excelDropZone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          excelDropZone.style.borderColor = '#34d399';
+          excelDropZone.style.background = 'rgba(16, 185, 129, 0.14)';
+        });
+        excelDropZone.addEventListener('dragleave', () => {
+          excelDropZone.style.borderColor = 'rgba(16, 185, 129, 0.45)';
+          excelDropZone.style.background = 'rgba(16, 185, 129, 0.06)';
+        });
+        excelDropZone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          excelDropZone.style.borderColor = 'rgba(16, 185, 129, 0.45)';
+          excelDropZone.style.background = 'rgba(16, 185, 129, 0.06)';
+          const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => processWorkbookArrayBuffer(ev.target.result, file.name);
+            reader.readAsArrayBuffer(file);
+          }
+        });
+
+        excelFileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => processWorkbookArrayBuffer(ev.target.result, file.name);
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      if (fetchSheetUrlBtn && excelUrlInput) {
+        fetchSheetUrlBtn.addEventListener('click', async () => {
+          let rawUrl = (excelUrlInput.value || '').trim();
+          if (!rawUrl) {
+            showExcelStatus('Please paste a Google Sheet link, CSV link, or Apps Script URL first.', 'error');
+            return;
+          }
+
+          if (rawUrl.includes('1drv.ms') || rawUrl.includes('onedrive') || rawUrl.includes('sharepoint.com')) {
+            showExcelStatus('ℹ️ OneDrive Excel Online restricts direct browser reading for privacy. Please click <strong>File &rarr; Save As &rarr; Download a Copy (.xlsx)</strong> in Excel Online, then drop that file in the green box above!', 'info');
+            return;
+          }
+
+          // Auto-convert standard Google Sheet /edit URL to CSV export URL
+          let fetchUrl = rawUrl;
+          const gsheetMatch = rawUrl.match(/docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+          if (gsheetMatch && !rawUrl.includes('export?format=csv') && !rawUrl.includes('gviz/tq')) {
+            const sheetId = gsheetMatch[1];
+            const gidMatch = rawUrl.match(/gid=([0-9]+)/);
+            const gidParam = gidMatch ? `&gid=${gidMatch[1]}` : '';
+            fetchUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv${gidParam}`;
+          }
+
+          showExcelStatus('⏳ Fetching spreadsheet data...', 'info');
+          try {
+            const res = await fetch(fetchUrl);
+            if (!res.ok) throw new Error(`HTTP ${res.status} — ensure the sheet is shared as "Anyone with the link" or published as CSV.`);
+            const contentType = res.headers.get('content-type') || '';
+
+            if (contentType.includes('application/json') || fetchUrl.includes('/exec')) {
+              const json = await res.json();
+              const rows = json.rsvps || (Array.isArray(json) ? json : []);
+              const mapped = rows.map((row, idx) => mapSheetRowToRSVP(row, idx)).filter(Boolean);
+              renderParsedPreview(mapped, 'Cloud Google Sheet');
+            } else {
+              const buffer = await res.arrayBuffer();
+              const text = new TextDecoder().decode(buffer);
+              if (text.trim().startsWith('<!DOCTYPE html') || text.trim().startsWith('<html')) {
+                throw new Error('Google returned a login/HTML page instead of CSV. Make sure the Google Sheet sharing setting is "Anyone with the link can view", or export as .xlsx/.csv and drop the file above.');
+              }
+              const rawRows = parseCsvFallback(text);
+              const mapped = rawRows.map((row, idx) => mapSheetRowToRSVP(row, idx)).filter(Boolean);
+              renderParsedPreview(mapped, 'Google Sheets CSV');
+            }
+          } catch (err) {
+            showExcelStatus(`⚠️ Could not read link directly: ${escapeHtml(err.message)}. You can always download as <code>.xlsx</code> or <code>.csv</code> and upload it in the box above.`, 'error');
+          }
+        });
+      }
+
+      if (confirmExcelMergeBtn) {
+        confirmExcelMergeBtn.addEventListener('click', () => {
+          if (!parsedExcelRecords.length) return;
+
+          const mergeMap = new Map();
+          // Keep existing roster records first
+          currentData.forEach(item => {
+            const key = (item.referenceCode || item.fullName || '').toUpperCase();
+            if (key) mergeMap.set(key, item);
+          });
+
+          // Merge imported Excel records (updating matches or adding new)
+          parsedExcelRecords.forEach(item => {
+            const key = (item.referenceCode || item.fullName || '').toUpperCase();
+            if (key) mergeMap.set(key, item);
+          });
+
+          currentData = Array.from(mergeMap.values());
+
+          // Persist to both Admin cache and Guest Lookup cache so both portals recognize them
+          try {
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
+            localStorage.setItem('ikg_all_rsvps_cache', JSON.stringify(currentData));
+          } catch (e) {}
+
+          updateMetricsAndTable();
+          excelModal.close();
+          alert(`✓ Excel Sheet synced! ${parsedExcelRecords.length} rows merged. Total roster now has ${currentData.length} registrations ready for headcount & gate QR verification.`);
+        });
+      }
 
     })();
 
