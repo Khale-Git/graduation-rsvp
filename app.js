@@ -25,6 +25,16 @@ const CONFIG = {
   BACKGROUND_IMAGE_PATH: 'blank_invitation.jpg'
 };
 
+function getAppBaseUrl() {
+  if (typeof window !== 'undefined' && window.location && window.location.origin) {
+    if (window.location.protocol.startsWith('http')) {
+      const path = window.location.pathname.replace(/\/[^/]*$/, '/');
+      return `${window.location.origin}${path}`;
+    }
+  }
+  return 'https://khale-git.github.io/graduation-rsvp/';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initThemeManager();
   initBookFlipInteraction();
@@ -739,7 +749,7 @@ function initRSVPForm() {
       } else {
         qrBox.style.display = 'flex';
         qrTarget.innerHTML = '';
-        const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${encodeURIComponent(refCode)}`;
+        const verifyUrl = `${getAppBaseUrl()}admin.html?verify=${encodeURIComponent(refCode)}`;
         if (typeof QRCode !== 'undefined') {
           new QRCode(qrTarget, {
             text: verifyUrl,
@@ -861,7 +871,7 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
   const cleanGuestName = (guestName || 'Honored Guest').trim();
   const partySize = parseInt(guestCount, 10) || 1;
   const refCode = (referenceCode || 'IKG-2026-CONF').trim();
-  const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${encodeURIComponent(refCode)}`;
+  const verifyUrl = `${getAppBaseUrl()}admin.html?verify=${encodeURIComponent(refCode)}`;
   const qrCanvas = createOffscreenQrCanvas(verifyUrl, 220);
 
   const bgImg = new Image();

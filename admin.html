@@ -2686,7 +2686,7 @@
           // Generate QR Code
           const qrContainer = document.getElementById('card-qr-code');
           qrContainer.innerHTML = '';
-          const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${refCode}`;
+          const verifyUrl = `${getAppBaseUrl()}admin.html?verify=${refCode}`;
           
           if (typeof QRCode !== 'undefined') {
             new QRCode(qrContainer, {
@@ -2713,9 +2713,19 @@
         });
       }
 
+      function getAppBaseUrl() {
+        if (typeof window !== 'undefined' && window.location && window.location.origin) {
+          if (window.location.protocol.startsWith('http')) {
+            const path = window.location.pathname.replace(/\/[^/]*$/, '/');
+            return `${window.location.origin}${path}`;
+          }
+        }
+        return 'https://khale-git.github.io/graduation-rsvp/';
+      }
+
       // Clean, emoji-free WhatsApp text builder (prevents  diamond/square characters across devices)
       function buildCleanInviteMessage(name, count, refCode) {
-        const inviteUrl = `https://khale-git.github.io/graduation-rsvp/?ref=${encodeURIComponent(refCode)}#rsvp`;
+        const inviteUrl = `${getAppBaseUrl()}?ref=${encodeURIComponent(refCode)}#rsvp`;
         return `*GRADUATION CELEBRATION INVITATION*\n\n` +
           `Dear *${name}*,\n\n` +
           `You are cordially invited to the Graduation Celebration of\n` +
@@ -3275,7 +3285,7 @@
           // Generate QR Code
           const qrContainer = document.getElementById('card-qr-code');
           qrContainer.innerHTML = '';
-          const verifyUrl = `https://khale-git.github.io/graduation-rsvp/admin.html?verify=${ref}`;
+          const verifyUrl = `${getAppBaseUrl()}admin.html?verify=${ref}`;
           if (typeof QRCode !== 'undefined') {
             new QRCode(qrContainer, {
               text: verifyUrl,
