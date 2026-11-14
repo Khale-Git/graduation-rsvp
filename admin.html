@@ -1253,48 +1253,57 @@
 
           <!-- Cordially Invites -->
           <div style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.25rem;">Cordially invites</div>
-          <div id="card-render-guest-name" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fde68a; margin-bottom: 0.15rem;"></div>
-          <div id="card-render-guest-count" style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.85rem;"></div>
+          <div id="card-render-guest-name" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 700; color: #fde68a; margin-bottom: 0.25rem;"></div>
+          <div id="card-render-guest-count" style="display: none;"></div>
 
-          <!-- Event Details Grid -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 1rem; text-align: left;">
-            <div style="background: rgba(14, 26, 45, 0.65); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 0.6rem 0.75rem;">
-              <div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📅 DATE & TIME</div>
-              <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Sat, Nov 28, 2026</div>
-              <div style="font-size: 0.78rem; color: #38bdf8;">2:00 PM EAT</div>
+          <!-- Bottom Section: Left Event Details + Right QR Code (Bottom Right) -->
+          <div style="display: grid; grid-template-columns: 1.25fr 0.85fr; gap: 0.75rem; margin-top: 1rem; align-items: stretch; text-align: left;">
+            <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+              <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.65rem 0.8rem;">
+                <div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📅 DATE &amp; TIME</div>
+                <div style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Sat, Nov 28, 2026</div>
+                <div style="font-size: 0.8rem; color: #38bdf8;">2:00 PM EAT</div>
+              </div>
+              <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.65rem 0.8rem;">
+                <div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📍 VENUE &amp; MAP LOCATION</div>
+                <div style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Thee Bobians Residence</div>
+                <div style="font-size: 0.8rem; color: #cbd5e1;">Rironi, Limuru</div>
+                <a href="https://maps.google.com/?q=-1.1562,36.6424" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.74rem; color: #38bdf8; text-decoration: underline; margin-top: 0.25rem;">🗺️ Open in Google Maps</a>
+              </div>
+              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 0.55rem 0.8rem;">
+                <span id="card-render-ref-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; color: #38bdf8; font-weight: 700;"></span>
+              </div>
             </div>
-            <div style="background: rgba(14, 26, 45, 0.65); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 0.6rem 0.75rem;">
-              <div style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📍 VENUE</div>
-              <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Thee Bobians Residence</div>
-              <div style="font-size: 0.78rem; color: #cbd5e1;">Rironi, Limuru</div>
+
+            <!-- Bottom-Right QR Container -->
+            <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(251, 191, 36, 0.45); border-radius: 12px; padding: 0.85rem 0.6rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+              <div style="background: #ffffff; border-radius: 8px; padding: 8px; display: inline-block; margin-bottom: 0.4rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                <div id="card-qr-code"></div>
+              </div>
+              <div style="font-size: 0.74rem; font-family: 'JetBrains Mono', monospace; color: #fbbf24; font-weight: 800;">SCAN TO VERIFY</div>
+              <div style="font-size: 0.65rem; color: #94a3b8;">Venue Gate Entry Pass</div>
             </div>
           </div>
-
-          <!-- QR Code -->
-          <div style="background: #ffffff; border-radius: 12px; padding: 10px; display: inline-block; margin-bottom: 0.65rem;">
-            <div id="card-qr-code"></div>
-          </div>
-          <div id="card-render-ref-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.25rem;"></div>
-          <div style="font-size: 0.72rem; color: #64748b;">Scan QR code at the venue for verification</div>
         </div>
 
         <!-- Share & Download Actions -->
         <div id="card-share-feedback" style="display: none; margin-top: 1rem; padding: 0.7rem 0.9rem; border-radius: 8px; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.45); color: #a7f3d0; font-size: 0.82rem; line-height: 1.45;"></div>
 
         <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
-          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-primary-tech" style="flex: 1 1 180px; background: #25D366; border: none; color: #fff; justify-content: center;">
-            📱 Share Card + Text (WhatsApp)
+          <!-- Primary Simplified v2 Share Button -->
+          <button type="button" id="share-card-v2-btn" class="btn btn-sm btn-primary-tech" style="flex: 2 1 200px; background: linear-gradient(135deg, #25D366, #128C7E); border: none; color: #fff; font-weight: 800; font-size: 0.92rem; justify-content: center; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4); padding: 0.75rem 1.25rem;">
+            📱 Share v2
           </button>
-          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1 1 140px; justify-content: center;">
-            📤 Share Image + Text
+          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
+            Share v1
           </button>
-          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 140px; justify-content: center;">
-            💾 Download PNG Card
+          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
+            📤 Share Image
           </button>
-          <button type="button" id="print-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 100px; justify-content: center;">
-            🖨️ Print
+          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 120px; justify-content: center; font-size: 0.78rem;">
+            💾 Download PNG
           </button>
-          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 110px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center;">
+          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 100px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center; font-size: 0.78rem;">
             + New Card
           </button>
         </div>
@@ -2316,7 +2325,7 @@
           } catch (err) {}
 
           // Attempt Cloud Webhook POST if configured
-          const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
+          const webhookUrl = (localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec').trim();
           if (webhookUrl) {
             try {
               const safePhoneForSheets = (newGuest.phoneNumber || '').startsWith('+') && !(newGuest.phoneNumber || '').startsWith("'")
@@ -2660,7 +2669,7 @@
           } catch (err) {}
 
           // Cloud Webhook POST
-          const webhookUrl = localStorage.getItem('ikg_cloud_webhook_url');
+          const webhookUrl = (localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec').trim();
           if (webhookUrl) {
             try {
               const safePhone = (newGuest.phoneNumber || '').startsWith('+') ? `'${newGuest.phoneNumber}` : newGuest.phoneNumber;
@@ -2669,7 +2678,9 @@
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...newGuest, phoneNumber: safePhone })
-              });
+              }).then(() => {
+                console.log('✓ Organiser card synced to Google Sheets:', refCode);
+              }).catch(() => {});
             } catch (e) {}
           }
 
@@ -2677,10 +2688,10 @@
             window._ikg_updateMetrics();
           }
 
-          // Populate the card preview
+          // Populate the card preview (Simple design: no party size mentioned)
           document.getElementById('card-render-guest-name').textContent = guestName;
-          document.getElementById('card-render-guest-count').textContent = 
-            `Party of ${guestCount} ${parseInt(guestCount) === 1 ? 'Guest' : 'Guests'}`;
+          const guestCountEl = document.getElementById('card-render-guest-count');
+          if (guestCountEl) guestCountEl.textContent = '';
           document.getElementById('card-render-ref-code').textContent = `Ref: #${refCode}`;
 
           // Generate QR Code
@@ -2723,7 +2734,26 @@
         return 'https://khale-git.github.io/graduation-rsvp/';
       }
 
-      // Clean, emoji-free WhatsApp text builder (prevents  diamond/square characters across devices)
+      // Clean, simple Invitation Message V2 (No RSVP/confirming prompts, No party count, with Google Maps & Celebration links)
+      function buildCleanInviteMessageV2(name, refCode) {
+        const celebrationUrl = getAppBaseUrl();
+        const mapsUrl = 'https://maps.google.com/?q=-1.1562,36.6424';
+
+        return `*GRADUATION CELEBRATION INVITATION*\n\n` +
+          `Dear *${name}*,\n\n` +
+          `You are cordially invited to celebrate the Graduation of\n` +
+          `*Ian Kiromo Githengu*\n` +
+          `B.Sc. Applied Computer Science — Daystar University, Class of 2026\n\n` +
+          `- *Date:* Saturday, November 28, 2026\n` +
+          `- *Time:* 2:00 PM EAT\n` +
+          `- *Venue:* Thee Bobians Residence, Rironi, Limuru\n` +
+          `- *Location (Google Maps):* ${mapsUrl}\n` +
+          `- *Invitation Code:* #${refCode}\n\n` +
+          `Check out celebration details & memories:\n${celebrationUrl}\n\n` +
+          `We look forward to celebrating with you!`;
+      }
+
+      // Clean, emoji-free WhatsApp text builder (Legacy v1 builder)
       function buildCleanInviteMessage(name, count, refCode) {
         const inviteUrl = `${getAppBaseUrl()}?ref=${encodeURIComponent(refCode)}#rsvp`;
         return `*GRADUATION CELEBRATION INVITATION*\n\n` +
@@ -2741,7 +2771,7 @@
           `We look forward to celebrating with you!`;
       }
 
-      // Render Royal Navy & Gold Invitation Card PNG with Live QR Code
+      // Render Royal Navy & Gold Invitation Card PNG with Live Bottom-Right QR Code Pass
       function buildAdminCardCanvas(name, count, refCode) {
         const w = 900;
         const h = 1160;
@@ -2788,24 +2818,24 @@
         // Header
         ctx.fillStyle = '#fbbf24';
         ctx.font = '700 20px "JetBrains Mono", monospace';
-        ctx.fillText('DAYSTAR UNIVERSITY  |  CLASS OF 2026', w / 2, 108);
+        ctx.fillText('DAYSTAR UNIVERSITY  |  CLASS OF 2026', w / 2, 98);
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = '700 50px "Cinzel", Georgia, serif';
-        ctx.fillText('Graduation Celebration', w / 2, 175);
+        ctx.font = '700 48px "Cinzel", Georgia, serif';
+        ctx.fillText('Graduation Celebration', w / 2, 162);
 
         ctx.fillStyle = '#fbbf24';
         ctx.font = '700 22px Georgia, serif';
-        ctx.fillText('*   *   *', w / 2, 224);
+        ctx.fillText('*   *   *', w / 2, 210);
 
         // Graduate Name & Degree
         ctx.fillStyle = '#e0f2fe';
         ctx.font = '800 36px "Space Grotesk", Arial, sans-serif';
-        ctx.fillText('Ian Kiromo Githengu', w / 2, 286);
+        ctx.fillText('Ian Kiromo Githengu', w / 2, 270);
 
         ctx.fillStyle = '#38bdf8';
-        ctx.font = '600 21px "JetBrains Mono", monospace';
-        ctx.fillText('B.Sc. Applied Computer Science', w / 2, 326);
+        ctx.font = '600 20px "JetBrains Mono", monospace';
+        ctx.fillText('B.Sc. Applied Computer Science', w / 2, 310);
 
         // Gold Divider Line
         const divGrad = ctx.createLinearGradient(w * 0.2, 0, w * 0.8, 0);
@@ -2813,74 +2843,107 @@
         divGrad.addColorStop(0.5, '#fbbf24');
         divGrad.addColorStop(1, 'transparent');
         ctx.fillStyle = divGrad;
-        ctx.fillRect(w * 0.2, 368, w * 0.6, 2);
+        ctx.fillRect(w * 0.2, 350, w * 0.6, 2);
 
         // Cordially Invites + Guest Name
         ctx.fillStyle = '#cbd5e1';
         ctx.font = '500 22px "Inter", Arial, sans-serif';
-        ctx.fillText('CORDIALLY INVITES', w / 2, 418);
+        ctx.fillText('CORDIALLY INVITES', w / 2, 398);
 
-        let gSize = 48;
+        let gSize = 46;
         ctx.font = `800 ${gSize}px "Space Grotesk", Georgia, serif`;
         while (ctx.measureText(name).width > w * 0.78 && gSize > 24) {
           gSize -= 2;
           ctx.font = `800 ${gSize}px "Space Grotesk", Georgia, serif`;
         }
         ctx.fillStyle = '#fde68a';
-        ctx.fillText(name, w / 2, 476);
+        ctx.fillText(name, w / 2, 458);
 
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '600 23px "Inter", Arial, sans-serif';
-        ctx.fillText(`Party of ${count} ${parseInt(count, 10) === 1 ? 'Guest' : 'Guests'}`, w / 2, 526);
+        // (Party of 5 removed for clean simple look)
 
-        // Event Info Boxes
-        const boxW = 370;
-        const boxH = 128;
-        const gap = 36;
-        const leftX = (w - (boxW * 2 + gap)) / 2;
-        const rightX = leftX + boxW + gap;
-        const boxY = 576;
+        // -------------------------------------------------------------
+        // LEFT COLUMN: EVENT DETAILS & LOCATION
+        // -------------------------------------------------------------
+        const leftX = 65;
+        const leftW = 465;
 
-        [leftX, rightX].forEach(bx => {
-          ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
-          ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
-          ctx.lineWidth = 2;
-          ctx.fillRect(bx, boxY, boxW, boxH);
-          ctx.strokeRect(bx, boxY, boxW, boxH);
-        });
+        // Date & Time Box
+        const dateBoxY = 530;
+        const dateBoxH = 140;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, dateBoxY, leftW, dateBoxH);
+        ctx.strokeRect(leftX, dateBoxY, leftW, dateBoxH);
 
         ctx.textAlign = 'left';
         ctx.fillStyle = '#94a3b8';
         ctx.font = '700 16px "JetBrains Mono", monospace';
-        ctx.fillText('DATE & TIME', leftX + 24, boxY + 34);
+        ctx.fillText('📅 DATE & TIME', leftX + 22, dateBoxY + 32);
         ctx.fillStyle = '#ffffff';
         ctx.font = '700 24px "Inter", Arial, sans-serif';
-        ctx.fillText('Sat, Nov 28, 2026', leftX + 24, boxY + 68);
+        ctx.fillText('Saturday, Nov 28, 2026', leftX + 22, dateBoxY + 68);
         ctx.fillStyle = '#38bdf8';
         ctx.font = '600 20px "Inter", Arial, sans-serif';
-        ctx.fillText('2:00 PM EAT', leftX + 24, boxY + 100);
+        ctx.fillText('2:00 PM EAT', leftX + 22, dateBoxY + 104);
+
+        // Venue & Maps Box
+        const venueBoxY = 690;
+        const venueBoxH = 175;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, venueBoxY, leftW, venueBoxH);
+        ctx.strokeRect(leftX, venueBoxY, leftW, venueBoxH);
 
         ctx.fillStyle = '#94a3b8';
         ctx.font = '700 16px "JetBrains Mono", monospace';
-        ctx.fillText('VENUE', rightX + 24, boxY + 34);
+        ctx.fillText('📍 VENUE & MAP LOCATION', leftX + 22, venueBoxY + 32);
         ctx.fillStyle = '#ffffff';
         ctx.font = '700 24px "Inter", Arial, sans-serif';
-        ctx.fillText('Thee Bobians Residence', rightX + 24, boxY + 68);
+        ctx.fillText('Thee Bobians Residence', leftX + 22, venueBoxY + 68);
         ctx.fillStyle = '#cbd5e1';
         ctx.font = '500 20px "Inter", Arial, sans-serif';
-        ctx.fillText('Rironi, Limuru', rightX + 24, boxY + 100);
+        ctx.fillText('Rironi, Limuru', leftX + 22, venueBoxY + 102);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '600 16px "JetBrains Mono", monospace';
+        ctx.fillText('Maps: -1.1562° N, 36.6424° E', leftX + 22, venueBoxY + 138);
 
-        // QR Code Container
-        ctx.textAlign = 'center';
+        // Ref Code Badge (Left)
+        const refBoxY = 885;
+        const refBoxH = 65;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.95)';
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, refBoxY, leftW, refBoxH);
+        ctx.strokeRect(leftX, refBoxY, leftW, refBoxH);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '700 20px "JetBrains Mono", monospace';
+        ctx.fillText(`INVITATION CODE: #${refCode}`, leftX + 22, refBoxY + 34);
+
+        // -------------------------------------------------------------
+        // RIGHT COLUMN: BOTTOM-RIGHT QR CODE PASS
+        // -------------------------------------------------------------
         const qrContainer = document.getElementById('card-qr-code');
         const qrSrcCanvas = qrContainer ? qrContainer.querySelector('canvas') : null;
         const qrSrcImg = qrContainer ? qrContainer.querySelector('img') : null;
-        const qrSize = 240;
-        const qrPad = 20;
-        const qrBoxSize = qrSize + qrPad * 2;
-        const qrBoxX = (w - qrBoxSize) / 2;
-        const qrBoxY = 742;
 
+        const qrInnerSize = 220;
+        const qrPad = 16;
+        const qrBoxSize = qrInnerSize + qrPad * 2; // 252px
+        const qrBoxX = w - qrBoxSize - 65; // 900 - 252 - 65 = 583
+        const qrBoxY = 560;
+
+        // Container Card
+        const qrCardH = 390;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(qrBoxX - 12, qrBoxY - 15, qrBoxSize + 24, qrCardH);
+        ctx.strokeRect(qrBoxX - 12, qrBoxY - 15, qrBoxSize + 24, qrCardH);
+
+        // High contrast White QR background with gold border
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
         ctx.strokeStyle = '#fbbf24';
@@ -2888,19 +2951,38 @@
         ctx.strokeRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
 
         if (qrSrcCanvas) {
-          ctx.drawImage(qrSrcCanvas, qrBoxX + qrPad, qrBoxY + qrPad, qrSize, qrSize);
+          ctx.drawImage(qrSrcCanvas, qrBoxX + qrPad, qrBoxY + qrPad, qrInnerSize, qrInnerSize);
         } else if (qrSrcImg && qrSrcImg.complete) {
-          ctx.drawImage(qrSrcImg, qrBoxX + qrPad, qrBoxY + qrPad, qrSize, qrSize);
+          ctx.drawImage(qrSrcImg, qrBoxX + qrPad, qrBoxY + qrPad, qrInnerSize, qrInnerSize);
         }
 
-        // Reference Code & Gate Instruction
-        ctx.fillStyle = '#38bdf8';
-        ctx.font = '700 24px "JetBrains Mono", monospace';
-        ctx.fillText(`Ref: #${refCode}`, w / 2, 1054);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '800 18px "JetBrains Mono", monospace';
+        ctx.fillText('SCAN TO VERIFY PASS', qrBoxX + qrBoxSize / 2, qrBoxY + qrBoxSize + 32);
 
         ctx.fillStyle = '#94a3b8';
-        ctx.font = '500 18px "Inter", Arial, sans-serif';
-        ctx.fillText('Present this QR pass at the venue entrance for verification', w / 2, 1094);
+        ctx.font = '600 16px "Inter", Arial, sans-serif';
+        ctx.fillText('Venue Gate Entry', qrBoxX + qrBoxSize / 2, qrBoxY + qrBoxSize + 62);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '700 16px "JetBrains Mono", monospace';
+        ctx.fillText(`#${refCode}`, qrBoxX + qrBoxSize / 2, qrBoxY + qrBoxSize + 92);
+
+        // -------------------------------------------------------------
+        // BOTTOM FOOTER BANNER
+        // -------------------------------------------------------------
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.3)';
+        ctx.fillRect(leftX, 990, w - leftX * 2, 2);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 17px "Inter", Arial, sans-serif';
+        ctx.fillText('Thee Bobians Residence  •  Rironi, Limuru  •  November 28, 2026', w / 2, 1040);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '500 14px "JetBrains Mono", monospace';
+        ctx.fillText('Daystar University Academic Commencement Celebration', w / 2, 1074);
 
         return canvas;
       }
@@ -2925,6 +3007,69 @@
         if (!fb) return;
         fb.innerHTML = htmlMsg;
         fb.style.display = 'block';
+      }
+
+      // ===================================================================
+      // SHARE V2 (Primary Action: Bottom-Right QR Card + Clean Maps Link + No RSVP/Party Prompts)
+      // ===================================================================
+      const shareCardV2Btn = document.getElementById('share-card-v2-btn');
+      if (shareCardV2Btn) {
+        shareCardV2Btn.addEventListener('click', async () => {
+          const name = cardPreviewSection.dataset.guestName || 'Honored Guest';
+          const count = cardPreviewSection.dataset.guestCount || '1';
+          const refCode = cardPreviewSection.dataset.refCode || 'IKG-C2026';
+          const message = buildCleanInviteMessageV2(name, refCode);
+          const { blob, file, canvas } = await getAdminCardBlobAndFile(name, count, refCode);
+
+          // 1. Mobile Native Share (Image File + Clean Text together into WhatsApp)
+          if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).catch(() => {});
+              }
+              await navigator.share({
+                files: [file],
+                title: `Graduation Invitation - ${name}`,
+                text: message
+              });
+              showCardShareFeedback('✓ <strong>Share v2 sent!</strong> Invitation card &amp; clean WhatsApp text shared.');
+              return;
+            } catch (e) {
+              if (e && e.name === 'AbortError') return;
+            }
+          }
+
+          // 2. Desktop Fallback: Download card PNG + copy to clipboard + launch WhatsApp
+          if (canvas) {
+            const link = document.createElement('a');
+            link.download = `Ian_Kiromo_Invite_${refCode}_v2.png`;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+
+          let copiedImg = false;
+          if (blob && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+            try {
+              await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+              copiedImg = true;
+            } catch (err) {}
+          }
+
+          showCardShareFeedback(
+            copiedImg
+              ? '✓ <strong>Share v2 Ready!</strong> Card PNG downloaded &amp; copied to clipboard. In WhatsApp, press <strong>Ctrl+V</strong> to attach the image with your clean invite text.'
+              : '✓ <strong>Share v2 Ready!</strong> Card PNG downloaded. Attach <code>Ian_Kiromo_Invite_' + escapeHtml(refCode) + '_v2.png</code> in WhatsApp with your invitation message.'
+          );
+
+          const guestPhone = (document.getElementById('card-guest-phone').value || '').replace(/\s/g, '');
+          const waUrl = guestPhone
+            ? `https://wa.me/${guestPhone.replace('+', '')}?text=${encodeURIComponent(message)}`
+            : `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+          window.open(waUrl, '_blank');
+        });
       }
 
       // Share via WhatsApp (Sends Card Image + Clean Invitation Text together)
@@ -3276,10 +3421,10 @@
           document.getElementById('card-guest-phone').value = (phone === '—' || phone === '-') ? '' : phone;
           document.getElementById('card-guest-dietary').value = diet;
 
-          // Populate the card render
+          // Populate the card render (Simple design: no party size mentioned)
           document.getElementById('card-render-guest-name').textContent = name;
-          document.getElementById('card-render-guest-count').textContent = 
-            `Party of ${count} ${parseInt(count) === 1 ? 'Guest' : 'Guests'}`;
+          const guestCountEl = document.getElementById('card-render-guest-count');
+          if (guestCountEl) guestCountEl.textContent = '';
           document.getElementById('card-render-ref-code').textContent = `Ref: #${ref}`;
 
           // Generate QR Code

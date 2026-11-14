@@ -1011,17 +1011,11 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
   }
   ctx.font = `500 ${badgeSize}px "Roboto Mono", "JetBrains Mono", "Inter", monospace`;
 
-  const partyCount = parseInt(partySize, 10) || 1;
-  const partyText = partyCount > 1
-    ? `[ RESERVED PARTY: ${partyCount} GUESTS ]`
-    : `[ RESERVED: 1 GUEST ]`;
-
-  ctx.fillText(partyText, centerX, badgeY);
-
+  // Omit party count for a clean, simple look
   if (refCode) {
     ctx.fillStyle = '#fbbf24';
-    ctx.font = `700 ${Math.max(11, Math.round(13 * scale))}px "JetBrains Mono", monospace`;
-    ctx.fillText(`PASS REF: #${refCode}`, centerX, refY);
+    ctx.font = `700 ${Math.max(12, Math.round(14 * scale))}px "JetBrains Mono", monospace`;
+    ctx.fillText(`INVITATION PASS: #${refCode}`, centerX, badgeY);
   }
   ctx.restore();
 
