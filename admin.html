@@ -1545,7 +1545,7 @@
               <!-- Golden Arched Frame -->
               <div
                 style="position: relative; width: 100%; max-width: 175px; height: 215px; border-radius: 85px 85px 8px 8px; border: 3px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.35), inset 0 0 15px rgba(251, 191, 36, 0.2); background: radial-gradient(circle at 50% 25%, #1d3557 0%, #0c1a2e 85%); overflow: hidden; display: flex; align-items: flex-end; justify-content: center;">
-                <img id="card-render-portrait" src="assets/images/ian-portrait-cutout.png" alt="Ian Kiromo Githengu"
+                <img id="card-render-portrait" src="assets/images/ian-portrait-cutout.png?v=standing" alt="Ian Kiromo Githengu"
                   style="width: 100%; height: auto; max-height: 210px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
               </div>
 
@@ -3283,10 +3283,10 @@
         // Graduate Cutout Portrait inside Arch
         const portraitImg = document.getElementById('card-render-portrait');
         if (portraitImg && portraitImg.complete && portraitImg.naturalWidth > 0) {
-          const pw = 330;
+          const pw = 320;
           const ph = Math.round(pw * (portraitImg.naturalHeight / portraitImg.naturalWidth));
           const px = archX + (archW - pw) / 2;
-          const py = archY + archH - ph + 25;
+          const py = archY + archH - ph + 15;
           ctx.drawImage(portraitImg, px, py, pw, ph);
         }
         ctx.restore();
