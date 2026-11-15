@@ -4,6 +4,13 @@ def generate_authentic_cv():
     out1 = r"C:\Users\Ian Kiromo\.gemini\antigravity-ide\scratch\graduation-rsvp\Ian_Kiromo_Githengu_CV.pdf"
     out2 = r"D:\Graduation-RSVP\Ian_Kiromo_Githengu_CV.pdf"
 
+    # NOTE: The canonical, beautifully styled 2-page CV with graduate portrait,
+    # Health Strat attachment, projects, and referees is already in Ian_Kiromo_Githengu_CV.pdf.
+    # Do not overwrite unless explicitly requested.
+    if os.path.exists(out2) and os.path.getsize(out2) > 50000:
+        print(f"Preserving authentic styled CV ({os.path.getsize(out2)} bytes). To regenerate fallback text version, remove or rename it.")
+        return
+
     # Clean multi-page PDF 1.4
     # Page 1: Contact, Education, Skills, Professional Summary, Work Experience (Health Strat), Projects (Phone Repair, Cleanash)
     # Page 2: Projects (Phone Mart POS, Project PhishSim), Certifications, Leadership, Referees

@@ -1074,13 +1074,13 @@
           B.Sc. in Applied Computer Science &bull; Daystar University &bull; Class of 2026
         </p>
         <p class="designer-bio">
-          Passionate about full-stack software engineering, modern web architectures, and cloud-native computing.
+          Applied Computer Science professional with practical experience in full-stack engineering (React, Flutter, PHP), enterprise cloud infrastructure on Microsoft Azure, and network security. Certified in Cybersecurity (IBM) and Agentic AI workflows.
         </p>
 
         <!-- Professional Portfolio & CV Links -->
         <div class="portfolio-links">
 
-          <!-- Requirement 1: CV / Resume Download Integration (Opens local PDF) -->
+          <!-- Requirement 1: CV / Resume Download Integration (Opens authentic PDF) -->
           <a href="Ian_Kiromo_Githengu_CV.pdf" target="_blank" rel="noopener noreferrer"
             class="portfolio-link-btn highlight-cv-btn" title="Download Ian Kiromo Githengu's Curriculum Vitae (PDF)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1093,6 +1093,16 @@
             <span class="font-bold">Download Resume / CV</span>
           </a>
 
+          <!-- CV Interactive Quick Preview Button -->
+          <button type="button" id="open-cv-modal-btn" class="portfolio-link-btn" title="Preview Ian Kiromo's 2-Page CV"
+            style="border-color: rgba(56, 189, 248, 0.4); color: #7dd3fc; background: rgba(56, 189, 248, 0.08); cursor: pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <span>Preview CV ↗</span>
+          </button>
+
           <!-- Featured Project: FaithAccess -->
           <a href="https://faithaccess.onrender.com/" target="_blank" rel="noopener noreferrer"
             class="portfolio-link-btn" title="FaithAccess — Real-Time Church Accessibility System by Ian Kiromo"
@@ -1101,6 +1111,16 @@
               <path d="M12 2v20M7 8h10" />
             </svg>
             <span class="font-bold">FaithAccess (Live) ↗</span>
+          </a>
+
+          <!-- IBM Credly Badge Verification -->
+          <a href="https://www.credly.com/users/ian-kiromo" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn"
+            title="Credly Professional Certifications — Ian Kiromo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="8" r="7" />
+              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+            </svg>
+            <span>Credly Badges</span>
           </a>
 
           <a href="https://github.com/Khale-Git" target="_blank" rel="noopener noreferrer" class="portfolio-link-btn"
@@ -1128,14 +1148,23 @@
             </svg>
             <span>Email</span>
           </a>
+
+          <a href="tel:+254796059830" class="portfolio-link-btn" title="Direct Phone / WhatsApp (+254 796059830)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <span>0796059830</span>
+          </a>
         </div>
 
-        <!-- Tech Stack Tags -->
+        <!-- Tech Stack Tags from Authentic CV -->
         <div class="tech-stack-pills">
-          <span class="tech-pill">HTML5 Canvas (Dynamic Cards)</span>
-          <span class="tech-pill">Vanilla CSS (Custom Tokens)</span>
-          <span class="tech-pill">Client-Side Async JS</span>
-          <span class="tech-pill">Python Backend API</span>
+          <span class="tech-pill">Microsoft Azure (Linux Web Apps &amp; Entra ID)</span>
+          <span class="tech-pill">React &amp; Flutter</span>
+          <span class="tech-pill">PHP &amp; Laravel</span>
+          <span class="tech-pill">Cybersecurity &amp; SQL Injection Testing</span>
+          <span class="tech-pill">Google Gemini API &amp; Claude MCP</span>
+          <span class="tech-pill">MikroTik &amp; FortiGate Networks</span>
         </div>
       </div>
 
@@ -1195,6 +1224,44 @@
               <span class="cal-btn-sub">Direct file download with alarms and coordinates</span>
             </div>
           </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===================================================================
+       CV / RESUME INTERACTIVE PREVIEW MODAL
+       =================================================================== -->
+  <dialog id="cv-modal" class="cyber-modal" style="max-width: 960px; width: 95vw; background: transparent;">
+    <div class="modal-card" style="padding: 1.5rem; background: #0f1d33; border: 1.5px solid rgba(56, 189, 248, 0.4); border-radius: 16px; box-shadow: 0 25px 70px rgba(0,0,0,0.85), 0 0 30px rgba(56, 189, 248, 0.2);">
+      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
+        <div>
+          <h3 style="margin: 0; font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.25rem; color: #ffffff;">
+            📄 Curriculum Vitae — Ian Kiromo Githengu
+          </h3>
+          <p style="margin: 0.25rem 0 0; font-size: 0.8rem; color: #94a3b8;">
+            B.Sc. Applied Computer Science &bull; Full-Stack, Cloud &amp; Cybersecurity
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center;">
+          <a href="Ian_Kiromo_Githengu_CV.pdf" download="Ian_Kiromo_Githengu_CV.pdf" class="btn btn-sm btn-primary-tech" style="text-decoration: none; padding: 0.45rem 0.9rem; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, #0284c7, #2563eb); border: none; font-weight: 700;">
+            💾 Download PDF
+          </a>
+          <button id="close-cv-modal-btn" class="modal-close" aria-label="Close CV dialog" style="position: static; font-size: 1.6rem; line-height: 1; cursor: pointer;">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" style="padding: 0;">
+        <div style="width: 100%; height: 75vh; min-height: 480px; max-height: 820px; border-radius: 10px; overflow: hidden; background: #0b1322; border: 1px solid rgba(56, 189, 248, 0.25);">
+          <object data="Ian_Kiromo_Githengu_CV.pdf#toolbar=1&amp;navpanes=0" type="application/pdf" width="100%" height="100%">
+            <iframe src="Ian_Kiromo_Githengu_CV.pdf" width="100%" height="100%" style="border: none;">
+              <div style="padding: 2.5rem; text-align: center; color: #cbd5e1;">
+                <p style="margin-bottom: 1rem;">Click below to view or download Ian Kiromo's 2-page Curriculum Vitae:</p>
+                <a href="Ian_Kiromo_Githengu_CV.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary-tech">
+                  Open CV in New Window ↗
+                </a>
+              </div>
+            </iframe>
+          </object>
         </div>
       </div>
     </div>

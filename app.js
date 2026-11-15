@@ -1185,6 +1185,31 @@ function initCalendarIntegrations() {
     });
   }
 
+  // Interactive CV Preview Modal Handler
+  const cvModal = document.getElementById('cv-modal');
+  const openCvBtn = document.getElementById('open-cv-modal-btn');
+  const closeCvBtn = document.getElementById('close-cv-modal-btn');
+
+  if (openCvBtn && cvModal) {
+    openCvBtn.addEventListener('click', () => {
+      if (typeof cvModal.showModal === 'function') {
+        cvModal.showModal();
+      } else {
+        window.open('Ian_Kiromo_Githengu_CV.pdf', '_blank');
+      }
+    });
+  }
+
+  if (closeCvBtn && cvModal) {
+    closeCvBtn.addEventListener('click', () => cvModal.close());
+  }
+
+  if (cvModal) {
+    cvModal.addEventListener('click', (e) => {
+      if (e.target === cvModal) cvModal.close();
+    });
+  }
+
   function downloadIcs() {
     const icsContent = [
       "BEGIN:VCALENDAR",
