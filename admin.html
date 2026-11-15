@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organiser Headcount & Planning Portal | Ian Kiromo Graduation</title>
-  <meta name="description" content="Organiser portal to monitor proposed attendees, headcount metrics, catering dietary requirements, and guest responses for Ian Kiromo Githengu's Graduation Celebration.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-  
+  <meta name="description"
+    content="Organiser portal to monitor proposed attendees, headcount metrics, catering dietary requirements, and guest responses for Ian Kiromo Githengu's Graduation Celebration.">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="style.css?v=2026.6">
 
   <!-- QR Code Generation Library -->
@@ -22,7 +27,7 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <script>
-    (function() {
+    (function () {
       const saved = localStorage.getItem('ikg_site_theme') || 'dark';
       if (saved === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -37,7 +42,7 @@
       display: flex;
       flex-direction: column;
     }
-    
+
     .admin-navbar {
       background: rgba(14, 26, 45, 0.85);
       backdrop-filter: blur(16px);
@@ -429,7 +434,8 @@
       transition: all 0.15s ease;
     }
 
-    .filter-btn.active, .filter-btn:hover {
+    .filter-btn.active,
+    .filter-btn:hover {
       background: rgba(56, 189, 248, 0.15);
       border-color: #38bdf8;
       color: #ffffff;
@@ -563,27 +569,116 @@
     }
 
     @media (max-width: 768px) {
-      .admin-nav-container { flex-direction: column; gap: 0.65rem; align-items: stretch; padding: 0 1rem; }
-      .admin-brand { justify-content: space-between; font-size: 0.96rem; }
-      .admin-nav-actions { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-      .auth-card { padding: 1.5rem 1.15rem; }
-      .admin-main-wrap { padding: 1.25rem 0.9rem 3rem; }
-      .admin-page-title { font-size: 1.32rem; }
-      .admin-header-row { flex-direction: column; align-items: stretch; gap: 1rem; }
-      .admin-toolbar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; width: 100%; }
-      .admin-toolbar .btn { width: 100%; justify-content: center; text-align: center; padding: 0.55rem 0.45rem; font-size: 0.78rem; white-space: normal; line-height: 1.25; }
-      .headcount-kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-      .headcount-kpi-grid .featured-headcount { grid-column: 1 / -1; }
-      .kpi-stat-box { padding: 1rem 0.85rem; }
-      .stat-value { font-size: 1.85rem; }
-      .dietary-pills-wrap { flex-direction: column; align-items: flex-start; padding: 1rem; gap: 0.75rem; }
-      .roster-toolbar { flex-direction: column; align-items: stretch; padding: 1rem; }
-      .roster-search-shell { max-width: 100%; }
-      .roster-filter-pills { flex-wrap: wrap; }
-      .roster-footer { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.85rem 1rem; }
-      #invitation-card-render { padding: 1.25rem 0.9rem !important; }
-      #invitation-card-render > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
-      #card-render-guest-name { font-size: 1.25rem !important; }
+      .admin-nav-container {
+        flex-direction: column;
+        gap: 0.65rem;
+        align-items: stretch;
+        padding: 0 1rem;
+      }
+
+      .admin-brand {
+        justify-content: space-between;
+        font-size: 0.96rem;
+      }
+
+      .admin-nav-actions {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .auth-card {
+        padding: 1.5rem 1.15rem;
+      }
+
+      .admin-main-wrap {
+        padding: 1.25rem 0.9rem 3rem;
+      }
+
+      .admin-page-title {
+        font-size: 1.32rem;
+      }
+
+      .admin-header-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .admin-toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .admin-toolbar .btn {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 0.55rem 0.45rem;
+        font-size: 0.78rem;
+        white-space: normal;
+        line-height: 1.25;
+      }
+
+      .headcount-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+
+      .headcount-kpi-grid .featured-headcount {
+        grid-column: 1 / -1;
+      }
+
+      .kpi-stat-box {
+        padding: 1rem 0.85rem;
+      }
+
+      .stat-value {
+        font-size: 1.85rem;
+      }
+
+      .dietary-pills-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 0.75rem;
+      }
+
+      .roster-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+      }
+
+      .roster-search-shell {
+        max-width: 100%;
+      }
+
+      .roster-filter-pills {
+        flex-wrap: wrap;
+      }
+
+      .roster-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.85rem 1rem;
+      }
+
+      #invitation-card-render {
+        padding: 1.25rem 0.9rem !important;
+      }
+
+      #invitation-card-render>div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      #card-render-guest-name {
+        font-size: 1.25rem !important;
+      }
     }
 
     /* ===================================================================
@@ -776,6 +871,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Ambient Tech Grid Overlays -->
@@ -791,7 +887,8 @@
         <span class="admin-brand-tag">ORGANISER PORTAL</span>
       </a>
       <div class="admin-nav-actions" style="display: flex; align-items: center; gap: 0.75rem;">
-        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle Light/Dark Theme" title="Switch Theme (Light / Dark)">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle Light/Dark Theme"
+          title="Switch Theme (Light / Dark)">
           <span class="theme-icon">☀️</span>
         </button>
         <a href="index.html" class="btn btn-sm btn-ghost-tech">
@@ -808,26 +905,27 @@
   <div id="auth-gate-section" class="auth-gate-wrap">
     <div class="auth-card">
       <div class="auth-icon-badge">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
       </div>
       <h1 class="auth-title">Organiser Access</h1>
-      <p class="auth-subtitle">Confidential attendee headcount &amp; catering dietary management portal for Ian Kiromo's Graduation Celebration.</p>
+      <p class="auth-subtitle">Confidential attendee headcount &amp; catering dietary management portal for Ian Kiromo's
+        Graduation Celebration.</p>
 
       <form id="organiser-login-form">
         <!-- Hidden username for browser credential accessibility -->
-        <input type="text" name="username" value="IanKiromoOrganiser" autocomplete="username" style="display: none;" aria-hidden="true">
+        <input type="text" name="username" value="IanKiromoOrganiser" autocomplete="username" style="display: none;"
+          aria-hidden="true">
         <div class="auth-input-wrap">
           <label class="auth-input-label" for="portal-password-input">Organiser Passcode</label>
           <div class="password-field-shell">
             <span class="key-icon">🔑</span>
-            <input 
-              type="password" 
-              id="portal-password-input" 
-              placeholder="Enter passcode"
-              required 
-              autocomplete="current-password"
-            >
-            <button type="button" id="toggle-pw-visibility" class="password-toggle-btn" title="Show/Hide Password">👁️</button>
+            <input type="password" id="portal-password-input" placeholder="Enter passcode" required
+              autocomplete="current-password">
+            <button type="button" id="toggle-pw-visibility" class="password-toggle-btn"
+              title="Show/Hide Password">👁️</button>
           </div>
           <div id="login-error-msg" class="auth-error-msg">Incorrect passcode. Please try again.</div>
         </div>
@@ -841,77 +939,128 @@
 
   <!-- 2. ORGANISER MAIN DASHBOARD (Visible when logged in) -->
   <main id="admin-dashboard-section" class="admin-main-wrap">
-    
+
     <!-- Top Overview & Actions -->
     <div class="admin-header-row">
       <div>
         <h1 class="admin-page-title">Attendee Headcount &amp; Catering Intelligence</h1>
-        <p class="admin-page-desc">Real-time RSVP responses, total human headcount, and catering dietary preferences for Saturday, Nov 28, 2026 at Thee Bobians Residence.</p>
+        <p class="admin-page-desc">Real-time RSVP responses, total human headcount, and catering dietary preferences for
+          Saturday, Nov 28, 2026 at Thee Bobians Residence.</p>
       </div>
-            <div class="admin-toolbar">
+      <div class="admin-toolbar">
         <!-- 1. Manual Attendee Registration (Edge Case for Phone/Offline RSVPs) -->
-        <button id="open-manual-add-btn" class="btn btn-sm btn-primary-tech" title="Register an attendee manually (phone calls, elders, offline RSVPs)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <button id="open-manual-add-btn" class="btn btn-sm btn-primary-tech"
+          title="Register an attendee manually (phone calls, elders, offline RSVPs)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
           <span>+ Add Attendee</span>
         </button>
 
         <!-- 2. Verify Invitation Pass (Door / Usher Verification) -->
-        <button id="open-verifier-btn" class="btn btn-sm btn-outline-cyber" title="Verify guest invitation pass & check seating reservation">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        <button id="open-verifier-btn" class="btn btn-sm btn-outline-cyber"
+          title="Verify guest invitation pass & check seating reservation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 12l2 2 4-4" />
+            <circle cx="12" cy="12" r="10" />
+          </svg>
           <span>Verify Invitation</span>
         </button>
 
         <!-- 2b. Generate Invitation Card -->
-        <button id="open-card-gen-btn" class="btn btn-sm btn-outline-cyber" title="Generate a shareable invitation card with QR code" style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <button id="open-card-gen-btn" class="btn btn-sm btn-outline-cyber"
+          title="Generate a shareable invitation card with QR code"
+          style="border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
           <span>🎫 Generate Card</span>
         </button>
 
         <!-- 2c. Scan QR Code at Door -->
-        <button id="open-qr-scanner-btn" class="btn btn-sm btn-outline-cyber" title="Scan a guest's QR code at the door for instant verification" style="border-color: rgba(16, 185, 129, 0.5); color: #34d399;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><line x1="21" y1="14" x2="21" y2="21"/><line x1="14" y1="21" x2="21" y2="21"/></svg>
+        <button id="open-qr-scanner-btn" class="btn btn-sm btn-outline-cyber"
+          title="Scan a guest's QR code at the door for instant verification"
+          style="border-color: rgba(16, 185, 129, 0.5); color: #34d399;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="3" height="3" />
+            <line x1="21" y1="14" x2="21" y2="21" />
+            <line x1="14" y1="21" x2="21" y2="21" />
+          </svg>
           <span>📷 Scan QR</span>
         </button>
 
         <!-- Live Excel Online Workbook Direct Access -->
-        <a href="https://1drv.ms/x/c/cd40dbc2a44d889f/IQCsR5WIP84VRoAnpeadLP4kAeAZ-rnn0pSxNw1Vt39Z9KA?e=zjcF1P" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost-tech" id="open-excel-toolbar-btn" style="color: #34d399; border-color: rgba(52, 211, 153, 0.45); text-decoration: none;" title="Open your live attendee spreadsheet on Microsoft Excel Online">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <a href="https://1drv.ms/x/c/cd40dbc2a44d889f/IQCsR5WIP84VRoAnpeadLP4kAeAZ-rnn0pSxNw1Vt39Z9KA?e=zjcF1P"
+          target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-ghost-tech" id="open-excel-toolbar-btn"
+          style="color: #34d399; border-color: rgba(52, 211, 153, 0.45); text-decoration: none;"
+          title="Open your live attendee spreadsheet on Microsoft Excel Online">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
           <span>Open Excel Sheet ↗</span>
         </a>
 
         <!-- Read / Import Excel or CSV Spreadsheet into Web -->
-        <button id="open-excel-import-btn" class="btn btn-sm btn-outline-cyber" style="border-color: rgba(16, 185, 129, 0.55); color: #6ee7b7; background: rgba(16, 185, 129, 0.1);" title="Import and read an Excel (.xlsx, .xls, .csv) or Google Sheet directly into the web roster">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <button id="open-excel-import-btn" class="btn btn-sm btn-outline-cyber"
+          style="border-color: rgba(16, 185, 129, 0.55); color: #6ee7b7; background: rgba(16, 185, 129, 0.1);"
+          title="Import and read an Excel (.xlsx, .xls, .csv) or Google Sheet directly into the web roster">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
           <span>📥 Read Excel Sheet</span>
         </button>
 
         <!-- Cloud Sync Settings -->
         <button id="open-cloud-sync-btn" class="btn btn-sm btn-ghost-tech" title="Live Cloud Sync with Google Sheets">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+          </svg>
           <span>Cloud Sync</span>
         </button>
 
         <!-- 4. Refresh Data -->
-        <button id="refresh-roster-btn" class="btn btn-sm btn-ghost-tech" title="Refresh data from server or local database">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <button id="refresh-roster-btn" class="btn btn-sm btn-ghost-tech"
+          title="Refresh data from server or local database">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+          </svg>
           <span>Refresh</span>
         </button>
 
         <!-- 5. Export Catering CSV -->
-        <button id="export-catering-csv-btn" class="btn btn-sm btn-ghost-tech" title="Download Excel-compatible CSV for catering and budgeting">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <button id="export-catering-csv-btn" class="btn btn-sm btn-ghost-tech"
+          title="Download Excel-compatible CSV for catering and budgeting">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
           <span>Export CSV</span>
         </button>
 
         <!-- 6. Change Passcode -->
-        <button id="change-passcode-btn" class="btn btn-sm btn-ghost-tech" title="Change your secret Organiser Passcode">
+        <button id="change-passcode-btn" class="btn btn-sm btn-ghost-tech"
+          title="Change your secret Organiser Passcode">
           <span>🔑 Passcode</span>
         </button>
       </div>
     </div>
 
     <!-- Cloud Sync Diagnostic Banner (Auto-detects missing doGet on Google Apps Script) -->
-    <div id="cloud-sync-health-banner" style="display: none; margin-bottom: 1.5rem; padding: 1rem 1.25rem; border-radius: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.45); color: #fde68a; font-size: 0.85rem; line-height: 1.5;">
+    <div id="cloud-sync-health-banner"
+      style="display: none; margin-bottom: 1.5rem; padding: 1rem 1.25rem; border-radius: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.45); color: #fde68a; font-size: 0.85rem; line-height: 1.5;">
     </div>
 
     <!-- Live Headcount KPI Grid -->
@@ -954,7 +1103,8 @@
         <span class="dietary-counter-badge diet-halal">🌙 Halal: <strong id="diet-halal-count">0</strong></span>
         <span class="dietary-counter-badge diet-vegan">🌱 Vegan: <strong id="diet-vegan-count">0</strong></span>
         <span class="dietary-counter-badge diet-gluten">🌾 Gluten-Free: <strong id="diet-gluten-count">0</strong></span>
-        <span class="dietary-counter-badge diet-other">⚠️ Allergies / Other: <strong id="diet-special-count">0</strong></span>
+        <span class="dietary-counter-badge diet-other">⚠️ Allergies / Other: <strong
+            id="diet-special-count">0</strong></span>
       </div>
     </div>
 
@@ -962,10 +1112,14 @@
     <div class="dietary-pills-wrap" style="border-color: rgba(245, 158, 11, 0.35); background: rgba(30, 20, 10, 0.45);">
       <span class="dietary-pill-title" style="color: #fbbf24;">☕ Kenyan Tea Urns (Catering):</span>
       <div class="dietary-badges" id="tea-badges-list">
-        <span class="dietary-counter-badge" style="border-color: rgba(245, 158, 11, 0.4); color: #fde68a;">☕ Chai (With Sugar): <strong id="tea-chai-count">0</strong> cups</span>
-        <span class="dietary-counter-badge" style="border-color: rgba(16, 185, 129, 0.4); color: #a7f3d0;">🍵 Ndufia (No Sugar): <strong id="tea-ndufia-count">0</strong> cups</span>
-        <span class="dietary-counter-badge" style="border-color: rgba(239, 68, 68, 0.4); color: #fca5a5;">🫖 Strong (Tea Leaves): <strong id="tea-strong-count">0</strong> cups</span>
-        <span class="dietary-counter-badge" style="border-color: rgba(56, 189, 248, 0.4); color: #bae6fd;">🥤 Cold Beverage: <strong id="tea-cold-count">0</strong></span>
+        <span class="dietary-counter-badge" style="border-color: rgba(245, 158, 11, 0.4); color: #fde68a;">☕ Chai (With
+          Sugar): <strong id="tea-chai-count">0</strong> cups</span>
+        <span class="dietary-counter-badge" style="border-color: rgba(16, 185, 129, 0.4); color: #a7f3d0;">🍵 Ndufia (No
+          Sugar): <strong id="tea-ndufia-count">0</strong> cups</span>
+        <span class="dietary-counter-badge" style="border-color: rgba(239, 68, 68, 0.4); color: #fca5a5;">🫖 Strong (Tea
+          Leaves): <strong id="tea-strong-count">0</strong> cups</span>
+        <span class="dietary-counter-badge" style="border-color: rgba(56, 189, 248, 0.4); color: #bae6fd;">🥤 Cold
+          Beverage: <strong id="tea-cold-count">0</strong></span>
       </div>
     </div>
 
@@ -978,8 +1132,10 @@
         </div>
         <div class="roster-filter-pills">
           <button class="filter-btn active" data-filter="all">All (<span id="filter-all-count">0</span>)</button>
-          <button class="filter-btn" data-filter="attending">Attending (<span id="filter-attending-count">0</span>)</button>
-          <button class="filter-btn" data-filter="declined">Declined (<span id="filter-declined-count">0</span>)</button>
+          <button class="filter-btn" data-filter="attending">Attending (<span
+              id="filter-attending-count">0</span>)</button>
+          <button class="filter-btn" data-filter="declined">Declined (<span
+              id="filter-declined-count">0</span>)</button>
         </div>
       </div>
 
@@ -1022,26 +1178,39 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">+ Register Attendee Manually</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">For guests responding via phone call, in-person, or family members unable to use the web.</p>
+          <h3
+            style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">
+            + Register Attendee Manually</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">For guests responding via phone
+            call, in-person, or family members unable to use the web.</p>
         </div>
         <button type="button" class="modal-close" id="close-manual-modal-btn" aria-label="Close modal">&times;</button>
       </div>
 
       <form id="manual-attendee-form" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
         <div>
-          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Guest / Group Name *</label>
-          <input type="text" id="manual-name" required placeholder="e.g. Elder Samuel Kimani & Family" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+          <label
+            style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Guest
+            / Group Name *</label>
+          <input type="text" id="manual-name" required placeholder="e.g. Elder Samuel Kimani & Family"
+            class="tech-input"
+            style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Phone Number</label>
-            <input type="tel" id="manual-phone" placeholder="e.g. +254 722 000 111" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Phone
+              Number</label>
+            <input type="tel" id="manual-phone" placeholder="e.g. +254 722 000 111" class="tech-input"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
           </div>
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Attendance Status *</label>
-            <select id="manual-attending" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Attendance
+              Status *</label>
+            <select id="manual-attending" class="tech-select"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
               <option value="Yes">● Confirmed Attending</option>
               <option value="No">✕ Regretfully Declined</option>
             </select>
@@ -1050,8 +1219,11 @@
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Headcount (Party Size) *</label>
-            <select id="manual-guest-count" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Headcount
+              (Party Size) *</label>
+            <select id="manual-guest-count" class="tech-select"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
               <option value="1">1 Person (Individual)</option>
               <option value="2">2 Guests (Couple / Pair)</option>
               <option value="3">3 Guests</option>
@@ -1065,8 +1237,11 @@
             </select>
           </div>
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Dietary Preference</label>
-            <select id="manual-dietary" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Dietary
+              Preference</label>
+            <select id="manual-dietary" class="tech-select"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
               <option value="Standard Menu">🍽️ Standard Celebration Menu</option>
               <option value="Vegetarian">🥗 Vegetarian</option>
               <option value="Vegan">🌱 Vegan</option>
@@ -1078,8 +1253,11 @@
         </div>
 
         <div>
-          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Kenyan Tea &amp; Beverage Urn</label>
-          <select id="manual-tea" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+          <label
+            style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Kenyan
+            Tea &amp; Beverage Urn</label>
+          <select id="manual-tea" class="tech-select"
+            style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
             <option value="Chai (Tea with Sugar)">☕ Chai (Traditional Kenyan Tea with Sugar)</option>
             <option value="Ndufia (Tea without Sugar)">🍵 Ndufia (Tea Without Sugar)</option>
             <option value="Strong (Tea Leaves)">🫖 Strong Strungi (Tea Leaves)</option>
@@ -1088,8 +1266,12 @@
         </div>
 
         <div>
-          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Notes / Seating Allocation Instructions</label>
-          <textarea id="manual-notes" rows="2" placeholder="e.g. Elder table seating, spoken confirmation via phone" class="tech-textarea" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); resize: vertical;"></textarea>
+          <label
+            style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Notes
+            / Seating Allocation Instructions</label>
+          <textarea id="manual-notes" rows="2" placeholder="e.g. Elder table seating, spoken confirmation via phone"
+            class="tech-textarea"
+            style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); resize: vertical;"></textarea>
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
@@ -1107,22 +1289,29 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">🔍 Invitation &amp; Reservation Checker</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Door / Reception check-in: Instantly verify guest RSVP status by code, name, or phone number.</p>
+          <h3
+            style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">
+            🔍 Invitation &amp; Reservation Checker</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Door / Reception check-in:
+            Instantly verify guest RSVP status by code, name, or phone number.</p>
         </div>
-        <button type="button" class="modal-close" id="close-verifier-modal-btn" aria-label="Close modal">&times;</button>
+        <button type="button" class="modal-close" id="close-verifier-modal-btn"
+          aria-label="Close modal">&times;</button>
       </div>
 
       <div style="margin-top: 1.25rem;">
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-          <input type="text" id="verifier-input" placeholder="Enter Ref Code (#IKG-...), Guest Name, or Phone..." class="tech-input" style="flex: 1; border: 1px solid var(--accent-blue, #38bdf8); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); font-size: 0.95rem;">
+          <input type="text" id="verifier-input" placeholder="Enter Ref Code (#IKG-...), Guest Name, or Phone..."
+            class="tech-input"
+            style="flex: 1; border: 1px solid var(--accent-blue, #38bdf8); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); font-size: 0.95rem;">
           <button type="button" id="do-verify-btn" class="btn btn-sm btn-primary-tech" style="padding: 0 1.25rem;">
             <span>Verify Pass</span>
           </button>
         </div>
 
         <!-- Verification Results Card -->
-        <div id="verifier-result-box" style="display: none; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; transition: all 0.2s;">
+        <div id="verifier-result-box"
+          style="display: none; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; transition: all 0.2s;">
           <!-- Dynamically populated -->
         </div>
       </div>
@@ -1136,23 +1325,35 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">📊 Cloud Spreadsheet Sync (Excel Online & Google Sheets)</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Sync or link your live attendee registrations on Microsoft Excel Online or Google Sheets.</p>
+          <h3
+            style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">
+            📊 Cloud Spreadsheet Sync (Excel Online & Google Sheets)</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Sync or link your live attendee
+            registrations on Microsoft Excel Online or Google Sheets.</p>
         </div>
         <button type="button" class="modal-close" id="close-cloud-sync-btn" aria-label="Close modal">&times;</button>
       </div>
 
       <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
         <div>
-          <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Google Apps Script Web App URL</label>
-          <input type="url" id="cloud-webhook-url-input" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); font-size: 0.85rem; font-family: var(--font-mono, monospace);">
-          <small style="display: block; font-size: 0.75rem; color: var(--text-muted, #94a3b8); margin-top: 0.35rem;">Follow the simple 2-minute setup guide in <code>GOOGLE_SHEETS_SETUP.md</code> to deploy your spreadsheet webhook.</small>
+          <label
+            style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Google
+            Apps Script Web App URL</label>
+          <input type="url" id="cloud-webhook-url-input" placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+            class="tech-input"
+            style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff); font-size: 0.85rem; font-family: var(--font-mono, monospace);">
+          <small
+            style="display: block; font-size: 0.75rem; color: var(--text-muted, #94a3b8); margin-top: 0.35rem;">Follow
+            the simple 2-minute setup guide in <code>GOOGLE_SHEETS_SETUP.md</code> to deploy your spreadsheet
+            webhook.</small>
         </div>
 
-        <div id="cloud-sync-status" style="display: none; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem;"></div>
+        <div id="cloud-sync-status"
+          style="display: none; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem;"></div>
 
         <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-          <button type="button" id="test-sync-btn" class="btn btn-sm btn-outline-cyber">Test Connection &amp; Fetch</button>
+          <button type="button" id="test-sync-btn" class="btn btn-sm btn-outline-cyber">Test Connection &amp;
+            Fetch</button>
           <button type="button" id="save-sync-btn" class="btn btn-sm btn-primary-tech">Save Webhook URL</button>
         </div>
       </div>
@@ -1167,8 +1368,11 @@
     <div class="modal-card" style="max-width: 680px;">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">🎫 Invitation Card Generator</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Create a beautiful invitation card with a unique QR code. Share it via WhatsApp, SMS, or download.</p>
+          <h3
+            style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">
+            🎫 Invitation Card Generator</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Create a beautiful invitation
+            card with a unique QR code. Share it via WhatsApp, SMS, or download.</p>
         </div>
         <button type="button" class="modal-close" id="close-card-gen-btn" aria-label="Close modal">&times;</button>
       </div>
@@ -1177,12 +1381,18 @@
       <div id="card-gen-form-section" style="margin-top: 1.25rem;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Guest / Group Name *</label>
-            <input type="text" id="card-guest-name" required placeholder="e.g. The Maina Family" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Guest
+              / Group Name *</label>
+            <input type="text" id="card-guest-name" required placeholder="e.g. The Maina Family" class="tech-input"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
           </div>
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Relationship / Category *</label>
-            <select id="card-guest-category" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Relationship
+              / Category *</label>
+            <select id="card-guest-category" class="tech-select"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
               <option value="—" selected>— (Just a dash / General)</option>
               <option value="Family">Family (&amp; Family)</option>
               <option value="Friend">Friend</option>
@@ -1199,12 +1409,18 @@
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Phone Number (Optional)</label>
-            <input type="tel" id="card-guest-phone" placeholder="+254 7XX XXX XXX" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Phone
+              Number (Optional)</label>
+            <input type="tel" id="card-guest-phone" placeholder="+254 7XX XXX XXX" class="tech-input"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
           </div>
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Dietary Preference</label>
-            <select id="card-guest-dietary" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+            <label
+              style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Dietary
+              Preference</label>
+            <select id="card-guest-dietary" class="tech-select"
+              style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
               <option value="Standard Menu">🍽️ Standard Menu</option>
               <option value="Vegetarian">🥗 Vegetarian</option>
               <option value="Vegan">🌱 Vegan</option>
@@ -1215,7 +1431,8 @@
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-          <button type="button" id="generate-card-btn" class="btn btn-sm btn-primary-tech" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #ffffff;">
+          <button type="button" id="generate-card-btn" class="btn btn-sm btn-primary-tech"
+            style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #ffffff;">
             🎫 Generate Invitation Card
           </button>
         </div>
@@ -1235,94 +1452,152 @@
           color: #ffffff;
         ">
           <!-- Gold corner L-accents -->
-          <div style="position: absolute; top: 0; left: 0; width: 44px; height: 44px; border-top: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 16px 0 0 0;"></div>
-          <div style="position: absolute; top: 0; right: 0; width: 44px; height: 44px; border-top: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 16px 0 0;"></div>
-          <div style="position: absolute; bottom: 0; left: 0; width: 44px; height: 44px; border-bottom: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 0 0 0 16px;"></div>
-          <div style="position: absolute; bottom: 0; right: 0; width: 44px; height: 44px; border-bottom: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 0 16px 0;"></div>
+          <div
+            style="position: absolute; top: 0; left: 0; width: 44px; height: 44px; border-top: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 16px 0 0 0;">
+          </div>
+          <div
+            style="position: absolute; top: 0; right: 0; width: 44px; height: 44px; border-top: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 16px 0 0;">
+          </div>
+          <div
+            style="position: absolute; bottom: 0; left: 0; width: 44px; height: 44px; border-bottom: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 0 0 0 16px;">
+          </div>
+          <div
+            style="position: absolute; bottom: 0; right: 0; width: 44px; height: 44px; border-bottom: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 0 16px 0;">
+          </div>
 
           <!-- Top Special Invitation Banner (Touch of Gold Ribbon) -->
           <div style="text-align: center; margin-bottom: 0.65rem;">
-            <div style="display: inline-block; padding: 0.32rem 1.15rem; border: 1.5px solid #fbbf24; border-radius: 999px; background: rgba(251, 191, 36, 0.12); box-shadow: 0 0 16px rgba(251, 191, 36, 0.25);">
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #fbbf24; font-weight: 800; text-transform: uppercase;">✦ SPECIAL INVITATION TO: <span id="card-render-banner-name" style="color: #ffffff;">REV. KIRAGU</span> ✦</span>
+            <div
+              style="display: inline-block; padding: 0.32rem 1.15rem; border: 1.5px solid #fbbf24; border-radius: 999px; background: rgba(251, 191, 36, 0.12); box-shadow: 0 0 16px rgba(251, 191, 36, 0.25);">
+              <span
+                style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #fbbf24; font-weight: 800; text-transform: uppercase;">✦
+                SPECIAL INVITATION TO: <span id="card-render-banner-name" style="color: #ffffff;">REV. KIRAGU</span>
+                ✦</span>
             </div>
           </div>
 
           <!-- "You're Invited" Cursive Calligraphy Script Header -->
-          <div style="font-family: 'Alex Brush', 'Great Vibes', cursive; font-size: 2.9rem; font-weight: 700; background: linear-gradient(135deg, #fef08a 0%, #fbbf24 50%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin: 0.2rem auto 0.25rem auto; filter: drop-shadow(0 2px 10px rgba(251, 191, 36, 0.35));">You're Invited</div>
+          <div
+            style="font-family: 'Alex Brush', 'Great Vibes', cursive; font-size: 2.9rem; font-weight: 700; background: linear-gradient(135deg, #fef08a 0%, #fbbf24 50%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin: 0.2rem auto 0.25rem auto; filter: drop-shadow(0 2px 10px rgba(251, 191, 36, 0.35));">
+            You're Invited</div>
 
           <!-- Ceremony Subheading -->
-          <div style="font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.22em; color: #cbd5e1; margin-bottom: 0.2rem;">TO THE GRADUATION CEREMONY OF</div>
-          <div style="font-family: 'Cinzel', serif; font-size: 1.35rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 20%, #fef08a 60%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.08em; margin-bottom: 0.15rem;">IAN KIROMO GITHENGU</div>
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #38bdf8; margin-bottom: 0.3rem;">B.Sc. Applied Computer Science — Daystar University, Class of 2026</div>
-          <div style="font-size: 0.68rem; color: #94a3b8; letter-spacing: 0.06em; margin-bottom: 0.75rem; font-style: italic;">PLEASE JOIN US IN CELEBRATING THIS SIGNIFICANT MILESTONE</div>
+          <div
+            style="font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.22em; color: #cbd5e1; margin-bottom: 0.2rem;">
+            TO THE GRADUATION CEREMONY OF</div>
+          <div
+            style="font-family: 'Cinzel', serif; font-size: 1.35rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 20%, #fef08a 60%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.08em; margin-bottom: 0.15rem;">
+            IAN KIROMO GITHENGU</div>
+          <div
+            style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #38bdf8; margin-bottom: 0.3rem;">
+            B.Sc. Applied Computer Science — Daystar University, Class of 2026</div>
+          <div
+            style="font-size: 0.68rem; color: #94a3b8; letter-spacing: 0.06em; margin-bottom: 0.75rem; font-style: italic;">
+            PLEASE JOIN US IN CELEBRATING THIS SIGNIFICANT MILESTONE</div>
 
           <!-- Gold Divider -->
-          <div style="width: 70%; height: 1px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); margin: 0 auto 0.85rem auto;"></div>
+          <div
+            style="width: 70%; height: 1px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); margin: 0 auto 0.85rem auto;">
+          </div>
 
           <!-- Main Two-Column Section: Left Event Cards + Right Arched Portrait & Pass -->
-          <div style="display: grid; grid-template-columns: 1.18fr 0.82fr; gap: 0.85rem; align-items: stretch; text-align: left;">
+          <div
+            style="display: grid; grid-template-columns: 1.18fr 0.82fr; gap: 0.85rem; align-items: stretch; text-align: left;">
             <div style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: center;">
-              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(251, 191, 36, 0.35); border-radius: 8px; padding: 0.55rem 0.75rem;">
-                <div style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #fbbf24; letter-spacing: 0.08em; font-weight: 700;">📅 MARK YOUR CALENDAR</div>
+              <div
+                style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(251, 191, 36, 0.35); border-radius: 8px; padding: 0.55rem 0.75rem;">
+                <div
+                  style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #fbbf24; letter-spacing: 0.08em; font-weight: 700;">
+                  📅 MARK YOUR CALENDAR</div>
                 <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Saturday, Nov 28, 2026</div>
                 <div style="font-size: 0.78rem; color: #38bdf8;">2:00 PM EAT</div>
+                <a id="card-google-cal-link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Graduation+Celebration+%E2%80%94+Ian+Kiromo+Githengu&dates=20261128T110000Z/20261128T160000Z&details=Graduation+Celebration+of+Ian+Kiromo+Githengu+%E2%80%94+B.Sc.+Applied+Computer+Science%2C+Daystar+University+Class+of+2026.%0A%0ADate%3A+Saturday%2C+Nov+28%2C+2026+at+2%3A00+PM+EAT%0AVenue%3A+Thee+Bobians+Residence%2C+Rironi%2C+Limuru%0AGoogle+Maps%3A+https%3A%2F%2Fmaps.google.com%2F%3Fq%3D-1.1562%2C36.6424%0AContact%3A+0796059830+(Ian)+%2F+0722433596%0A%0AWe+look+forward+to+celebrating+with+you%21&location=Thee+Bobians+Residence%2C+Rironi%2C+Limuru+(https%3A%2F%2Fmaps.google.com%2F%3Fq%3D-1.1562%2C36.6424)" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.72rem; color: #fbbf24; text-decoration: underline; margin-top: 0.2rem;">📅 Add to Google Calendar ↗</a>
               </div>
-              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.55rem 0.75rem;">
-                <div style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📍 VENUE &amp; MAP LOCATION</div>
+              <div
+                style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.55rem 0.75rem;">
+                <div
+                  style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">
+                  📍 VENUE &amp; MAP LOCATION</div>
                 <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Thee Bobians Residence</div>
                 <div style="font-size: 0.78rem; color: #cbd5e1;">Rironi, Limuru</div>
-                <a href="https://maps.google.com/?q=-1.1562,36.6424" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.72rem; color: #38bdf8; text-decoration: underline; margin-top: 0.15rem;">🗺️ Open in Google Maps</a>
+                <a href="https://maps.google.com/?q=-1.1562,36.6424" target="_blank" rel="noopener noreferrer"
+                  style="display: inline-block; font-size: 0.72rem; color: #38bdf8; text-decoration: underline; margin-top: 0.15rem;">🗺️
+                  Open in Google Maps</a>
               </div>
-              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.5rem 0.75rem;">
-                <div style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📞 LOST ON ROUTE / INQUIRIES</div>
-                <div style="font-size: 0.82rem; font-weight: 700; color: #fde68a;">0796059830 <span style="font-size: 0.72rem; font-weight: 400; color: #94a3b8;">(Ian)</span> / 0722433596</div>
+              <div
+                style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                <div
+                  style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">
+                  📞 LOST ON ROUTE / INQUIRIES</div>
+                <div style="font-size: 0.82rem; font-weight: 700; color: #fde68a;">0796059830 <span
+                    style="font-size: 0.72rem; font-weight: 400; color: #94a3b8;">(Ian)</span> / 0722433596</div>
               </div>
-              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 0.45rem 0.75rem;">
-                <span id="card-render-ref-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; font-weight: 700;"></span>
+              <div
+                style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 0.45rem 0.75rem;">
+                <span id="card-render-ref-code"
+                  style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; font-weight: 700;"></span>
               </div>
             </div>
 
             <!-- Right Column: Golden Arched Frame & Discreet Pass -->
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.65rem;">
+            <div
+              style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.65rem;">
               <!-- Golden Arched Frame -->
-              <div style="position: relative; width: 100%; max-width: 175px; height: 215px; border-radius: 85px 85px 8px 8px; border: 3px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.35), inset 0 0 15px rgba(251, 191, 36, 0.2); background: radial-gradient(circle at 50% 25%, #1d3557 0%, #0c1a2e 85%); overflow: hidden; display: flex; align-items: flex-end; justify-content: center;">
-                <img id="card-render-portrait" src="assets/images/ian-portrait-cutout.png" alt="Ian Kiromo Githengu" style="width: 100%; height: auto; max-height: 210px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
+              <div
+                style="position: relative; width: 100%; max-width: 175px; height: 215px; border-radius: 85px 85px 8px 8px; border: 3px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.35), inset 0 0 15px rgba(251, 191, 36, 0.2); background: radial-gradient(circle at 50% 25%, #1d3557 0%, #0c1a2e 85%); overflow: hidden; display: flex; align-items: flex-end; justify-content: center;">
+                <img id="card-render-portrait" src="assets/images/ian-portrait-cutout.png" alt="Ian Kiromo Githengu"
+                  style="width: 100%; height: auto; max-height: 210px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
               </div>
 
               <!-- Compact Discreet QR Code (No verification text) -->
-              <div style="background: rgba(14, 26, 45, 0.9); border: 1.5px solid rgba(251, 191, 36, 0.45); border-radius: 10px; padding: 0.45rem 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 175px;">
+              <div
+                style="background: rgba(14, 26, 45, 0.9); border: 1.5px solid rgba(251, 191, 36, 0.45); border-radius: 10px; padding: 0.45rem 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 175px;">
                 <div style="background: #ffffff; border-radius: 5px; padding: 4px; display: inline-block;">
                   <div id="card-qr-code"></div>
                 </div>
-                <div id="card-qr-ref-tiny" style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; margin-top: 0.25rem;"></div>
+                <div id="card-qr-ref-tiny"
+                  style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; margin-top: 0.25rem;">
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Bottom Footer -->
-          <div style="margin-top: 1rem; padding-top: 0.65rem; border-top: 1px solid rgba(251, 191, 36, 0.25); font-size: 0.72rem; color: #94a3b8; letter-spacing: 0.05em;">
+          <div
+            style="margin-top: 1rem; padding-top: 0.65rem; border-top: 1px solid rgba(251, 191, 36, 0.25); font-size: 0.72rem; color: #94a3b8; letter-spacing: 0.05em;">
             Thee Bobians Residence • Rironi, Limuru • November 28, 2026
           </div>
         </div>
 
         <!-- Share & Download Actions -->
-        <div id="card-share-feedback" style="display: none; margin-top: 1rem; padding: 0.7rem 0.9rem; border-radius: 8px; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.45); color: #a7f3d0; font-size: 0.82rem; line-height: 1.45;"></div>
+        <div id="card-share-feedback"
+          style="display: none; margin-top: 1rem; padding: 0.7rem 0.9rem; border-radius: 8px; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.45); color: #a7f3d0; font-size: 0.82rem; line-height: 1.45;">
+        </div>
 
         <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
           <!-- Primary Simplified v2 Share Button -->
-          <button type="button" id="share-card-v2-btn" class="btn btn-sm btn-primary-tech" style="flex: 2 1 200px; background: linear-gradient(135deg, #25D366, #128C7E); border: none; color: #fff; font-weight: 800; font-size: 0.92rem; justify-content: center; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4); padding: 0.75rem 1.25rem;">
+          <button type="button" id="share-card-v2-btn" class="btn btn-sm btn-primary-tech"
+            style="flex: 2 1 200px; background: linear-gradient(135deg, #25D366, #128C7E); border: none; color: #fff; font-weight: 800; font-size: 0.92rem; justify-content: center; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4); padding: 0.75rem 1.25rem;">
             📱 Share v2
           </button>
-          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
+          <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-outline-cyber"
+            style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
             Share v1
           </button>
-          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber" style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
+          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber"
+            style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
             📤 Share Image
           </button>
-          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 120px; justify-content: center; font-size: 0.78rem;">
+          <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech"
+            style="flex: 1 1 120px; justify-content: center; font-size: 0.78rem;">
             💾 Download PNG
           </button>
-          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech" style="flex: 1 1 100px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center; font-size: 0.78rem;">
+          <a id="card-gcal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Graduation+Celebration+%E2%80%94+Ian+Kiromo+Githengu&dates=20261128T110000Z/20261128T160000Z&details=Graduation+Celebration+of+Ian+Kiromo+Githengu+%E2%80%94+B.Sc.+Applied+Computer+Science%2C+Daystar+University+Class+of+2026.%0A%0ADate%3A+Saturday%2C+Nov+28%2C+2026+at+2%3A00+PM+EAT%0AVenue%3A+Thee+Bobians+Residence%2C+Rironi%2C+Limuru%0AGoogle+Maps%3A+https%3A%2F%2Fmaps.google.com%2F%3Fq%3D-1.1562%2C36.6424%0AContact%3A+0796059830+(Ian)+%2F+0722433596%0A%0AWe+look+forward+to+celebrating+with+you%21&location=Thee+Bobians+Residence%2C+Rironi%2C+Limuru+(https%3A%2F%2Fmaps.google.com%2F%3Fq%3D-1.1562%2C36.6424)" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-cyber"
+            style="flex: 1 1 135px; justify-content: center; font-size: 0.78rem; color: #fbbf24; border-color: rgba(251, 191, 36, 0.45); text-decoration: none;">
+            📅 Google Calendar
+          </a>
+          <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech"
+            style="flex: 1 1 100px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center; font-size: 0.78rem;">
             + New Card
           </button>
         </div>
@@ -1337,23 +1612,30 @@
     <div class="modal-card" style="max-width: 560px;">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">📷 QR Code Scanner — Door Verification</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Point the camera at a guest's invitation QR code for instant verification.</p>
+          <h3
+            style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">
+            📷 QR Code Scanner — Door Verification</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Point the camera at a guest's
+            invitation QR code for instant verification.</p>
         </div>
         <button type="button" class="modal-close" id="close-qr-scanner-btn" aria-label="Close modal">&times;</button>
       </div>
 
       <div style="margin-top: 1.25rem;">
         <!-- Camera viewport -->
-        <div id="qr-reader" style="width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.4); background: #000;"></div>
+        <div id="qr-reader"
+          style="width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid rgba(16, 185, 129, 0.4); background: #000;">
+        </div>
 
         <!-- Scanner status message -->
-        <div id="qr-scanner-status" style="text-align: center; padding: 0.85rem; font-size: 0.88rem; color: #94a3b8; margin-top: 0.75rem;">
+        <div id="qr-scanner-status"
+          style="text-align: center; padding: 0.85rem; font-size: 0.88rem; color: #94a3b8; margin-top: 0.75rem;">
           📸 Camera will activate when you open this scanner. Allow camera access if prompted.
         </div>
 
         <!-- Scan Result -->
-        <div id="qr-scan-result" style="display: none; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; transition: all 0.2s;">
+        <div id="qr-scan-result"
+          style="display: none; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; transition: all 0.2s;">
           <!-- Dynamically populated by scan results -->
         </div>
       </div>
@@ -1367,8 +1649,12 @@
     <div class="modal-card" style="max-width: 640px;">
       <div class="modal-header">
         <div>
-          <h3 style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">📥 Read Excel / Spreadsheet Data</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Import guests directly from your Excel workbook (<code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>) or Google Sheet so gate verification &amp; headcount stay in sync.</p>
+          <h3
+            style="font-family: var(--font-display, 'Space Grotesk', sans-serif); font-size: 1.35rem; color: var(--text-primary, #ffffff); margin-bottom: 0.25rem;">
+            📥 Read Excel / Spreadsheet Data</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted, #94a3b8); margin: 0;">Import guests directly from your
+            Excel workbook (<code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>) or Google Sheet so gate
+            verification &amp; headcount stay in sync.</p>
         </div>
         <button type="button" class="modal-close" id="close-excel-import-btn" aria-label="Close modal">&times;</button>
       </div>
@@ -1376,56 +1662,78 @@
       <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1.15rem;">
 
         <!-- Option A: Upload / Read Local Excel File -->
-        <div id="excel-drop-zone" style="border: 2px dashed rgba(16, 185, 129, 0.45); border-radius: 14px; padding: 1.5rem 1.25rem; text-align: center; background: rgba(16, 185, 129, 0.06); cursor: pointer; transition: all 0.2s;">
+        <div id="excel-drop-zone"
+          style="border: 2px dashed rgba(16, 185, 129, 0.45); border-radius: 14px; padding: 1.5rem 1.25rem; text-align: center; background: rgba(16, 185, 129, 0.06); cursor: pointer; transition: all 0.2s;">
           <div style="font-size: 2rem; margin-bottom: 0.35rem;">📊</div>
           <div style="font-weight: 700; color: #ffffff; font-size: 0.98rem; margin-bottom: 0.25rem;">
             Drop your Excel Sheet here, or click to browse
           </div>
           <p style="font-size: 0.78rem; color: #94a3b8; margin: 0 0 0.9rem 0;">
-            Supports <code>.xlsx</code>, <code>.xls</code>, and <code>.csv</code> files (including copies downloaded from OneDrive Excel Online or Google Sheets)
+            Supports <code>.xlsx</code>, <code>.xls</code>, and <code>.csv</code> files (including copies downloaded
+            from OneDrive Excel Online or Google Sheets)
           </p>
-          <input type="file" id="excel-file-input" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" style="display: none;">
-          <button type="button" id="browse-excel-btn" class="btn btn-sm btn-primary-tech" style="background: linear-gradient(135deg, #10b981, #059669); border: none;">
+          <input type="file" id="excel-file-input"
+            accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
+            style="display: none;">
+          <button type="button" id="browse-excel-btn" class="btn btn-sm btn-primary-tech"
+            style="background: linear-gradient(135deg, #10b981, #059669); border: none;">
             📂 Choose Excel / CSV File
           </button>
         </div>
 
         <!-- Option B: Quick Fetch from Cloud Sheet Link -->
-        <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 1rem;">
-          <label style="display: block; font-size: 0.76rem; font-family: var(--font-mono, monospace); color: #7dd3fc; margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 700;">
+        <div
+          style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 1rem;">
+          <label
+            style="display: block; font-size: 0.76rem; font-family: var(--font-mono, monospace); color: #7dd3fc; margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 700;">
             Or Read Directly from Google Sheet / Published CSV Link
           </label>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <input type="url" id="excel-sheet-url-input" placeholder="Paste Google Sheet URL (https://docs.google.com/spreadsheets/d/...) or CSV link" class="tech-input" style="flex: 1; min-width: 220px; border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; padding: 0.6rem 0.85rem; background: rgba(10, 20, 36, 0.9); color: #ffffff; font-size: 0.82rem; font-family: var(--font-mono, monospace);">
-            <button type="button" id="fetch-sheet-url-btn" class="btn btn-sm btn-outline-cyber" style="white-space: nowrap;">
+            <input type="url" id="excel-sheet-url-input"
+              placeholder="Paste Google Sheet URL (https://docs.google.com/spreadsheets/d/...) or CSV link"
+              class="tech-input"
+              style="flex: 1; min-width: 220px; border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; padding: 0.6rem 0.85rem; background: rgba(10, 20, 36, 0.9); color: #ffffff; font-size: 0.82rem; font-family: var(--font-mono, monospace);">
+            <button type="button" id="fetch-sheet-url-btn" class="btn btn-sm btn-outline-cyber"
+              style="white-space: nowrap;">
               ⚡ Read Link
             </button>
           </div>
           <small style="display: block; font-size: 0.72rem; color: #94a3b8; margin-top: 0.45rem;">
-            Tip: For Microsoft Excel Online (<code>1drv.ms</code>), click <strong>File &rarr; Save As &rarr; Download a Copy (.xlsx)</strong> and select it above. For Google Sheets, set sharing to "Anyone with the link" or use your Apps Script webhook.
+            Tip: For Microsoft Excel Online (<code>1drv.ms</code>), click <strong>File &rarr; Save As &rarr; Download a
+              Copy (.xlsx)</strong> and select it above. For Google Sheets, set sharing to "Anyone with the link" or use
+            your Apps Script webhook.
           </small>
         </div>
 
         <!-- Status & Parsed Preview -->
-        <div id="excel-import-status" style="display: none; padding: 0.85rem 1rem; border-radius: 10px; font-size: 0.85rem;"></div>
+        <div id="excel-import-status"
+          style="display: none; padding: 0.85rem 1rem; border-radius: 10px; font-size: 0.85rem;"></div>
 
-        <div id="excel-preview-box" style="display: none; background: rgba(10, 20, 36, 0.85); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 1rem; max-height: 220px; overflow-y: auto;">
+        <div id="excel-preview-box"
+          style="display: none; background: rgba(10, 20, 36, 0.85); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 1rem; max-height: 220px; overflow-y: auto;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-            <strong style="color: #fbbf24; font-size: 0.85rem;" id="excel-preview-title">Previewing Parsed Records</strong>
-            <span style="font-family: var(--font-mono, monospace); font-size: 0.75rem; color: #34d399;" id="excel-preview-headcount"></span>
+            <strong style="color: #fbbf24; font-size: 0.85rem;" id="excel-preview-title">Previewing Parsed
+              Records</strong>
+            <span style="font-family: var(--font-mono, monospace); font-size: 0.75rem; color: #34d399;"
+              id="excel-preview-headcount"></span>
           </div>
-          <div id="excel-preview-list" style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem; color: #cbd5e1;"></div>
+          <div id="excel-preview-list"
+            style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem; color: #cbd5e1;"></div>
         </div>
 
-        <label id="excel-cloud-push-wrap" style="display: none; align-items: center; gap: 0.55rem; font-size: 0.82rem; color: #cbd5e1; cursor: pointer;">
-          <input type="checkbox" id="excel-sync-cloud-checkbox" checked style="width: 16px; height: 16px; accent-color: #10b981;">
+        <label id="excel-cloud-push-wrap"
+          style="display: none; align-items: center; gap: 0.55rem; font-size: 0.82rem; color: #cbd5e1; cursor: pointer;">
+          <input type="checkbox" id="excel-sync-cloud-checkbox" checked
+            style="width: 16px; height: 16px; accent-color: #10b981;">
           <span>Also sync imported rows to Google Sheets Cloud (so phones &amp; other devices receive them)</span>
         </label>
 
         <!-- Action Footer -->
-        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; border-top: 1px solid rgba(148, 163, 184, 0.15); padding-top: 0.85rem;">
+        <div
+          style="display: flex; justify-content: flex-end; gap: 0.75rem; border-top: 1px solid rgba(148, 163, 184, 0.15); padding-top: 0.85rem;">
           <button type="button" id="cancel-excel-import-btn" class="btn btn-sm btn-ghost-tech">Close</button>
-          <button type="button" id="confirm-excel-merge-btn" class="btn btn-sm btn-primary-tech" style="display: none; background: linear-gradient(135deg, #10b981, #059669); border: none;">
+          <button type="button" id="confirm-excel-merge-btn" class="btn btn-sm btn-primary-tech"
+            style="display: none; background: linear-gradient(135deg, #10b981, #059669); border: none;">
             ✓ Merge &amp; Update Web Roster
           </button>
         </div>
@@ -1440,7 +1748,7 @@
        ORGANISER PORTAL ENGINE
        Protected by Client-Side Cryptographic SHA-256 Hashing
        =================================================================== */
-    (function() {
+    (function () {
       const AUTH_STORAGE_KEY = 'ikg_organiser_auth_session';
       const PASS_HASH_KEY = 'ikg_organiser_pass_hash_v2';
       const LOCAL_CACHE_KEY = 'ikg_rsvp_admin_cache_v3';
@@ -1483,7 +1791,7 @@
 
         try {
           localStorage.setItem('ikg_site_theme', theme);
-        } catch (e) {}
+        } catch (e) { }
       }
 
       applyTheme(savedTheme);
@@ -1686,7 +1994,7 @@
         loadRosterData();
       }
 
-            // 6. Comprehensive Data Fetching (Cloud Sheets + All Storage Keys + Backend API)
+      // 6. Comprehensive Data Fetching (Cloud Sheets + All Storage Keys + Backend API)
       async function loadRosterData() {
         const itemMap = new Map();
 
@@ -1780,16 +2088,16 @@
                 itemMap.set(id, parsed);
               }
             }
-          } catch (e) {}
+          } catch (e) { }
         });
 
         // 2. Fetch from Google Sheets Cloud Webhook if configured (skip human document viewer URLs like 1drv.ms)
         const cloudWebhook = (localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec').trim();
-        const isHumanDocLink = cloudWebhook.includes('1drv.ms') || 
-                               cloudWebhook.includes('onedrive') || 
-                               cloudWebhook.includes('sharepoint.com') || 
-                               cloudWebhook.includes('office.com') || 
-                               cloudWebhook.includes('docs.google.com/spreadsheets');
+        const isHumanDocLink = cloudWebhook.includes('1drv.ms') ||
+          cloudWebhook.includes('onedrive') ||
+          cloudWebhook.includes('sharepoint.com') ||
+          cloudWebhook.includes('office.com') ||
+          cloudWebhook.includes('docs.google.com/spreadsheets');
 
         const healthBanner = document.getElementById('cloud-sync-health-banner');
         let cloudSyncOk = false;
@@ -1949,7 +2257,7 @@
               });
             }
           }
-        } catch (err) {}
+        } catch (err) { }
 
         let combined = Array.from(itemMap.values());
 
@@ -1968,7 +2276,7 @@
         try {
           localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(combined));
           localStorage.setItem('ikg_all_rsvps_cache', JSON.stringify(combined));
-        } catch (e) {}
+        } catch (e) { }
 
         currentData = combined;
         updateMetricsAndTable();
@@ -2098,7 +2406,7 @@
 
         const filtered = currentData.filter(g => {
           const isAttending = g.attending === 'yes' || g.attending === true || g.attending === 'Attending In-Person' || g.attending === 'Yes';
-          
+
           if (activeFilter === 'attending' && !isAttending) return false;
           if (activeFilter === 'declined' && isAttending) return false;
 
@@ -2139,14 +2447,14 @@
             <td><code class="text-accent-blue" style="font-size: 0.78rem;">#${g.referenceCode || 'IKG-RSVP'}</code></td>
             <td><strong>${escapeHtml(g.fullName || 'Honored Guest')}</strong></td>
             <td>
-              ${isAttending 
-                ? `<span class="party-size-pill">👥 ${size} ${size === 1 ? 'Guest' : 'Guests'}</span>` 
-                : `<span class="text-muted">0</span>`}
+              ${isAttending
+              ? `<span class="party-size-pill">👥 ${size} ${size === 1 ? 'Guest' : 'Guests'}</span>`
+              : `<span class="text-muted">0</span>`}
             </td>
             <td>
-              ${isAttending 
-                ? `<span class="status-badge-attending">● Confirmed Attending</span>` 
-                : `<span class="status-badge-declined">✕ Declined</span>`}
+              ${isAttending
+              ? `<span class="status-badge-attending">● Confirmed Attending</span>`
+              : `<span class="status-badge-declined">✕ Declined</span>`}
             </td>
             <td>
               ${isAttending ? getDietaryBadge(g.dietary) : '<span class="text-muted">—</span>'}
@@ -2160,14 +2468,14 @@
             </td>
             <td style="font-size: 0.78rem; color: #94a3b8; white-space: nowrap;">
               ${(() => {
-                const rawDate = g.submittedAt || g.timestamp;
-                if (!rawDate) return '<span class="text-muted">Just now</span>';
-                const d = new Date(rawDate);
-                if (isNaN(d.getTime())) return escapeHtml(rawDate);
-                const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-                const timeStr = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
-                return `<div><strong>${dateStr}</strong></div><div style="font-size: 0.72rem; color: var(--accent-blue);">${timeStr}</div>`;
-              })()}
+              const rawDate = g.submittedAt || g.timestamp;
+              if (!rawDate) return '<span class="text-muted">Just now</span>';
+              const d = new Date(rawDate);
+              if (isNaN(d.getTime())) return escapeHtml(rawDate);
+              const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+              const timeStr = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true });
+              return `<div><strong>${dateStr}</strong></div><div style="font-size: 0.72rem; color: var(--accent-blue);">${timeStr}</div>`;
+            })()}
             </td>
             <td>
               <button type="button" class="btn btn-sm btn-outline-cyber view-row-pass-btn" data-ref="${escapeHtml(g.referenceCode || '')}" data-name="${escapeHtml(g.fullName || '')}" data-count="${size}" data-phone="${escapeHtml(g.phoneNumber || '')}" data-diet="${escapeHtml(g.dietary || 'Standard Menu')}" style="padding: 0.25rem 0.6rem; font-size: 0.74rem; border-color: rgba(245, 158, 11, 0.45); color: #fbbf24; white-space: nowrap;" title="View & share digital pass with QR code">
@@ -2215,7 +2523,7 @@
           currentData = [...SAMPLE_RECORDS];
           try {
             localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
-          } catch (e) {}
+          } catch (e) { }
           updateMetricsAndTable();
         });
       }
@@ -2234,12 +2542,12 @@
             localStorage.setItem('ikg_rsvp_admin_cache_v2', JSON.stringify([]));
             localStorage.setItem('ikg_rsvp_cache_v1', JSON.stringify([]));
             localStorage.setItem('ikg_all_rsvps_cache', JSON.stringify([]));
-          } catch (e) {}
+          } catch (e) { }
 
           try {
             const activePin = sessionStorage.getItem('ikg_organiser_active_key') || '';
             await fetch(`/api/clear-rsvps?pin=${encodeURIComponent(activePin)}`, { method: 'POST' });
-          } catch (e) {}
+          } catch (e) { }
 
           updateMetricsAndTable();
           alert("✓ All test data has been cleared! Your dashboard is now 100% clean and ready for real RSVPs.");
@@ -2341,7 +2649,7 @@
             if (rawManual) manualList = JSON.parse(rawManual);
             manualList.unshift(newGuest);
             localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
-          } catch (err) {}
+          } catch (err) { }
 
           // Attempt Cloud Webhook POST if configured
           const webhookUrl = (localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec').trim();
@@ -2360,7 +2668,7 @@
                   phoneNumber: safePhoneForSheets
                 })
               });
-            } catch (postErr) {}
+            } catch (postErr) { }
           }
 
           updateMetricsAndTable();
@@ -2414,10 +2722,10 @@
           const n = (g.name || g.fullName || '').toLowerCase();
           const p = (g.phone || g.phoneNumber || '').toLowerCase().replace(/[^0-9]/g, '');
           const cleanDigits = query.replace(/[^0-9]/g, '');
-          
-          return r === cleanQuery || r.includes(cleanQuery) || 
-                 n === query || n.includes(query) || 
-                 (cleanDigits.length >= 4 && p.includes(cleanDigits));
+
+          return r === cleanQuery || r.includes(cleanQuery) ||
+            n === query || n.includes(query) ||
+            (cleanDigits.length >= 4 && p.includes(cleanDigits));
         });
 
         verifierResultBox.style.display = 'block';
@@ -2712,7 +3020,7 @@
             if (rawManual) manualList = JSON.parse(rawManual);
             manualList.unshift(newGuest);
             localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
-          } catch (err) {}
+          } catch (err) { }
 
           updateMetricsAndTable();
 
@@ -2727,9 +3035,9 @@
                 keepalive: true,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...newGuest, phoneNumber: safePhone })
-              }).catch(() => {});
+              }).catch(() => { });
               console.log('✓ Organiser invitation card fed directly to Google Sheets database:', refCode);
-            } catch (e) {}
+            } catch (e) { }
           }
 
           // 3. Populate Card Preview (Touch of Gold design)
@@ -2741,7 +3049,7 @@
           const qrContainer = document.getElementById('card-qr-code');
           qrContainer.innerHTML = '';
           const verifyUrl = `${getAppBaseUrl()}admin.html?verify=${refCode}`;
-          
+
           if (typeof QRCode !== 'undefined') {
             new QRCode(qrContainer, {
               text: verifyUrl,
@@ -2782,10 +3090,25 @@
         return 'https://khale-git.github.io/graduation-rsvp/';
       }
 
+      function getGoogleCalendarUrl() {
+        const title = encodeURIComponent("Graduation Celebration — Ian Kiromo Githengu");
+        const details = encodeURIComponent(
+          "Graduation Celebration of Ian Kiromo Githengu — B.Sc. Applied Computer Science, Daystar University Class of 2026.\n\n" +
+          "Date: Saturday, November 28, 2026 at 2:00 PM EAT\n" +
+          "Venue: Thee Bobians Residence, Rironi, Limuru\n" +
+          "Google Maps: https://maps.google.com/?q=-1.1562,36.6424\n" +
+          "Contact: 0796059830 (Ian) / 0722433596\n\n" +
+          "We look forward to celebrating with you!"
+        );
+        const loc = encodeURIComponent("Thee Bobians Residence, Rironi, Limuru (https://maps.google.com/?q=-1.1562,36.6424)");
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261128T110000Z/20261128T160000Z&details=${details}&location=${loc}`;
+      }
+
       // Clean, simple Invitation Message V2 (No RSVP/confirming prompts, No party count, with Google Maps, Call number & Calendar links)
       function buildCleanInviteMessageV2(name, refCode) {
         const celebrationUrl = getAppBaseUrl();
         const mapsUrl = 'https://maps.google.com/?q=-1.1562,36.6424';
+        const calUrl = getGoogleCalendarUrl();
 
         return `*GRADUATION CELEBRATION INVITATION*\n\n` +
           `Dear *${name}*,\n\n` +
@@ -2796,6 +3119,7 @@
           `- *Time:* 2:00 PM EAT\n` +
           `- *Venue:* Thee Bobians Residence, Rironi, Limuru\n` +
           `- *Location (Google Maps):* ${mapsUrl}\n` +
+          `- *Add to Google Calendar:* ${calUrl}\n` +
           `- *Contact / Lost on Route:* 0796059830 (Ian) / 0722433596\n` +
           `- *Invitation Code:* #${refCode}\n\n` +
           `*Mark Your Calendar:* Saturday, Nov 28 at 2:00 PM EAT\n\n` +
@@ -3180,7 +3504,7 @@
           if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(message).catch(() => {});
+                navigator.clipboard.writeText(message).catch(() => { });
               }
               await navigator.share({
                 files: [file],
@@ -3209,7 +3533,7 @@
             try {
               await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
               copiedImg = true;
-            } catch (err) {}
+            } catch (err) { }
           }
 
           showCardShareFeedback(
@@ -3241,7 +3565,7 @@
           if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(message).catch(() => {});
+                navigator.clipboard.writeText(message).catch(() => { });
               }
               await navigator.share({
                 files: [file],
@@ -3270,7 +3594,7 @@
             try {
               await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
               copiedImg = true;
-            } catch (err) {}
+            } catch (err) { }
           }
 
           showCardShareFeedback(
@@ -3443,8 +3767,8 @@
           try {
             html5QrScanner.stop().then(() => {
               html5QrScanner.clear();
-            }).catch(() => {});
-          } catch (e) {}
+            }).catch(() => { });
+          } catch (e) { }
           html5QrScanner = null;
         }
       }
@@ -3966,7 +4290,7 @@
           try {
             localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
             localStorage.setItem('ikg_all_rsvps_cache', JSON.stringify(currentData));
-          } catch (e) {}
+          } catch (e) { }
 
           // Optionally push newly discovered Excel rows up to Google Sheets Webhook
           const syncCloudChk = document.getElementById('excel-sync-cloud-checkbox');
@@ -3995,7 +4319,7 @@
                   })
                 });
                 pushedCount++;
-              } catch (e) {}
+              } catch (e) { }
             }
           }
 
@@ -4013,4 +4337,5 @@
 
   </script>
 </body>
+
 </html>
