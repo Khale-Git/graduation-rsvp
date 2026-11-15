@@ -10,7 +10,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css?v=2026.6">
 
@@ -1181,18 +1181,18 @@
             <input type="text" id="card-guest-name" required placeholder="e.g. The Maina Family" class="tech-input" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
           </div>
           <div>
-            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Number of Guests *</label>
-            <select id="card-guest-count" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
-              <option value="1">1 Guest</option>
-              <option value="2" selected>2 Guests</option>
-              <option value="3">3 Guests</option>
-              <option value="4">4 Guests</option>
-              <option value="5">5 Guests (Family)</option>
-              <option value="6">6 Guests</option>
-              <option value="7">7 Guests</option>
-              <option value="8">8 Guests</option>
-              <option value="9">9 Guests</option>
-              <option value="10">10 Guests (Large Group)</option>
+            <label style="display: block; font-size: 0.8rem; font-family: var(--font-mono, monospace); color: var(--text-secondary, #cbd5e1); margin-bottom: 0.35rem; text-transform: uppercase;">Relationship / Category *</label>
+            <select id="card-guest-category" class="tech-select" style="width: 100%; border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.3)); border-radius: 8px; padding: 0.75rem 1rem; background: var(--bg-input, rgba(14, 26, 45, 0.85)); color: var(--text-primary, #ffffff);">
+              <option value="—" selected>— (Just a dash / General)</option>
+              <option value="Family">Family (&amp; Family)</option>
+              <option value="Friend">Friend</option>
+              <option value="Classmate">Classmate</option>
+              <option value="Workmate">Workmate</option>
+              <option value="1 Guest">1 Guest</option>
+              <option value="2 Guests">2 Guests</option>
+              <option value="3 Guests">3 Guests</option>
+              <option value="4 Guests">4 Guests</option>
+              <option value="5 Guests">5 Guests (Family)</option>
             </select>
           </div>
         </div>
@@ -1224,75 +1224,84 @@
       <!-- Generated Card Preview -->
       <div id="card-preview-section" style="display: none; margin-top: 1.5rem;">
         <div id="invitation-card-render" style="
-          background: linear-gradient(135deg, #091322 0%, #15263d 50%, #0c182b 100%);
-          border: 2px solid #d97706;
+          background: linear-gradient(145deg, #071221 0%, #0d1e38 50%, #081426 100%);
+          border: 2px solid #fbbf24;
+          box-shadow: 0 12px 36px rgba(0,0,0,0.65), 0 0 24px rgba(251, 191, 36, 0.18);
           border-radius: 16px;
-          padding: 2rem 1.5rem;
+          padding: 1.75rem 1.4rem;
           text-align: center;
           position: relative;
           overflow: hidden;
           color: #ffffff;
         ">
-          <!-- Gold corner accents -->
-          <div style="position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 16px 0 0 0;"></div>
-          <div style="position: absolute; top: 0; right: 0; width: 40px; height: 40px; border-top: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 16px 0 0;"></div>
-          <div style="position: absolute; bottom: 0; left: 0; width: 40px; height: 40px; border-bottom: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 0 0 0 16px;"></div>
-          <div style="position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; border-bottom: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 0 16px 0;"></div>
+          <!-- Gold corner L-accents -->
+          <div style="position: absolute; top: 0; left: 0; width: 44px; height: 44px; border-top: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 16px 0 0 0;"></div>
+          <div style="position: absolute; top: 0; right: 0; width: 44px; height: 44px; border-top: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 16px 0 0;"></div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 44px; height: 44px; border-bottom: 3px solid #fbbf24; border-left: 3px solid #fbbf24; border-radius: 0 0 0 16px;"></div>
+          <div style="position: absolute; bottom: 0; right: 0; width: 44px; height: 44px; border-bottom: 3px solid #fbbf24; border-right: 3px solid #fbbf24; border-radius: 0 0 16px 0;"></div>
 
-          <!-- Header -->
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #fbbf24; font-weight: 700; margin-bottom: 0.3rem;">DAYSTAR UNIVERSITY • CLASS OF 2026</div>
-          <div style="font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-bottom: 0.15rem;">Graduation Celebration</div>
-          <div style="color: #fbbf24; font-size: 0.85rem; letter-spacing: 0.5em; margin-bottom: 0.75rem;">✦ ✦ ✦</div>
-
-          <!-- Graduate Name -->
-          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 20%, #bae6fd 60%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.15rem;">Ian Kiromo Githengu</div>
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #38bdf8;">B.Sc. Applied Computer Science</div>
-
-          <!-- Graduate Cutout Portrait (Background Removed) -->
-          <div style="display: flex; justify-content: center; margin: 0.65rem auto 0.4rem;">
-            <div style="position: relative; display: inline-block;">
-              <img id="card-render-portrait" src="assets/images/ian-portrait-cutout.png" alt="Ian Kiromo Githengu" style="max-height: 160px; width: auto; object-fit: contain; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.7)); border-radius: 8px;">
+          <!-- Top Special Invitation Banner (Touch of Gold Ribbon) -->
+          <div style="text-align: center; margin-bottom: 0.65rem;">
+            <div style="display: inline-block; padding: 0.32rem 1.15rem; border: 1.5px solid #fbbf24; border-radius: 999px; background: rgba(251, 191, 36, 0.12); box-shadow: 0 0 16px rgba(251, 191, 36, 0.25);">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: #fbbf24; font-weight: 800; text-transform: uppercase;">✦ SPECIAL INVITATION TO: <span id="card-render-banner-name" style="color: #ffffff;">REV. KIRAGU</span> ✦</span>
             </div>
           </div>
 
-          <!-- Divider -->
-          <div style="width: 60%; height: 1px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); margin: 0.65rem auto;"></div>
+          <!-- "You're Invited" Cursive Calligraphy Script Header -->
+          <div style="font-family: 'Alex Brush', 'Great Vibes', cursive; font-size: 2.9rem; font-weight: 700; background: linear-gradient(135deg, #fef08a 0%, #fbbf24 50%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin: 0.2rem auto 0.25rem auto; filter: drop-shadow(0 2px 10px rgba(251, 191, 36, 0.35));">You're Invited</div>
 
-          <!-- Cordially Invites -->
-          <div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 0.2rem;">Cordially invites</div>
-          <div id="card-render-guest-name" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fde68a; margin-bottom: 0.2rem;"></div>
-          <div id="card-render-guest-count" style="display: none;"></div>
+          <!-- Ceremony Subheading -->
+          <div style="font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.22em; color: #cbd5e1; margin-bottom: 0.2rem;">TO THE GRADUATION CEREMONY OF</div>
+          <div style="font-family: 'Cinzel', serif; font-size: 1.35rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 20%, #fef08a 60%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.08em; margin-bottom: 0.15rem;">IAN KIROMO GITHENGU</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #38bdf8; margin-bottom: 0.3rem;">B.Sc. Applied Computer Science — Daystar University, Class of 2026</div>
+          <div style="font-size: 0.68rem; color: #94a3b8; letter-spacing: 0.06em; margin-bottom: 0.75rem; font-style: italic;">PLEASE JOIN US IN CELEBRATING THIS SIGNIFICANT MILESTONE</div>
 
-          <!-- Bottom Section: Left Event Details + Right Compact QR Code (Discreet, No Verification Text) -->
-          <div style="display: grid; grid-template-columns: 1.35fr 0.75fr; gap: 0.75rem; margin-top: 0.85rem; align-items: stretch; text-align: left;">
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.55rem 0.75rem;">
-                <div style="font-size: 0.66rem; font-family: 'JetBrains Mono', monospace; color: #fbbf24; letter-spacing: 0.08em; font-weight: 700;">📅 MARK YOUR CALENDAR</div>
+          <!-- Gold Divider -->
+          <div style="width: 70%; height: 1px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); margin: 0 auto 0.85rem auto;"></div>
+
+          <!-- Main Two-Column Section: Left Event Cards + Right Arched Portrait & Pass -->
+          <div style="display: grid; grid-template-columns: 1.18fr 0.82fr; gap: 0.85rem; align-items: stretch; text-align: left;">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: center;">
+              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(251, 191, 36, 0.35); border-radius: 8px; padding: 0.55rem 0.75rem;">
+                <div style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #fbbf24; letter-spacing: 0.08em; font-weight: 700;">📅 MARK YOUR CALENDAR</div>
                 <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Saturday, Nov 28, 2026</div>
                 <div style="font-size: 0.78rem; color: #38bdf8;">2:00 PM EAT</div>
               </div>
-              <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.55rem 0.75rem;">
-                <div style="font-size: 0.66rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📍 VENUE &amp; MAPS</div>
+              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.55rem 0.75rem;">
+                <div style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📍 VENUE &amp; MAP LOCATION</div>
                 <div style="font-size: 0.92rem; font-weight: 700; color: #ffffff;">Thee Bobians Residence</div>
                 <div style="font-size: 0.78rem; color: #cbd5e1;">Rironi, Limuru</div>
-                <a href="https://maps.google.com/?q=-1.1562,36.6424" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.72rem; color: #38bdf8; text-decoration: underline; margin-top: 0.2rem;">🗺️ Open in Google Maps</a>
+                <a href="https://maps.google.com/?q=-1.1562,36.6424" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.72rem; color: #38bdf8; text-decoration: underline; margin-top: 0.15rem;">🗺️ Open in Google Maps</a>
               </div>
-              <div style="background: rgba(14, 26, 45, 0.75); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.5rem 0.75rem;">
-                <div style="font-size: 0.66rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📞 LOST ON ROUTE / INQUIRIES</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #fde68a;">0796059830 <span style="font-size: 0.72rem; font-weight: 400; color: #94a3b8;">(Ian)</span></div>
+              <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                <div style="font-size: 0.64rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; letter-spacing: 0.08em;">📞 LOST ON ROUTE / INQUIRIES</div>
+                <div style="font-size: 0.82rem; font-weight: 700; color: #fde68a;">0796059830 <span style="font-size: 0.72rem; font-weight: 400; color: #94a3b8;">(Ian)</span> / 0722433596</div>
               </div>
               <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 0.45rem 0.75rem;">
                 <span id="card-render-ref-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; font-weight: 700;"></span>
               </div>
             </div>
 
-            <!-- Compact Bottom-Right QR Container (Discreet, No Verification Text) -->
-            <div style="background: rgba(14, 26, 45, 0.85); border: 1px solid rgba(251, 191, 36, 0.35); border-radius: 12px; padding: 0.65rem 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-              <div style="background: #ffffff; border-radius: 6px; padding: 6px; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
-                <div id="card-qr-code"></div>
+            <!-- Right Column: Golden Arched Frame & Discreet Pass -->
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 0.65rem;">
+              <!-- Golden Arched Frame -->
+              <div style="position: relative; width: 100%; max-width: 175px; height: 215px; border-radius: 85px 85px 8px 8px; border: 3px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.35), inset 0 0 15px rgba(251, 191, 36, 0.2); background: radial-gradient(circle at 50% 25%, #1d3557 0%, #0c1a2e 85%); overflow: hidden; display: flex; align-items: flex-end; justify-content: center;">
+                <img id="card-render-portrait" src="assets/images/ian-portrait-cutout.png" alt="Ian Kiromo Githengu" style="width: 100%; height: auto; max-height: 210px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
               </div>
-              <div id="card-qr-ref-tiny" style="font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; margin-top: 0.35rem;"></div>
+
+              <!-- Compact Discreet QR Code (No verification text) -->
+              <div style="background: rgba(14, 26, 45, 0.9); border: 1.5px solid rgba(251, 191, 36, 0.45); border-radius: 10px; padding: 0.45rem 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 175px;">
+                <div style="background: #ffffff; border-radius: 5px; padding: 4px; display: inline-block;">
+                  <div id="card-qr-code"></div>
+                </div>
+                <div id="card-qr-ref-tiny" style="font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; margin-top: 0.25rem;"></div>
+              </div>
             </div>
+          </div>
+
+          <!-- Bottom Footer -->
+          <div style="margin-top: 1rem; padding-top: 0.65rem; border-top: 1px solid rgba(251, 191, 36, 0.25); font-size: 0.72rem; color: #94a3b8; letter-spacing: 0.05em;">
+            Thee Bobians Residence • Rironi, Limuru • November 28, 2026
           </div>
         </div>
 
@@ -2635,42 +2644,69 @@
       }
 
       if (generateCardBtn) {
-        generateCardBtn.addEventListener('click', () => {
+        generateCardBtn.addEventListener('click', async () => {
           const guestName = (document.getElementById('card-guest-name').value || '').trim();
           if (!guestName) {
             alert('Please enter the guest name.');
             return;
           }
 
-          const guestCount = document.getElementById('card-guest-count').value;
+          const categoryEl = document.getElementById('card-guest-category');
+          const category = categoryEl ? categoryEl.value : '—';
           const guestPhone = (document.getElementById('card-guest-phone').value || '').trim();
           const guestDietary = document.getElementById('card-guest-dietary').value;
+
+          // Compute polished display & banner names
+          let displayName = guestName;
+          let bannerName = guestName.toUpperCase();
+          if (category === 'Family') {
+            if (!guestName.toLowerCase().includes('family')) {
+              displayName = `${guestName} & Family`;
+              bannerName = `${guestName.toUpperCase()} AND FAMILY`;
+            }
+          } else if (category === 'Friend') {
+            displayName = `${guestName} (Friend)`;
+            bannerName = `${guestName.toUpperCase()} (FRIEND)`;
+          } else if (category === 'Classmate') {
+            displayName = `${guestName} (Classmate)`;
+            bannerName = `${guestName.toUpperCase()} (CLASSMATE)`;
+          } else if (category === 'Workmate') {
+            displayName = `${guestName} (Workmate)`;
+            bannerName = `${guestName.toUpperCase()} (WORKMATE)`;
+          }
+
+          let headcount = 1;
+          const countMatch = category.match(/(\d+)\s*Guest/i);
+          if (countMatch) {
+            headcount = parseInt(countMatch[1], 10);
+          } else if (category === 'Family') {
+            headcount = 2;
+          }
 
           // Generate reference code
           const randSuffix = Math.floor(1000 + Math.random() * 9000);
           const refCode = 'IKG-C' + randSuffix;
           const nowIso = new Date().toISOString();
 
-          // Create the guest entry and add to roster
+          // Create the guest entry and immediately feed into database
           const newGuest = {
             referenceCode: refCode,
-            fullName: guestName,
+            fullName: displayName,
             phoneNumber: guestPhone || '—',
             attending: 'Yes',
-            guestCount: guestCount,
+            guestCount: headcount,
             dietary: guestDietary,
             teaPreference: 'Chai (Tea with Sugar)',
-            message: 'Invitation card generated by organiser',
+            message: `Category: ${category} | Organiser Invitation Pass`,
             timestamp: nowIso,
             submittedAt: nowIso
           };
 
-          // Add to currentData & update roster immediately
-          const currentData = window._ikg_currentData ? window._ikg_currentData() : [];
+          // 1. Add to currentData & update table/KPIs immediately
           currentData.unshift(newGuest);
-          if (window._ikg_setCurrentData) window._ikg_setCurrentData(currentData);
           try {
-            localStorage.setItem('ikg_rsvp_admin_cache_v3', JSON.stringify(currentData));
+            localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(currentData));
+            localStorage.setItem('ikg_all_rsvps_cache', JSON.stringify(currentData));
             let manualList = [];
             const rawManual = localStorage.getItem('ikg_manual_rsvps');
             if (rawManual) manualList = JSON.parse(rawManual);
@@ -2678,7 +2714,9 @@
             localStorage.setItem('ikg_manual_rsvps', JSON.stringify(manualList));
           } catch (err) {}
 
-          // Cloud Webhook POST
+          updateMetricsAndTable();
+
+          // 2. Direct feed into Google Sheets Cloud Database (guaranteed sync with keepalive)
           const webhookUrl = (localStorage.getItem('ikg_cloud_webhook_url') || 'https://script.google.com/macros/s/AKfycbxODjyeAorYChxskg4slB70I219eMxvO5nBE70S73Qxf5AjCOl_ai3Fat8oO7uNbrmF/exec').trim();
           if (webhookUrl) {
             try {
@@ -2686,25 +2724,20 @@
               fetch(webhookUrl, {
                 method: 'POST',
                 mode: 'no-cors',
+                keepalive: true,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...newGuest, phoneNumber: safePhone })
-              }).then(() => {
-                console.log('✓ Organiser card synced to Google Sheets:', refCode);
               }).catch(() => {});
+              console.log('✓ Organiser invitation card fed directly to Google Sheets database:', refCode);
             } catch (e) {}
           }
 
-          if (window._ikg_updateMetrics) {
-            window._ikg_updateMetrics();
-          }
-
-          // Populate the card preview (Simple design: no party size mentioned)
-          document.getElementById('card-render-guest-name').textContent = guestName;
-          const guestCountEl = document.getElementById('card-render-guest-count');
-          if (guestCountEl) guestCountEl.textContent = '';
+          // 3. Populate Card Preview (Touch of Gold design)
+          const bannerEl = document.getElementById('card-render-banner-name');
+          if (bannerEl) bannerEl.textContent = bannerName;
           document.getElementById('card-render-ref-code').textContent = `Ref: #${refCode}`;
 
-          // Generate Compact QR Code (Discreet Bottom-Right pass)
+          // Generate Compact Discreet QR Code (No verification text)
           const qrContainer = document.getElementById('card-qr-code');
           qrContainer.innerHTML = '';
           const verifyUrl = `${getAppBaseUrl()}admin.html?verify=${refCode}`;
@@ -2719,20 +2752,23 @@
               correctLevel: QRCode.CorrectLevel.M
             });
           } else {
-            // Fallback: show text code
             qrContainer.innerHTML = `<div style="width: 95px; height: 95px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.65rem; color: #0f172a; word-break: break-all; padding: 4px;">#${refCode}</div>`;
           }
           const qrTinyRef = document.getElementById('card-qr-ref-tiny');
           if (qrTinyRef) qrTinyRef.textContent = `#${refCode}`;
 
-          // Store refCode for sharing
+          // Store attributes for Share v2 & Canvas download
           cardPreviewSection.dataset.refCode = refCode;
-          cardPreviewSection.dataset.guestName = guestName;
-          cardPreviewSection.dataset.guestCount = guestCount;
+          cardPreviewSection.dataset.guestName = displayName;
+          cardPreviewSection.dataset.bannerName = bannerName;
+          cardPreviewSection.dataset.guestCategory = category;
+          cardPreviewSection.dataset.guestCount = headcount;
 
           // Show preview, hide form
           cardFormSection.style.display = 'none';
           cardPreviewSection.style.display = 'block';
+
+          showCardShareFeedback(`☁️ <strong>Saved directly to Database &amp; Google Sheets!</strong> Reference: <code>#${refCode}</code>`);
         });
       }
 
@@ -2760,7 +2796,7 @@
           `- *Time:* 2:00 PM EAT\n` +
           `- *Venue:* Thee Bobians Residence, Rironi, Limuru\n` +
           `- *Location (Google Maps):* ${mapsUrl}\n` +
-          `- *Contact / Lost on Route:* 0796059830 (Ian)\n` +
+          `- *Contact / Lost on Route:* 0796059830 (Ian) / 0722433596\n` +
           `- *Invitation Code:* #${refCode}\n\n` +
           `*Mark Your Calendar:* Saturday, Nov 28 at 2:00 PM EAT\n\n` +
           `Check out celebration details & moments:\n${celebrationUrl}\n\n` +
@@ -2781,30 +2817,32 @@
         canvas.height = h;
         const ctx = canvas.getContext('2d');
 
-        // Background Navy Radial Gradient
-        const grad = ctx.createRadialGradient(w / 2, h * 0.42, 60, w / 2, h / 2, w * 0.82);
-        grad.addColorStop(0, '#162b4a');
-        grad.addColorStop(1, '#091322');
+        // 1. Deep Royal Midnight Navy Background
+        const grad = ctx.createRadialGradient(w * 0.45, h * 0.42, 60, w / 2, h / 2, w * 0.88);
+        grad.addColorStop(0, '#102542');
+        grad.addColorStop(0.55, '#0b192e');
+        grad.addColorStop(1, '#050c17');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, w, h);
 
-        // Outer & Inner Gold Frames
-        ctx.strokeStyle = '#d97706';
-        ctx.lineWidth = 5;
-        ctx.strokeRect(24, 24, w - 48, h - 48);
-        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(40, 40, w - 80, h - 80);
-
-        // Corner Gold L-Accents
-        const cLen = 46;
+        // 2. Outer & Inner Gold Frames (Touch of Gold)
         ctx.strokeStyle = '#fbbf24';
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(26, 26, w - 52, h - 52);
+
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(38, 38, w - 76, h - 76);
+
+        // Corner Gold L-Accents & Diamonds
+        const cLen = 44;
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 4;
         [
-          [[24, 24 + cLen], [24, 24], [24 + cLen, 24]],
-          [[w - 24 - cLen, 24], [w - 24, 24], [w - 24, 24 + cLen]],
-          [[24, h - 24 - cLen], [24, h - 24], [24 + cLen, h - 24]],
-          [[w - 24 - cLen, h - 24], [w - 24, h - 24], [w - 24, h - 24 - cLen]]
+          [[26, 26 + cLen], [26, 26], [26 + cLen, 26]],
+          [[w - 26 - cLen, 26], [w - 26, 26], [w - 26, 26 + cLen]],
+          [[26, h - 26 - cLen], [26, h - 26], [26 + cLen, h - 26]],
+          [[w - 26 - cLen, h - 26], [w - 26, h - 26], [w - 26, h - 26 - cLen]]
         ].forEach(pts => {
           ctx.beginPath();
           ctx.moveTo(pts[0][0], pts[0][1]);
@@ -2813,151 +2851,146 @@
           ctx.stroke();
         });
 
+        // Corner gold square accents
+        [
+          [26, 26], [w - 26, 26], [26, h - 26], [w - 26, h - 26]
+        ].forEach(([cx, cy]) => {
+          ctx.fillStyle = '#fbbf24';
+          ctx.fillRect(cx - 5, cy - 5, 10, 10);
+        });
+
+        // Floating Gold Sparkles / Confetti Stars (Regal touch of gold)
+        const sparkles = [
+          [72, 75, 16], [140, 56, 10], [80, 135, 12], [w - 78, 72, 14], [w - 145, 56, 10], [w - 72, 140, 16],
+          [52, 280, 10], [w - 52, 280, 10], [52, 480, 11], [w - 52, 480, 11], [52, 940, 11],
+          [w - 52, 880, 11], [65, 1140, 14], [w - 65, 1140, 14]
+        ];
+        sparkles.forEach(([sx, sy, sr]) => {
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.7)';
+          ctx.font = `${sr}px serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('✦', sx, sy);
+        });
+
+        // 3. Top Ribbon Banner: SPECIAL INVITATION TO: ...
+        const bannerName = (cardPreviewSection && cardPreviewSection.dataset.bannerName)
+          ? cardPreviewSection.dataset.bannerName
+          : (name || 'HONORED GUEST').toUpperCase();
+        const bannerText = `✦ SPECIAL INVITATION TO: ${bannerName} ✦`;
+
+        ctx.font = '700 15px "JetBrains Mono", monospace';
+        const bannerTextW = ctx.measureText(bannerText).width;
+        const bannerBoxW = Math.min(w - 120, bannerTextW + 48);
+        const bannerBoxH = 38;
+        const bannerBoxX = (w - bannerBoxW) / 2;
+        const bannerBoxY = 56;
+
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
+        ctx.fillRect(bannerBoxX, bannerBoxY, bannerBoxW, bannerBoxH);
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(bannerBoxX, bannerBoxY, bannerBoxW, bannerBoxH);
+
+        ctx.fillStyle = '#fbbf24';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+        ctx.fillText(bannerText, w / 2, bannerBoxY + bannerBoxH / 2);
 
-        // Header
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = '700 19px "JetBrains Mono", monospace';
-        ctx.fillText('DAYSTAR UNIVERSITY  |  CLASS OF 2026', w / 2, 90);
+        // 4. "You're Invited" Cursive Calligraphy Header
+        const goldTextGrad = ctx.createLinearGradient(0, 110, 0, 185);
+        goldTextGrad.addColorStop(0, '#fef08a');
+        goldTextGrad.addColorStop(0.5, '#fbbf24');
+        goldTextGrad.addColorStop(1, '#d97706');
+        ctx.fillStyle = goldTextGrad;
+        ctx.font = '700 74px "Alex Brush", "Great Vibes", "Playfair Display", Georgia, cursive';
+        ctx.fillText("You're Invited", w / 2, 148);
+
+        // 5. Ceremony Header
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '600 15px "Cinzel", Georgia, serif';
+        ctx.fillText('TO THE GRADUATION CEREMONY OF', w / 2, 210);
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = '700 46px "Cinzel", Georgia, serif';
-        ctx.fillText('Graduation Celebration', w / 2, 146);
-
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = '700 20px Georgia, serif';
-        ctx.fillText('*   *   *', w / 2, 188);
-
-        // Graduate Cutout Portrait (Background Removed)
-        const portraitImg = document.getElementById('card-render-portrait');
-        if (portraitImg && portraitImg.complete && portraitImg.naturalWidth > 0) {
-          const pW = 210;
-          const pH = Math.round(pW * (portraitImg.naturalHeight / portraitImg.naturalWidth));
-          const pX = (w - pW) / 2;
-          const pY = 205;
-
-          // Subtle radial glow behind the graduate
-          const pGlow = ctx.createRadialGradient(w / 2, pY + pH / 2, 30, w / 2, pY + pH / 2, 160);
-          pGlow.addColorStop(0, 'rgba(251, 191, 36, 0.28)');
-          pGlow.addColorStop(1, 'transparent');
-          ctx.fillStyle = pGlow;
-          ctx.fillRect(w / 2 - 190, pY - 20, 380, pH + 40);
-
-          ctx.drawImage(portraitImg, pX, pY, pW, pH);
-        }
-
-        // Graduate Name & Degree
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '800 34px "Space Grotesk", Arial, sans-serif';
-        ctx.fillText('Ian Kiromo Githengu', w / 2, 510);
+        ctx.font = '800 34px "Cinzel", Georgia, serif';
+        ctx.fillText('IAN KIROMO GITHENGU', w / 2, 250);
 
         ctx.fillStyle = '#38bdf8';
-        ctx.font = '600 20px "JetBrains Mono", monospace';
-        ctx.fillText('B.Sc. Applied Computer Science', w / 2, 548);
+        ctx.font = '600 17px "JetBrains Mono", monospace';
+        ctx.fillText('B.Sc. Applied Computer Science — Daystar University, Class of 2026', w / 2, 288);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'italic 500 15px "Inter", Arial, sans-serif';
+        ctx.fillText('PLEASE JOIN US IN CELEBRATING THIS SIGNIFICANT MILESTONE', w / 2, 322);
 
         // Gold Divider Line
-        const divGrad = ctx.createLinearGradient(w * 0.2, 0, w * 0.8, 0);
+        const divGrad = ctx.createLinearGradient(w * 0.18, 0, w * 0.82, 0);
         divGrad.addColorStop(0, 'transparent');
         divGrad.addColorStop(0.5, '#fbbf24');
         divGrad.addColorStop(1, 'transparent');
         ctx.fillStyle = divGrad;
-        ctx.fillRect(w * 0.2, 580, w * 0.6, 2);
+        ctx.fillRect(w * 0.18, 348, w * 0.64, 2);
 
-        // Cordially Invites + Guest Name
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = '500 21px "Inter", Arial, sans-serif';
-        ctx.fillText('CORDIALLY INVITES', w / 2, 622);
+        // -------------------------------------------------------------
+        // RIGHT COLUMN: GOLDEN ARCHED FRAME WITH GRADUATE PORTRAIT
+        // -------------------------------------------------------------
+        const archW = 340;
+        const archH = 510;
+        const archX = w - archW - 55; // 900 - 340 - 55 = 505
+        const archY = 375;
+        const archR = archW / 2; // 170
 
-        let gSize = 44;
-        ctx.font = `800 ${gSize}px "Space Grotesk", Georgia, serif`;
-        while (ctx.measureText(name).width > w * 0.82 && gSize > 24) {
-          gSize -= 2;
-          ctx.font = `800 ${gSize}px "Space Grotesk", Georgia, serif`;
+        // Arch Clipping & Background
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(archX + archR, archY + archR, archR, Math.PI, 0);
+        ctx.lineTo(archX + archW, archY + archH);
+        ctx.lineTo(archX, archY + archH);
+        ctx.closePath();
+        ctx.clip();
+
+        // Arch interior gradient
+        const archGrad = ctx.createRadialGradient(archX + archR, archY + archR * 0.5, 20, archX + archR, archY + archH / 2, archW);
+        archGrad.addColorStop(0, '#1d3557');
+        archGrad.addColorStop(0.85, '#0c1a2e');
+        ctx.fillStyle = archGrad;
+        ctx.fillRect(archX, archY, archW, archH);
+
+        // Graduate Cutout Portrait inside Arch
+        const portraitImg = document.getElementById('card-render-portrait');
+        if (portraitImg && portraitImg.complete && portraitImg.naturalWidth > 0) {
+          const pw = 330;
+          const ph = Math.round(pw * (portraitImg.naturalHeight / portraitImg.naturalWidth));
+          const px = archX + (archW - pw) / 2;
+          const py = archY + archH - ph + 25;
+          ctx.drawImage(portraitImg, px, py, pw, ph);
         }
-        ctx.fillStyle = '#fde68a';
-        ctx.fillText(name, w / 2, 676);
+        ctx.restore();
 
-        // -------------------------------------------------------------
-        // LEFT COLUMN: EVENT DETAILS & LOCATION
-        // -------------------------------------------------------------
-        const leftX = 65;
-        const leftW = 540;
+        // Arch Outer Gold Border
+        ctx.beginPath();
+        ctx.arc(archX + archR, archY + archR, archR, Math.PI, 0);
+        ctx.lineTo(archX + archW, archY + archH);
+        ctx.lineTo(archX, archY + archH);
+        ctx.closePath();
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 4;
+        ctx.stroke();
 
-        // Card 1: Mark Your Calendar
-        const dateBoxY = 730;
-        const dateBoxH = 115;
-        ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
-        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
-        ctx.lineWidth = 2;
-        ctx.fillRect(leftX, dateBoxY, leftW, dateBoxH);
-        ctx.strokeRect(leftX, dateBoxY, leftW, dateBoxH);
-
-        ctx.textAlign = 'left';
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = '700 16px "JetBrains Mono", monospace';
-        ctx.fillText('📅 MARK YOUR CALENDAR', leftX + 22, dateBoxY + 30);
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '700 24px "Inter", Arial, sans-serif';
-        ctx.fillText('Saturday, Nov 28, 2026', leftX + 22, dateBoxY + 66);
-        ctx.fillStyle = '#38bdf8';
-        ctx.font = '600 20px "Inter", Arial, sans-serif';
-        ctx.fillText('2:00 PM EAT', leftX + 22, dateBoxY + 96);
-
-        // Card 2: Venue & Maps Box
-        const venueBoxY = 860;
-        const venueBoxH = 140;
-        ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
-        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
-        ctx.lineWidth = 2;
-        ctx.fillRect(leftX, venueBoxY, leftW, venueBoxH);
-        ctx.strokeRect(leftX, venueBoxY, leftW, venueBoxH);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '700 15px "JetBrains Mono", monospace';
-        ctx.fillText('📍 VENUE & MAP LOCATION', leftX + 22, venueBoxY + 28);
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '700 22px "Inter", Arial, sans-serif';
-        ctx.fillText('Thee Bobians Residence', leftX + 22, venueBoxY + 62);
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = '500 18px "Inter", Arial, sans-serif';
-        ctx.fillText('Rironi, Limuru', leftX + 22, venueBoxY + 92);
-        ctx.fillStyle = '#38bdf8';
-        ctx.font = '600 15px "JetBrains Mono", monospace';
-        ctx.fillText('Maps: -1.1562° N, 36.6424° E', leftX + 22, venueBoxY + 120);
-
-        // Card 3: Contact / Route Inquiries
-        const contactBoxY = 1015;
-        const contactBoxH = 75;
-        ctx.fillStyle = 'rgba(14, 26, 45, 0.85)';
-        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
-        ctx.lineWidth = 2;
-        ctx.fillRect(leftX, contactBoxY, leftW, contactBoxH);
-        ctx.strokeRect(leftX, contactBoxY, leftW, contactBoxH);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '700 14px "JetBrains Mono", monospace';
-        ctx.fillText('📞 LOST ON ROUTE / INQUIRIES', leftX + 22, contactBoxY + 25);
-        ctx.fillStyle = '#fde68a';
-        ctx.font = '700 21px "Inter", Arial, sans-serif';
-        ctx.fillText('0796059830  (Ian)', leftX + 22, contactBoxY + 54);
-
-        // Ref Code Badge (Left)
-        const refBoxY = 1105;
-        const refBoxH = 50;
-        ctx.fillStyle = 'rgba(14, 26, 45, 0.95)';
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-        ctx.lineWidth = 2;
-        ctx.fillRect(leftX, refBoxY, leftW, refBoxH);
-        ctx.strokeRect(leftX, refBoxY, leftW, refBoxH);
-
-        ctx.fillStyle = '#38bdf8';
-        ctx.font = '700 18px "JetBrains Mono", monospace';
-        ctx.fillText(`INVITATION CODE: #${refCode}`, leftX + 22, refBoxY + 25);
+        // Arch Inner Fine Gold Accent Line
+        const iPad = 7;
+        ctx.beginPath();
+        ctx.arc(archX + archR, archY + iPad + (archW - iPad * 2) / 2, (archW - iPad * 2) / 2, Math.PI, 0);
+        ctx.lineTo(archX + archW - iPad, archY + archH - iPad);
+        ctx.lineTo(archX + iPad, archY + archH - iPad);
+        ctx.closePath();
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.65)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
 
         // -------------------------------------------------------------
         // RIGHT COLUMN: COMPACT DISCREET BOTTOM-RIGHT QR CODE
-        // (No "SCAN TO VERIFY" or "Gate Entry" wording)
+        // (Positioned gracefully directly below the Golden Arch)
         // -------------------------------------------------------------
         const qrContainer = document.getElementById('card-qr-code');
         const qrSrcCanvas = qrContainer ? qrContainer.querySelector('canvas') : null;
@@ -2966,15 +2999,15 @@
         const qrInnerSize = 120;
         const qrPad = 12;
         const qrBoxSize = qrInnerSize + qrPad * 2; // 144px
-        const qrBoxX = w - qrBoxSize - 65; // 900 - 144 - 65 = 691
-        const qrBoxY = 960;
+        const qrBoxX = archX + (archW - qrBoxSize) / 2; // centered under arch
+        const qrBoxY = archY + archH + 20; // 375 + 510 + 20 = 905
 
         // Container Box with Gold Outline
-        ctx.fillStyle = 'rgba(14, 26, 45, 0.9)';
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.92)';
         ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
         ctx.lineWidth = 2;
-        ctx.fillRect(qrBoxX - 8, qrBoxY - 8, qrBoxSize + 16, qrBoxSize + 44);
-        ctx.strokeRect(qrBoxX - 8, qrBoxY - 8, qrBoxSize + 16, qrBoxSize + 44);
+        ctx.fillRect(qrBoxX - 8, qrBoxY - 8, qrBoxSize + 16, qrBoxSize + 46);
+        ctx.strokeRect(qrBoxX - 8, qrBoxY - 8, qrBoxSize + 16, qrBoxSize + 46);
 
         // High contrast White QR background
         ctx.fillStyle = '#ffffff';
@@ -2990,18 +3023,121 @@
         ctx.textAlign = 'center';
         ctx.fillStyle = '#94a3b8';
         ctx.font = '600 13px "JetBrains Mono", monospace';
-        ctx.fillText(`#${refCode}`, qrBoxX + qrBoxSize / 2, qrBoxY + qrBoxSize + 22);
+        ctx.fillText(`#${refCode}`, qrBoxX + qrBoxSize / 2, qrBoxY + qrBoxSize + 24);
+
+        // -------------------------------------------------------------
+        // LEFT COLUMN: EVENT DETAILS & LOCATION CARDS (Gold-Bordered)
+        // -------------------------------------------------------------
+        const leftX = 55;
+        const leftW = 425;
+
+        // Card 1: Date & Time Box
+        const dateBoxY = 375;
+        const dateBoxH = 115;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.88)';
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, dateBoxY, leftW, dateBoxH);
+        ctx.strokeRect(leftX, dateBoxY, leftW, dateBoxH);
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '700 15px "JetBrains Mono", monospace';
+        ctx.fillText('📅 MARK YOUR CALENDAR', leftX + 20, dateBoxY + 30);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 23px "Inter", Arial, sans-serif';
+        ctx.fillText('Saturday, Nov 28, 2026', leftX + 20, dateBoxY + 66);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '600 19px "Inter", Arial, sans-serif';
+        ctx.fillText('2:00 PM EAT', leftX + 20, dateBoxY + 96);
+
+        // Card 2: Venue & Maps Box
+        const venueBoxY = 508;
+        const venueBoxH = 140;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.88)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, venueBoxY, leftW, venueBoxH);
+        ctx.strokeRect(leftX, venueBoxY, leftW, venueBoxH);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 14px "JetBrains Mono", monospace';
+        ctx.fillText('📍 VENUE & MAP LOCATION', leftX + 20, venueBoxY + 28);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 22px "Inter", Arial, sans-serif';
+        ctx.fillText('Thee Bobians Residence', leftX + 20, venueBoxY + 62);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 17px "Inter", Arial, sans-serif';
+        ctx.fillText('Rironi, Limuru', leftX + 20, venueBoxY + 92);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '600 14px "JetBrains Mono", monospace';
+        ctx.fillText('Maps: -1.1562° N, 36.6424° E', leftX + 20, venueBoxY + 120);
+
+        // Card 3: Contact / Lost on Route Inquiries
+        const contactBoxY = 666;
+        const contactBoxH = 110;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.88)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, contactBoxY, leftW, contactBoxH);
+        ctx.strokeRect(leftX, contactBoxY, leftW, contactBoxH);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 14px "JetBrains Mono", monospace';
+        ctx.fillText('📞 LOST ON ROUTE / INQUIRIES', leftX + 20, contactBoxY + 26);
+        ctx.fillStyle = '#fde68a';
+        ctx.font = '700 20px "Inter", Arial, sans-serif';
+        ctx.fillText('0796059830  (Ian)', leftX + 20, contactBoxY + 58);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 17px "Inter", Arial, sans-serif';
+        ctx.fillText('0722433596  (Mum\'s Family)', leftX + 20, contactBoxY + 88);
+
+        // Card 4: Invitation Code Badge
+        const refBoxY = 794;
+        const refBoxH = 52;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.95)';
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, refBoxY, leftW, refBoxH);
+        ctx.strokeRect(leftX, refBoxY, leftW, refBoxH);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '700 18px "JetBrains Mono", monospace';
+        ctx.fillText(`INVITATION CODE: #${refCode}`, leftX + 20, refBoxY + 26);
+
+        // Card 5: RSVP Note / Timeline
+        const rsvpBoxY = 864;
+        const rsvpBoxH = 96;
+        ctx.fillStyle = 'rgba(14, 26, 45, 0.88)';
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.fillRect(leftX, rsvpBoxY, leftW, rsvpBoxH);
+        ctx.strokeRect(leftX, rsvpBoxY, leftW, rsvpBoxH);
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '700 14px "JetBrains Mono", monospace';
+        ctx.fillText('✉️ CELEBRATION RSVP & ARRIVAL', leftX + 20, rsvpBoxY + 26);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 16px "Inter", Arial, sans-serif';
+        ctx.fillText('Arrival & Refreshments from 1:30 PM', leftX + 20, rsvpBoxY + 56);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 14px "Inter", Arial, sans-serif';
+        ctx.fillText('Celebration Ceremony commences promptly at 2:00 PM', leftX + 20, rsvpBoxY + 80);
 
         // -------------------------------------------------------------
         // BOTTOM FOOTER BANNER
         // -------------------------------------------------------------
-        ctx.fillStyle = 'rgba(251, 191, 36, 0.25)';
-        ctx.fillRect(leftX, 1180, w - leftX * 2, 2);
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.35)';
+        ctx.fillRect(55, 1175, w - 110, 2);
 
         ctx.textAlign = 'center';
         ctx.fillStyle = '#cbd5e1';
         ctx.font = '500 16px "Inter", Arial, sans-serif';
-        ctx.fillText('Thee Bobians Residence  •  Rironi, Limuru  •  November 28, 2026', w / 2, 1215);
+        ctx.fillText('Thee Bobians Residence  •  Rironi, Limuru  •  November 28, 2026', w / 2, 1208);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '500 13px "JetBrains Mono", monospace';
+        ctx.fillText('Daystar University Academic Commencement Celebration', w / 2, 1232);
 
         return canvas;
       }
@@ -3436,14 +3572,17 @@
 
           // Prefill card generator form
           document.getElementById('card-guest-name').value = name;
-          document.getElementById('card-guest-count').value = count;
+          const catEl = document.getElementById('card-guest-category');
+          if (catEl) {
+            if (name.toLowerCase().includes('family')) catEl.value = 'Family';
+            else catEl.value = '—';
+          }
           document.getElementById('card-guest-phone').value = (phone === '—' || phone === '-') ? '' : phone;
           document.getElementById('card-guest-dietary').value = diet;
 
-          // Populate the card render (Simple design: no party size mentioned)
-          document.getElementById('card-render-guest-name').textContent = name;
-          const guestCountEl = document.getElementById('card-render-guest-count');
-          if (guestCountEl) guestCountEl.textContent = '';
+          // Populate the card render (Touch of Gold Ribbon banner & Ref code)
+          const bannerEl = document.getElementById('card-render-banner-name');
+          if (bannerEl) bannerEl.textContent = name.toUpperCase();
           document.getElementById('card-render-ref-code').textContent = `Ref: #${ref}`;
 
           // Generate Compact QR Code (Discreet Bottom-Right pass, no verification text)
@@ -3467,6 +3606,7 @@
 
           cardPreviewSection.dataset.refCode = ref;
           cardPreviewSection.dataset.guestName = name;
+          cardPreviewSection.dataset.bannerName = name.toUpperCase();
           cardPreviewSection.dataset.guestCount = count;
 
           cardFormSection.style.display = 'none';
