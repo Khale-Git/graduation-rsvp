@@ -1608,8 +1608,19 @@
             </div>
           </div>
 
-          <div style="max-width: 330px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 2.5px solid #fbbf24; box-shadow: 0 12px 35px rgba(0,0,0,0.7), 0 0 25px rgba(251, 191, 36, 0.25);">
-            <img src="assets/images/ian-daystar-poster.jpg?v=qr2" alt="Daystar Graduation Poster v3" style="width: 100%; height: auto; display: block;">
+          <div style="max-width: 330px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 2.5px solid #fbbf24; box-shadow: 0 12px 35px rgba(0,0,0,0.7), 0 0 25px rgba(251, 191, 36, 0.25); position: relative;">
+            <img src="assets/images/ian-daystar-poster.jpg?v=qr3" alt="Daystar Graduation Poster v3" style="width: 100%; height: auto; display: block;">
+            <!-- Guest name overlay — hidden until card is generated -->
+            <div id="v3-guest-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;">
+              <!-- Scrim behind the name zone (right column, upper third) -->
+              <div style="position:absolute; top:27.6%; left:45.3%; width:53%; height:11.5%; background:rgba(5,15,35,0.52); border-radius:6px;"></div>
+              <!-- Text overlay -->
+              <div style="position:absolute; top:28.5%; left:45.5%; width:52%; text-align:center;">
+                <div id="v3-cordially-label" style="font-family:'Montserrat',sans-serif; font-size:0.42rem; color:#94a3b8; letter-spacing:0.14em; font-weight:600; text-shadow:0 1px 3px rgba(0,0,0,0.9);">CORDIALLY INVITING</div>
+                <div id="v3-guest-name-display" style="font-family:'Playfair Display','Cinzel',Georgia,serif; font-size:0.85rem; font-weight:700; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.95); margin-top:1px; line-height:1.2; word-break:break-word;"></div>
+                <div id="v3-pass-display" style="font-family:monospace; font-size:0.38rem; color:#fbbf24; margin-top:2px; letter-spacing:0.04em;"></div>
+              </div>
+            </div>
           </div>
 
           <div style="margin-top: 1rem; padding-top: 0.65rem; border-top: 1px solid rgba(251, 191, 36, 0.25); font-size: 0.74rem; color: #cbd5e1; font-family: var(--font-mono, monospace);">
@@ -3128,6 +3139,16 @@
           cardPreviewSection.dataset.bannerName = bannerName;
           cardPreviewSection.dataset.guestCategory = category;
           cardPreviewSection.dataset.guestCount = headcount;
+
+          // Update v3 poster overlay with guest name
+          const v3Overlay = document.getElementById('v3-guest-overlay');
+          const v3Name = document.getElementById('v3-guest-name-display');
+          const v3Pass = document.getElementById('v3-pass-display');
+          if (v3Overlay && v3Name && v3Pass) {
+            v3Name.textContent = displayName;
+            v3Pass.textContent = `INVITATION PASS: #${refCode}`;
+            v3Overlay.style.display = 'block';
+          }
 
           // Show preview, hide form
           cardFormSection.style.display = 'none';
