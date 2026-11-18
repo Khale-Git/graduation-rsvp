@@ -235,23 +235,26 @@
           </div>
         </div>
 
-        <!-- Graduate Milestone Honor Spotlight with Official Regalia Photo -->
+        <!-- Graduate Milestone Honor Spotlight with Official Daystar Celebration Poster -->
         <div class="graduate-spotlight-card fade-in-up delay-4">
           <div class="spotlight-portrait-col">
-            <div class="spotlight-frame">
-              <img src="assets/images/ian-graduation.jpg" alt="Ian Kiromo Githengu in Graduation Gown and Cap" class="spotlight-portrait-img">
+            <div class="spotlight-frame official-poster-frame" id="open-poster-lightbox-btn" title="Click to view full-resolution Daystar Celebration Poster" style="cursor: pointer;">
+              <img src="assets/images/ian-daystar-poster.jpg" alt="Ian Kiromo Githengu - Official Daystar University Graduation Invitation Poster" class="spotlight-portrait-img poster-glow-img">
               <div class="spotlight-badge">DAYSTAR 2026</div>
+              <div class="poster-tap-overlay">
+                <span>🔍 Tap to Expand Poster</span>
+              </div>
             </div>
           </div>
           <div class="spotlight-info-col">
-            <div class="tech-chip"><span class="chip-dot"></span> B.SC. APPLIED COMPUTER SCIENCE &bull; CONFERRED</div>
-            <h2 class="spotlight-title">Honoring Ian Kiromo Githengu</h2>
+            <div class="tech-chip"><span class="chip-dot"></span> DAYSTAR UNIVERSITY &bull; BRIGHTER TOMORROWS TOGETHER</div>
+            <h2 class="spotlight-title" style="font-family: 'Cinzel', serif; letter-spacing: 0.04em;">Official Graduation Celebration Invitation</h2>
             <p class="spotlight-lead">
-              A celebration of dedication, character, and scholastic excellence in computing.
+              Honoring Ian Kiromo Githengu &bull; Bachelor of Science in Applied Computer Science
             </p>
             <p class="spotlight-desc">
-              Having completed his Bachelor of Science in Applied Computer Science at Daystar University, 
-              we gather with family and friends to praise God for this victory and launch Ian into his professional engineering horizon.
+              <em>"Excellence &bull; Transformation &bull; Service &bull; A Brighter Tomorrow Begins Here"</em><br>
+              With gratitude to God, we warmly invite family, friends, mentors, and colleagues to celebrate Ian's graduation milestone as he is conferred his Bachelor of Science in Applied Computer Science from Daystar University.
             </p>
             <div class="spotlight-details-deck">
               <div class="spotlight-detail-item">
@@ -262,10 +265,26 @@
                 <span class="detail-label">RECEPTION VENUE</span>
                 <span class="detail-val">Thee Bobians Residence &bull; Rironi, Limuru</span>
               </div>
+              <div class="spotlight-detail-item">
+                <span class="detail-label">OFFLINE INQUIRIES / CONTACT</span>
+                <span class="detail-val">0796059830 (Ian) / 0722433596</span>
+              </div>
+              <div class="spotlight-detail-item">
+                <span class="detail-label">ONLINE RSVP PORTAL</span>
+                <span class="detail-val">graduation-rsvp-blond.vercel.app</span>
+              </div>
             </div>
             <div class="spotlight-actions">
-              <a href="#rsvp" class="btn btn-primary-tech"><span>Reserve Your Seat</span> &rarr;</a>
-              <a href="#location" class="btn btn-ghost-tech"><span>Directions &amp; Map</span></a>
+              <a href="#rsvp" class="btn btn-primary-tech"><span>Reserve Your Seat (RSVP)</span> &rarr;</a>
+              <button type="button" class="btn btn-outline-cyber" id="spotlight-view-poster-btn" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.5);">
+                <span>🔍 View Full Poster</span>
+              </button>
+              <a href="assets/images/ian-daystar-poster.jpg" download="Ian_Kiromo_Daystar_Graduation_Poster.jpg" class="btn btn-ghost-tech" title="Download High-Resolution Invitation Poster">
+                <span>📥 Download Flyer</span>
+              </a>
+              <button type="button" class="btn btn-ghost-tech" id="spotlight-share-poster-btn" title="Share via WhatsApp" style="color: #34d399;">
+                <span>📱 Share</span>
+              </button>
             </div>
           </div>
         </div>
@@ -1266,6 +1285,59 @@
       </div>
     </div>
   </dialog>
+
+  <!-- ===================================================================
+       OFFICIAL DAYSTAR POSTER FULLSCREEN LIGHTBOX MODAL
+       =================================================================== -->
+  <dialog id="poster-lightbox-modal" class="cyber-modal poster-lightbox" style="max-width: 840px; width: 95vw; background: transparent;">
+    <div class="modal-card" style="padding: 1.25rem; background: rgba(9, 19, 34, 0.96); border: 1.5px solid rgba(251, 191, 36, 0.45); border-radius: 18px; box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 40px rgba(245, 158, 11, 0.25);">
+      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; padding-bottom: 0.65rem; border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
+        <div>
+          <h3 style="margin: 0; font-family: 'Cinzel', serif; font-size: 1.15rem; color: #ffffff; letter-spacing: 0.05em;">
+            🎓 Official Graduation Celebration Poster
+          </h3>
+          <p style="margin: 0.2rem 0 0; font-size: 0.78rem; color: #94a3b8;">
+            Daystar University &bull; Ian Kiromo Githengu &bull; Class of 2026
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="assets/images/ian-daystar-poster.jpg" download="Ian_Kiromo_Daystar_Graduation_Poster.jpg" class="btn btn-sm btn-primary-tech" style="text-decoration: none; padding: 0.4rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; font-weight: 700;">
+            📥 Download High-Res
+          </a>
+          <button id="close-poster-lightbox-btn" class="modal-close" aria-label="Close poster dialog" style="position: static; font-size: 1.6rem; line-height: 1; cursor: pointer;">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" style="padding: 0; display: flex; justify-content: center; align-items: center;">
+        <div style="position: relative; max-height: 78vh; overflow: auto; text-align: center; border-radius: 12px; background: #07111e; padding: 6px; border: 2px solid rgba(251, 191, 36, 0.35);">
+          <img src="assets/images/ian-daystar-poster.jpg" alt="Daystar University Graduation Invitation Poster - Ian Kiromo Githengu" style="max-height: 74vh; width: auto; max-width: 100%; border-radius: 8px; display: block; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.7);">
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modern Floating Quick-Action Glass Dock -->
+  <aside class="floating-quick-dock" aria-label="Quick actions dock">
+    <a href="#rsvp" class="dock-item" title="Confirm Attendance / RSVP">
+      <span class="dock-icon">✉️</span>
+      <span class="dock-label">RSVP</span>
+    </a>
+    <button type="button" class="dock-item" id="dock-poster-btn" title="View Official Daystar Poster">
+      <span class="dock-icon">📜</span>
+      <span class="dock-label">Poster</span>
+    </button>
+    <button type="button" class="dock-item" id="dock-cal-btn" title="Add to Calendar">
+      <span class="dock-icon">📅</span>
+      <span class="dock-label">Calendar</span>
+    </button>
+    <a href="#location" class="dock-item" title="Venue Map & Directions">
+      <span class="dock-icon">📍</span>
+      <span class="dock-label">Location</span>
+    </a>
+    <button type="button" class="dock-item" id="dock-cv-btn" title="Graduate CV">
+      <span class="dock-icon">📄</span>
+      <span class="dock-label">CV</span>
+    </button>
+  </aside>
 
   <!-- Organiser and Headcount operations are on dedicated standalone page: admin.html -->
 

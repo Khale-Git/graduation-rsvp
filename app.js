@@ -1210,6 +1210,88 @@ function initCalendarIntegrations() {
     });
   }
 
+  // Official Daystar Poster Lightbox Handlers
+  const posterModal = document.getElementById('poster-lightbox-modal');
+  const openPosterBtn1 = document.getElementById('open-poster-lightbox-btn');
+  const openPosterBtn2 = document.getElementById('spotlight-view-poster-btn');
+  const dockPosterBtn = document.getElementById('dock-poster-btn');
+  const closePosterBtn = document.getElementById('close-poster-lightbox-btn');
+
+  function openPosterLightbox() {
+    if (posterModal && typeof posterModal.showModal === 'function') {
+      posterModal.showModal();
+    } else {
+      window.open('assets/images/ian-daystar-poster.jpg', '_blank');
+    }
+  }
+
+  if (openPosterBtn1) openPosterBtn1.addEventListener('click', openPosterLightbox);
+  if (openPosterBtn2) openPosterBtn2.addEventListener('click', openPosterLightbox);
+  if (dockPosterBtn) dockPosterBtn.addEventListener('click', openPosterLightbox);
+
+  if (closePosterBtn && posterModal) {
+    closePosterBtn.addEventListener('click', () => posterModal.close());
+  }
+
+  if (posterModal) {
+    posterModal.addEventListener('click', (e) => {
+      if (e.target === posterModal) posterModal.close();
+    });
+  }
+
+  // Floating Dock Shortcuts
+  const dockCalBtn = document.getElementById('dock-cal-btn');
+  if (dockCalBtn && heroBtn) {
+    dockCalBtn.addEventListener('click', () => heroBtn.click());
+  }
+
+  const dockCvBtn = document.getElementById('dock-cv-btn');
+  if (dockCvBtn && openCvBtn) {
+    dockCvBtn.addEventListener('click', () => openCvBtn.click());
+  }
+
+  // Spotlight Share Poster Handler
+  const spotlightShareBtn = document.getElementById('spotlight-share-poster-btn');
+  if (spotlightShareBtn) {
+    spotlightShareBtn.addEventListener('click', async () => {
+      const shareMsg = `🎓 *OFFICIAL GRADUATION CELEBRATION INVITATION*\n\n` +
+        `You are cordially invited to celebrate the Graduation of\n` +
+        `*Ian Kiromo Githengu*\n` +
+        `Bachelor of Science in Applied Computer Science\n` +
+        `*Daystar University — Class of 2026*\n\n` +
+        `✨ _"Brighter Tomorrows Together"_\n\n` +
+        `📅 *Date:* Saturday, November 28, 2026\n` +
+        `⏰ *Time:* 2:00 PM EAT\n` +
+        `📍 *Venue:* Thee Bobians Residence, Rironi, Limuru\n` +
+        `🗺️ *Google Maps:* https://maps.google.com/?q=-1.1562,36.6424\n` +
+        `🌐 *RSVP & Event Portal:* https://graduation-rsvp-blond.vercel.app\n` +
+        `📞 *Contact / Directions:* 0796059830 (Ian) / 0722433596\n\n` +
+        `We look forward to celebrating this victory with you!`;
+
+      try {
+        const resp = await fetch('assets/images/ian-daystar-poster.png');
+        const blob = await resp.blob();
+        const file = new File([blob], 'Ian_Kiromo_Daystar_Graduation_Poster.png', { type: 'image/png' });
+
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'Graduation Invitation - Ian Kiromo Githengu',
+            text: shareMsg
+          });
+          return;
+        }
+      } catch (err) {
+        // Fallback to text + direct WhatsApp
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareMsg).catch(() => {});
+      }
+      window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, '_blank');
+    });
+  }
+
   function downloadIcs() {
     const icsContent = [
       "BEGIN:VCALENDAR",

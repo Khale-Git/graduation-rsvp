@@ -1444,6 +1444,19 @@
 
       <!-- Generated Card Preview -->
       <div id="card-preview-section" style="display: none; margin-top: 1.5rem;">
+        <!-- Tab Switcher for Card Formats -->
+        <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
+          <button type="button" id="tab-btn-card-v2" class="btn btn-sm"
+            style="font-size: 0.8rem; padding: 0.45rem 1rem; background: linear-gradient(135deg, #25D366, #128C7E); color: #ffffff; border: none; font-weight: 700; border-radius: 8px; cursor: pointer;">
+            🎫 Digital Pass v2 (with QR)
+          </button>
+          <button type="button" id="tab-btn-poster-v3" class="btn btn-sm btn-ghost-tech"
+            style="font-size: 0.8rem; padding: 0.45rem 1rem; border-color: rgba(245, 158, 11, 0.45); color: #fbbf24; font-weight: 700; border-radius: 8px; cursor: pointer;">
+            🎓 Daystar Poster v3
+          </button>
+        </div>
+
+        <!-- Format 1: Royal Digital Pass (v2) -->
         <div id="invitation-card-render" style="
           background: linear-gradient(145deg, #071221 0%, #0d1e38 50%, #081426 100%);
           border: 2px solid #fbbf24;
@@ -1573,35 +1586,75 @@
           </div>
         </div>
 
+        <!-- Format 2: Official Daystar Celebration Poster (v3) -->
+        <div id="invitation-poster-v3-render" style="
+          display: none;
+          background: linear-gradient(145deg, #071221 0%, #0d1e38 50%, #081426 100%);
+          border: 2px solid #fbbf24;
+          box-shadow: 0 12px 36px rgba(0,0,0,0.65), 0 0 24px rgba(251, 191, 36, 0.25);
+          border-radius: 16px;
+          padding: 1.5rem 1rem;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          color: #ffffff;
+        ">
+          <div style="margin-bottom: 0.85rem;">
+            <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; color: #fbbf24; letter-spacing: 0.12em; font-weight: 800;">
+              ✨ DAYSTAR UNIVERSITY // OFFICIAL COMMENCEMENT POSTER
+            </div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.2rem; font-family: 'JetBrains Mono', monospace;">
+              VERSION 3 &bull; HIGH-RESOLUTION CEREMONIAL FLYER
+            </div>
+          </div>
+
+          <div style="max-width: 330px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 2.5px solid #fbbf24; box-shadow: 0 12px 35px rgba(0,0,0,0.7), 0 0 25px rgba(251, 191, 36, 0.25);">
+            <img src="assets/images/ian-daystar-poster.jpg" alt="Daystar Graduation Poster v3" style="width: 100%; height: auto; display: block;">
+          </div>
+
+          <div style="margin-top: 1rem; padding-top: 0.65rem; border-top: 1px solid rgba(251, 191, 36, 0.25); font-size: 0.74rem; color: #cbd5e1; font-family: var(--font-mono, monospace);">
+            Includes: Daystar Crest &bull; Regalia Portrait &bull; Date &bull; Venue &bull; Vercel Portal
+          </div>
+        </div>
+
         <!-- Share & Download Actions -->
         <div id="card-share-feedback"
           style="display: none; margin-top: 1rem; padding: 0.7rem 0.9rem; border-radius: 8px; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.45); color: #a7f3d0; font-size: 0.82rem; line-height: 1.45;">
         </div>
 
         <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
+          <!-- Primary Version 3 (v3) Share Button: Official Daystar Poster -->
+          <button type="button" id="share-card-v3-btn" class="btn btn-sm"
+            style="flex: 2 1 200px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #fff; font-weight: 800; font-size: 0.92rem; justify-content: center; box-shadow: 0 4px 16px rgba(245, 158, 11, 0.45); padding: 0.75rem 1.25rem; cursor: pointer;">
+            🎓 Share v3 (Daystar Poster)
+          </button>
           <!-- Primary Simplified v2 Share Button -->
           <button type="button" id="share-card-v2-btn" class="btn btn-sm btn-primary-tech"
-            style="flex: 2 1 200px; background: linear-gradient(135deg, #25D366, #128C7E); border: none; color: #fff; font-weight: 800; font-size: 0.92rem; justify-content: center; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4); padding: 0.75rem 1.25rem;">
+            style="flex: 1.5 1 160px; background: linear-gradient(135deg, #25D366, #128C7E); border: none; color: #fff; font-weight: 800; font-size: 0.85rem; justify-content: center; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4); padding: 0.75rem 1rem;">
             📱 Share v2
           </button>
           <button type="button" id="share-card-whatsapp-btn" class="btn btn-sm btn-outline-cyber"
-            style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
+            style="flex: 1 1 95px; justify-content: center; font-size: 0.78rem;">
             Share v1
           </button>
-          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber"
-            style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
-            📤 Share Image
+          <button type="button" id="download-poster-v3-btn" class="btn btn-sm btn-outline-cyber"
+            style="flex: 1 1 125px; justify-content: center; font-size: 0.78rem; border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">
+            📥 Save Poster v3
           </button>
           <button type="button" id="download-card-btn" class="btn btn-sm btn-ghost-tech"
-            style="flex: 1 1 120px; justify-content: center; font-size: 0.78rem;">
-            💾 Download PNG
+            style="flex: 1 1 110px; justify-content: center; font-size: 0.78rem;">
+            💾 Save Card v2
+          </button>
+          <button type="button" id="share-card-native-btn" class="btn btn-sm btn-outline-cyber"
+            style="flex: 1 1 100px; justify-content: center; font-size: 0.78rem;">
+            📤 Share Image
           </button>
           <a id="card-gcal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Graduation+Celebration+%E2%80%94+Ian+Kiromo+Githengu&dates=20261128T110000Z/20261128T160000Z&details=Graduation+Celebration+of+Ian+Kiromo+Githengu+%E2%80%94+B.Sc.+Applied+Computer+Science%2C+Daystar+University+Class+of+2026.%0A%0ADate%3A+Saturday%2C+Nov+28%2C+2026+at+2%3A00+PM+EAT%0AVenue%3A+Thee+Bobians+Residence%2C+Rironi%2C+Limuru%0AGoogle+Maps%3A+https%3A%2F%2Fmaps.google.com%2F%3Fq%3D-1.1562%2C36.6424%0AContact%3A+0796059830+(Ian)+%2F+0722433596%0A%0AWe+look+forward+to+celebrating+with+you%21&location=Thee+Bobians+Residence%2C+Rironi%2C+Limuru+(https%3A%2F%2Fmaps.google.com%2F%3Fq%3D-1.1562%2C36.6424)" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-cyber"
-            style="flex: 1 1 135px; justify-content: center; font-size: 0.78rem; color: #fbbf24; border-color: rgba(251, 191, 36, 0.45); text-decoration: none;">
+            style="flex: 1 1 130px; justify-content: center; font-size: 0.78rem; color: #fbbf24; border-color: rgba(251, 191, 36, 0.45); text-decoration: none;">
             📅 Google Calendar
           </a>
           <button type="button" id="new-card-btn" class="btn btn-sm btn-ghost-tech"
-            style="flex: 1 1 100px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center; font-size: 0.78rem;">
+            style="flex: 1 1 95px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); justify-content: center; font-size: 0.78rem;">
             + New Card
           </button>
         </div>
@@ -3108,6 +3161,30 @@
         return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261128T110000Z/20261128T160000Z&details=${details}&location=${loc}`;
       }
 
+      // Official Daystar Poster Invitation Message V3 (Prestige Daystar Celebration)
+      function buildPrestigeInviteMessageV3(name, refCode) {
+        const celebrationUrl = 'https://graduation-rsvp-blond.vercel.app';
+        const mapsUrl = 'https://maps.google.com/?q=-1.1562,36.6424';
+        const calUrl = getGoogleCalendarUrl();
+
+        return `🎓 *OFFICIAL GRADUATION CELEBRATION INVITATION*\n\n` +
+          `Dear *${name}*,\n\n` +
+          `You are cordially invited to celebrate the Graduation Ceremony of\n` +
+          `*Ian Kiromo Githengu*\n` +
+          `Bachelor of Science in Applied Computer Science\n` +
+          `*Daystar University — Class of 2026*\n\n` +
+          `✨ _"Brighter Tomorrows Together"_\n\n` +
+          `- *Date:* Saturday, November 28, 2026\n` +
+          `- *Time:* 2:00 PM EAT\n` +
+          `- *Venue:* Thee Bobians Residence, Rironi, Limuru\n` +
+          `- *Location (Google Maps):* ${mapsUrl}\n` +
+          `- *Add to Google Calendar:* ${calUrl}\n` +
+          `- *RSVP & Event Portal:* ${celebrationUrl}\n` +
+          `- *Contact / Lost on Route:* 0796059830 (Ian) / 0722433596\n` +
+          (refCode ? `- *Invitation Pass:* #${refCode}\n\n` : `\n`) +
+          `We look forward to celebrating this joyful victory with you!`;
+      }
+
       // Clean, simple Invitation Message V2 (No RSVP/confirming prompts, No party count, with Google Maps, Call number & Calendar links)
       function buildCleanInviteMessageV2(name, refCode) {
         const celebrationUrl = getAppBaseUrl();
@@ -3706,6 +3783,113 @@
             `);
             printWin.document.close();
           }
+        });
+      }
+
+      // ===================================================================
+      // SHARE V3: Official Daystar Celebration Poster (High-Res Flyer + Text)
+      // ===================================================================
+      const shareCardV3Btn = document.getElementById('share-card-v3-btn');
+      if (shareCardV3Btn) {
+        shareCardV3Btn.addEventListener('click', async () => {
+          const name = cardPreviewSection.dataset.guestName || 'Honored Guest';
+          const refCode = cardPreviewSection.dataset.refCode || 'IKG-C2026';
+          const message = buildPrestigeInviteMessageV3(name, refCode);
+
+          let file = null;
+          let blob = null;
+          try {
+            const resp = await fetch('assets/images/ian-daystar-poster.png');
+            blob = await resp.blob();
+            file = new File([blob], `Ian_Kiromo_Daystar_Graduation_Poster_v3.png`, { type: 'image/png' });
+          } catch (err) { }
+
+          // 1. Mobile Native Share (Poster Image + Clean Message together into WhatsApp)
+          if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).catch(() => { });
+              }
+              await navigator.share({
+                files: [file],
+                title: `Graduation Invitation - ${name}`,
+                text: message
+              });
+              showCardShareFeedback('✓ <strong>Share v3 sent!</strong> Daystar Graduation Poster &amp; message shared.');
+              return;
+            } catch (e) {
+              if (e && e.name === 'AbortError') return;
+            }
+          }
+
+          // 2. Desktop Fallback: Download poster + copy text to clipboard + launch WhatsApp
+          const link = document.createElement('a');
+          link.download = `Ian_Kiromo_Daystar_Graduation_Poster_v3.png`;
+          link.href = 'assets/images/ian-daystar-poster.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          let copiedImg = false;
+          if (blob && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+            try {
+              await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+              copiedImg = true;
+            } catch (err) { }
+          }
+
+          showCardShareFeedback(
+            copiedImg
+              ? '✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded &amp; copied to clipboard. In WhatsApp, press <strong>Ctrl+V</strong> to attach the poster with your invitation text.'
+              : '✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded. Attach <code>Ian_Kiromo_Daystar_Graduation_Poster_v3.png</code> in WhatsApp with your invitation message.'
+          );
+
+          const guestPhone = (document.getElementById('card-guest-phone').value || '').replace(/\s/g, '');
+          const waUrl = guestPhone
+            ? `https://wa.me/${guestPhone.replace('+', '')}?text=${encodeURIComponent(message)}`
+            : `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+          window.open(waUrl, '_blank');
+        });
+      }
+
+      // Download Poster v3 direct button
+      const downloadPosterV3Btn = document.getElementById('download-poster-v3-btn');
+      if (downloadPosterV3Btn) {
+        downloadPosterV3Btn.addEventListener('click', () => {
+          const link = document.createElement('a');
+          link.download = 'Ian_Kiromo_Daystar_Graduation_Poster.jpg';
+          link.href = 'assets/images/ian-daystar-poster.jpg';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          showCardShareFeedback('✓ <strong>Downloaded!</strong> Daystar Graduation Poster saved to your device.');
+        });
+      }
+
+      // Card format tabs toggle
+      const tabBtnCardV2 = document.getElementById('tab-btn-card-v2');
+      const tabBtnPosterV3 = document.getElementById('tab-btn-poster-v3');
+      const renderCardV2 = document.getElementById('invitation-card-render');
+      const renderPosterV3 = document.getElementById('invitation-poster-v3-render');
+
+      if (tabBtnCardV2 && tabBtnPosterV3 && renderCardV2 && renderPosterV3) {
+        tabBtnCardV2.addEventListener('click', () => {
+          renderCardV2.style.display = 'block';
+          renderPosterV3.style.display = 'none';
+          tabBtnCardV2.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
+          tabBtnCardV2.style.color = '#ffffff';
+          tabBtnPosterV3.style.background = 'transparent';
+          tabBtnPosterV3.style.color = '#fbbf24';
+        });
+
+        tabBtnPosterV3.addEventListener('click', () => {
+          renderCardV2.style.display = 'none';
+          renderPosterV3.style.display = 'block';
+          tabBtnPosterV3.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+          tabBtnPosterV3.style.color = '#ffffff';
+          tabBtnCardV2.style.background = 'transparent';
+          tabBtnCardV2.style.color = '#38bdf8';
         });
       }
 
