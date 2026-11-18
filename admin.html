@@ -1609,6 +1609,7 @@
           </div>
 
           <div style="max-width: 330px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 2.5px solid #fbbf24; box-shadow: 0 12px 35px rgba(0,0,0,0.7), 0 0 25px rgba(251, 191, 36, 0.25);">
+            <canvas id="admin-poster-canvas" width="726" height="1080" style="width: 100%; height: auto; display: none;" aria-label="Personalized Daystar Graduation Poster"></canvas>
             <img id="poster-v3-img" src="assets/images/ian-daystar-poster.jpg?v=v3" alt="Daystar Graduation Poster v3" style="width: 100%; height: auto; display: block;">
           </div>
 
@@ -3129,12 +3130,173 @@
           cardPreviewSection.dataset.guestCategory = category;
           cardPreviewSection.dataset.guestCount = headcount;
 
+          // Render personalized Daystar Poster (v3) with guest name
+          renderAdminPosterCard(displayName, refCode);
+
           // Show preview, hide form
           cardFormSection.style.display = 'none';
           cardPreviewSection.style.display = 'block';
 
           showCardShareFeedback(`☁️ <strong>Saved directly to Database &amp; Google Sheets!</strong> Reference: <code>#${refCode}</code>`);
         });
+      }
+
+      function renderAdminPosterCard(guestName, refCode) {
+        const canvas = document.getElementById('admin-poster-canvas');
+        const fallbackImg = document.getElementById('poster-v3-img');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.src = 'blank_invitation.jpg';
+        img.onload = () => {
+          canvas.width = img.naturalWidth || 726;
+          canvas.height = img.naturalHeight || 1080;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          const scale = canvas.width / 726;
+          const centerX = Math.round(516 * scale);
+
+          // 1. CORDIALLY INVITING
+          ctx.save();
+          const cordiallyY = Math.round(395 * scale);
+          ctx.fillStyle = '#fbbf24';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+          ctx.shadowBlur = 4 * scale;
+          ctx.shadowOffsetY = 1 * scale;
+          if ('letterSpacing' in ctx) {
+            ctx.letterSpacing = `${Math.round(4 * scale)}px`;
+            ctx.font = `700 ${Math.max(10, Math.round(13 * scale))}px "Montserrat", "Space Grotesk", sans-serif`;
+            ctx.fillText('CORDIALLY INVITING', centerX, cordiallyY);
+          } else {
+            ctx.font = `700 ${Math.max(10, Math.round(13 * scale))}px "Montserrat", "Space Grotesk", sans-serif`;
+            ctx.fillText('C O R D I A L L Y   I N V I T I N G', centerX, cordiallyY);
+          }
+          ctx.restore();
+
+          // 2. GUEST NAME
+          ctx.save();
+          const nameY = Math.round(442 * scale);
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          let nameSize = Math.round(32 * scale);
+          const maxNameWidth = 340 * scale;
+          const serifFontFamily = '"Playfair Display", "Cinzel", "Times New Roman", Georgia, serif';
+          ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
+          let measured = ctx.measureText(guestName).width;
+          while (measured > maxNameWidth && nameSize > 16) {
+            nameSize -= 1.5;
+            ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
+            measured = ctx.measureText(guestName).width;
+          }
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+          ctx.shadowBlur = 6 * scale;
+          ctx.shadowOffsetY = 2 * scale;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(guestName, centerX, nameY);
+          ctx.restore();
+
+          // 3. Central INVITATION PASS
+          ctx.save();
+          const passTopY = Math.round(490 * scale);
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#38bdf8';
+          ctx.font = `700 ${Math.max(11, Math.round(13 * scale))}px "JetBrains Mono", monospace`;
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+          ctx.shadowBlur = 3 * scale;
+          ctx.shadowOffsetY = 1 * scale;
+          ctx.fillText(`INVITATION PASS: #${refCode}`, centerX, passTopY);
+          ctx.restore();
+
+          // 4. Subtle gold divider line
+          ctx.save();
+          const dividerY = Math.round(525 * scale);
+          const dividerGrad = ctx.createLinearGradient(centerX - 100 * scale, 0, centerX + 100 * scale, 0);
+          dividerGrad.addColorStop(0, 'transparent');
+          dividerGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.8)');
+          dividerGrad.addColorStop(1, 'transparent');
+          ctx.fillStyle = dividerGrad;
+          ctx.fillRect(centerX - 100 * scale, dividerY, 200 * scale, Math.max(1, 1.2 * scale));
+          ctx.restore();
+
+          // 5. TO THE GRADUATION CELEBRATION OF
+          ctx.save();
+          const toY = Math.round(560 * scale);
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#cbd5e1';
+          const toSize = Math.max(9, Math.round(11.5 * scale));
+          if ('letterSpacing' in ctx) {
+            ctx.letterSpacing = `${Math.round(2 * scale)}px`;
+            ctx.font = `600 ${toSize}px "Space Grotesk", sans-serif`;
+            ctx.fillText('TO THE GRADUATION CELEBRATION OF', centerX, toY);
+          } else {
+            ctx.font = `600 ${toSize}px "Space Grotesk", sans-serif`;
+            ctx.fillText('TO THE GRADUATION CELEBRATION OF', centerX, toY);
+          }
+          ctx.restore();
+
+          // 6. IAN KIROMO GITHENGU
+          ctx.save();
+          const ianY = Math.round(605 * scale);
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = `800 ${Math.max(18, Math.round(24 * scale))}px "Cinzel", "Playfair Display", Georgia, serif`;
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+          ctx.shadowBlur = 5 * scale;
+          ctx.shadowOffsetY = 2 * scale;
+          ctx.fillText('IAN KIROMO GITHENGU', centerX, ianY);
+          ctx.restore();
+
+          // 7. Degree
+          ctx.save();
+          const degY = Math.round(645 * scale);
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = `500 ${Math.max(9, Math.round(11 * scale))}px "Space Grotesk", sans-serif`;
+          ctx.fillText('Bachelor of Science in Applied Computer Science • Daystar University', centerX, degY);
+          ctx.restore();
+
+          // 8. Bottom Pass Code
+          const bottomX = Math.round(42 * scale);
+          const passY = Math.round(1048 * scale);
+          ctx.save();
+          ctx.fillStyle = '#06101d';
+          ctx.fillRect(bottomX, passY - Math.round(9 * scale), Math.round(380 * scale), Math.round(18 * scale));
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#38bdf8';
+          ctx.font = `700 ${Math.round(12.5 * scale)}px "JetBrains Mono", monospace`;
+          ctx.fillText(`INVITATION PASS: #${refCode}`, bottomX, passY);
+          ctx.restore();
+
+          // 9. Bottom QR Code
+          const qrImg = new Image();
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getAppBaseUrl() + 'admin.html?verify=' + refCode)}&color=0f172a&bgcolor=ffffff&qzone=1`;
+          qrImg.onload = () => {
+            const qrInnerSize = Math.round(72 * scale);
+            const pad = Math.round(6 * scale);
+            const boxW = qrInnerSize + pad * 2;
+            const boxH = qrInnerSize + pad * 2;
+            const boxX = canvas.width - boxW - Math.round(38 * scale);
+            const boxY = canvas.height - boxH - Math.round(22 * scale);
+            ctx.drawImage(qrImg, boxX + pad, boxY + pad, qrInnerSize, qrInnerSize);
+          };
+
+          // Successfully rendered canvas! Show canvas, hide fallback image
+          canvas.style.display = 'block';
+          if (fallbackImg) fallbackImg.style.display = 'none';
+        };
+
+        img.onerror = () => {
+          if (fallbackImg) fallbackImg.style.display = 'block';
+          canvas.style.display = 'none';
+        };
       }
 
       function getAppBaseUrl() {
@@ -3798,13 +3960,25 @@
 
           let file = null;
           let blob = null;
-          try {
-            const resp = await fetch('assets/images/ian-daystar-poster.png');
-            blob = await resp.blob();
-            file = new File([blob], 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png', { type: 'image/png' });
-          } catch (err) { }
+          const canvas = document.getElementById('admin-poster-canvas');
+          if (canvas && canvas.style.display !== 'none') {
+            try {
+              blob = await new Promise(r => canvas.toBlob(r, 'image/png', 1.0));
+              if (blob) {
+                const safeName = name.replace(/[^a-zA-Z0-9]+/g, '_');
+                file = new File([blob], `Ian_Kiromo_Graduation_Invitation_${safeName}_${refCode}.png`, { type: 'image/png' });
+              }
+            } catch (err) { }
+          }
+          if (!file) {
+            try {
+              const resp = await fetch('assets/images/ian-daystar-poster.png');
+              blob = await resp.blob();
+              file = new File([blob], 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png', { type: 'image/png' });
+            } catch (err) { }
+          }
 
-          // 1. Mobile Native Share (Poster Image + Clean Message together into WhatsApp)
+          // 1. Mobile Native Share (Poster Image with Guest Name + Invitation Message)
           if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -3815,7 +3989,7 @@
                 title: `Graduation Invitation - ${name}`,
                 text: message
               });
-              showCardShareFeedback('✓ <strong>Share v3 sent!</strong> Daystar Graduation Poster &amp; message shared.');
+              showCardShareFeedback(`✓ <strong>Share v3 sent!</strong> Daystar Poster with ${name}'s name shared.`);
               return;
             } catch (e) {
               if (e && e.name === 'AbortError') return;
@@ -3823,12 +3997,22 @@
           }
 
           // 2. Desktop Fallback: Download poster + copy text to clipboard + launch WhatsApp
-          const link = document.createElement('a');
-          link.download = 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png';
-          link.href = 'assets/images/ian-daystar-poster.png';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          if (canvas && canvas.style.display !== 'none') {
+            const link = document.createElement('a');
+            const safeName = name.replace(/[^a-zA-Z0-9]+/g, '_');
+            link.download = `Ian_Kiromo_Graduation_Invitation_${safeName}_${refCode}.png`;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            const link = document.createElement('a');
+            link.download = 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png';
+            link.href = 'assets/images/ian-daystar-poster.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
 
           let copiedImg = false;
           if (blob && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
@@ -3840,8 +4024,8 @@
 
           showCardShareFeedback(
             copiedImg
-              ? '✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded &amp; copied to clipboard. In WhatsApp, press <strong>Ctrl+V</strong> to attach the poster with your invitation text.'
-              : '✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded. Attach <code>Ian_Kiromo_Daystar_Graduation_Poster_v3.png</code> in WhatsApp with your invitation message.'
+              ? `✓ <strong>Share v3 Ready for ${name}!</strong> Invitation poster downloaded &amp; copied to clipboard. In WhatsApp, press <strong>Ctrl+V</strong> to attach the image with your invitation text.`
+              : `✓ <strong>Share v3 Ready for ${name}!</strong> Invitation poster downloaded. Attach the image in WhatsApp with your invitation message.`
           );
 
           const guestPhone = (document.getElementById('card-guest-phone').value || '').replace(/\s/g, '');
@@ -3857,13 +4041,25 @@
       const downloadPosterV3Btn = document.getElementById('download-poster-v3-btn');
       if (downloadPosterV3Btn) {
         downloadPosterV3Btn.addEventListener('click', () => {
-          const link = document.createElement('a');
-          link.download = 'Ian_Kiromo_Daystar_Graduation_Poster_v3.jpg';
-          link.href = 'assets/images/ian-daystar-poster.jpg';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          showCardShareFeedback('✓ <strong>Downloaded!</strong> Daystar Graduation Poster saved to your device.');
+          const canvas = document.getElementById('admin-poster-canvas');
+          const safeName = (cardPreviewSection.dataset.guestName || 'Guest').replace(/[^a-zA-Z0-9]+/g, '_');
+          const refCode = cardPreviewSection.dataset.refCode || 'card';
+          if (canvas && canvas.style.display !== 'none') {
+            const link = document.createElement('a');
+            link.download = `Ian_Kiromo_Daystar_Invitation_${safeName}_${refCode}.png`;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            const link = document.createElement('a');
+            link.download = `Ian_Kiromo_Daystar_Graduation_Poster_${safeName}.jpg`;
+            link.href = 'assets/images/ian-daystar-poster.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+          showCardShareFeedback(`✓ <strong>Downloaded!</strong> Daystar Graduation Invitation for ${safeName} saved.`);
         });
       }
 

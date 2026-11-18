@@ -931,17 +931,16 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
 function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCode, qrCanvas) {
   ctx.save();
 
-  // Position: Centered in the open space above the gold graduation cap on the right column
+  // Position: Centered in the middle invitation section on the right column
   const scale = width / 726;
-  const centerX = Math.round(505 * scale);
-  const cordiallyY = Math.round(350 * scale);
-  const nameY = Math.round(384 * scale);
+  const centerX = Math.round(516 * scale);
 
   // -------------------------------------------------------------
   // 1. 'CORDIALLY INVITING' (Clean, heavily letter-spaced gold)
   // -------------------------------------------------------------
   ctx.save();
-  const cordiallySize = Math.max(10, Math.round(12.5 * scale));
+  const cordiallyY = Math.round(395 * scale);
+  const cordiallySize = Math.max(10, Math.round(13 * scale));
   ctx.fillStyle = '#fbbf24';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -963,52 +962,111 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
   // 2. [GUEST NAME] (Pure white, regal serif, soft drop shadow)
   // -------------------------------------------------------------
   ctx.save();
+  const nameY = Math.round(442 * scale);
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  let nameSize = Math.round(25 * scale);
+  let nameSize = Math.round(32 * scale);
   const maxNameWidth = 340 * scale;
   const serifFontFamily = '"Playfair Display", "Cinzel", "Times New Roman", Georgia, serif';
 
   ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
   let measured = ctx.measureText(guestName).width;
-  while (measured > maxNameWidth && nameSize > 15) {
+  while (measured > maxNameWidth && nameSize > 16) {
     nameSize -= 1.5;
     ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
     measured = ctx.measureText(guestName).width;
   }
 
-  // Soft, regal black drop shadow to float naturally over background
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
   ctx.shadowBlur = 6 * scale;
   ctx.shadowOffsetX = 0;
   ctx.shadowOffsetY = 2 * scale;
-
-  // Pure white crisp text
   ctx.fillStyle = '#ffffff';
   ctx.fillText(guestName, centerX, nameY);
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 3. Subtle gold flourish / divider under the guest name
+  // 3. Central INVITATION PASS: #...
   // -------------------------------------------------------------
   ctx.save();
-  const dividerGrad = ctx.createLinearGradient(centerX - 90 * scale, 0, centerX + 90 * scale, 0);
-  dividerGrad.addColorStop(0, 'transparent');
-  dividerGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.7)');
-  dividerGrad.addColorStop(1, 'transparent');
-  ctx.fillStyle = dividerGrad;
-  ctx.fillRect(centerX - 90 * scale, Math.round(406 * scale), 180 * scale, Math.max(1, 1.2 * scale));
+  const passTopY = Math.round(490 * scale);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = `700 ${Math.max(11, Math.round(13 * scale))}px "JetBrains Mono", monospace`;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+  ctx.shadowBlur = 3 * scale;
+  ctx.shadowOffsetY = 1 * scale;
+  ctx.fillText(`INVITATION PASS: #${refCode}`, centerX, passTopY);
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 4. Pass Reference Code in the bottom bar
+  // 4. Subtle gold divider line
+  // -------------------------------------------------------------
+  ctx.save();
+  const dividerY = Math.round(525 * scale);
+  const dividerGrad = ctx.createLinearGradient(centerX - 100 * scale, 0, centerX + 100 * scale, 0);
+  dividerGrad.addColorStop(0, 'transparent');
+  dividerGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.8)');
+  dividerGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = dividerGrad;
+  ctx.fillRect(centerX - 100 * scale, dividerY, 200 * scale, Math.max(1, 1.2 * scale));
+  ctx.restore();
+
+  // -------------------------------------------------------------
+  // 5. 'TO THE GRADUATION CELEBRATION OF'
+  // -------------------------------------------------------------
+  ctx.save();
+  const toY = Math.round(560 * scale);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#cbd5e1';
+  const toSize = Math.max(9, Math.round(11.5 * scale));
+  if ('letterSpacing' in ctx) {
+    ctx.letterSpacing = `${Math.round(2 * scale)}px`;
+    ctx.font = `600 ${toSize}px "Space Grotesk", sans-serif`;
+    ctx.fillText('TO THE GRADUATION CELEBRATION OF', centerX, toY);
+  } else {
+    ctx.font = `600 ${toSize}px "Space Grotesk", sans-serif`;
+    ctx.fillText('TO THE GRADUATION CELEBRATION OF', centerX, toY);
+  }
+  ctx.restore();
+
+  // -------------------------------------------------------------
+  // 6. 'IAN KIROMO GITHENGU' (Regal Gold Serif)
+  // -------------------------------------------------------------
+  ctx.save();
+  const ianY = Math.round(605 * scale);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = `800 ${Math.max(18, Math.round(24 * scale))}px "Cinzel", "Playfair Display", Georgia, serif`;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+  ctx.shadowBlur = 5 * scale;
+  ctx.shadowOffsetY = 2 * scale;
+  ctx.fillText('IAN KIROMO GITHENGU', centerX, ianY);
+  ctx.restore();
+
+  // -------------------------------------------------------------
+  // 7. Degree & University
+  // -------------------------------------------------------------
+  ctx.save();
+  const degY = Math.round(645 * scale);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = `500 ${Math.max(9, Math.round(11 * scale))}px "Space Grotesk", sans-serif`;
+  ctx.fillText('Bachelor of Science in Applied Computer Science • Daystar University', centerX, degY);
+  ctx.restore();
+
+  // -------------------------------------------------------------
+  // 8. Bottom Pass Code
   // -------------------------------------------------------------
   const bottomX = Math.round(42 * scale);
   const passY = Math.round(1048 * scale);
 
   ctx.save();
-  // Mask underlying pass line cleanly
   ctx.fillStyle = '#06101d';
   ctx.fillRect(bottomX, passY - Math.round(9 * scale), Math.round(380 * scale), Math.round(18 * scale));
 
@@ -1021,7 +1079,7 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 5. Gate Verification QR Code (Bottom-Right Pass)
+  // 9. Gate Verification QR Code (Bottom-Right Pass)
   // -------------------------------------------------------------
   if (qrCanvas) {
     ctx.save();
