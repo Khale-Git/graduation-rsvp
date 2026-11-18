@@ -941,9 +941,9 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
   const centerX = Math.round(516 * scale);
 
   // Label + name sit in the clean dark band above the graduation-cap icon
-  const labelY  = Math.round(318 * scale);  // "CORDIALLY INVITING" small label
-  const nameY   = Math.round(358 * scale);  // Guest name (main focal text)
-  const passY   = Math.round(400 * scale);  // Invitation pass code
+  const labelY = Math.round(318 * scale);  // "CORDIALLY INVITING" small label
+  const nameY = Math.round(358 * scale);  // Guest name (main focal text)
+  const passY = Math.round(400 * scale);  // Invitation pass code
 
   // Max width limited to right column so text never overflows onto Ian's photo
   const maxNameWidth = Math.round(360 * scale);
@@ -994,7 +994,7 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
     measured = ctx.measureText(guestName).width;
   }
   ctx.shadowColor = 'rgba(0,0,0,0.85)';
-  ctx.shadowBlur   = 6;
+  ctx.shadowBlur = 6;
   ctx.shadowOffsetX = 0;
   ctx.shadowOffsetY = 2;
   ctx.fillStyle = '#ffffff';
@@ -1009,7 +1009,7 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = 'transparent';
-    ctx.shadowBlur  = 0;
+    ctx.shadowBlur = 0;
     const passSize = Math.max(9, Math.round(11 * scale));
     ctx.font = `700 ${passSize}px "JetBrains Mono", monospace`;
     ctx.fillStyle = '#fbbf24';
@@ -1024,11 +1024,11 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
   if (qrCanvas) {
     ctx.save();
     const qrInnerSize = Math.round(68 * scale);
-    const pad  = Math.round(6 * scale);
+    const pad = Math.round(6 * scale);
     const boxW = qrInnerSize + pad * 2;
     const boxH = qrInnerSize + pad * 2;
     // Position over the bottom-right strip (existing static QR area)
-    const boxX = width  - boxW - Math.round(20 * scale);
+    const boxX = width - boxW - Math.round(20 * scale);
     const boxY = height - boxH - Math.round(14 * scale);
 
     // Dark backdrop to cover the static QR printed on the poster image
