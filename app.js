@@ -22,7 +22,7 @@ const CONFIG = {
   STORAGE_KEY: 'ikg_grad_rsvp_2026',
   ADMIN_CACHE_KEY: 'ikg_all_rsvps_cache',
   ADMIN_PIN: '2026',
-  BACKGROUND_IMAGE_PATH: 'blank_invitation.jpg'
+  BACKGROUND_IMAGE_PATH: 'assets/images/daystar-invitation-template.jpg'
 };
 
 function getAppBaseUrl() {
@@ -889,8 +889,8 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
     }
 
     // Set high-res canvas dimensions matching the background card
-    canvas.width = bgImg.naturalWidth || 848;
-    canvas.height = bgImg.naturalHeight || 1264;
+    canvas.width = bgImg.naturalWidth || 726;
+    canvas.height = bgImg.naturalHeight || 1080;
 
     // 1. Draw the background card
     ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
@@ -902,8 +902,8 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
   bgImg.onerror = () => {
     // Elegant procedural fallback in case image file is not yet cached or offline
     if (spinner) spinner.style.display = 'none';
-    canvas.width = 1536;
-    canvas.height = 1024;
+    canvas.width = 726;
+    canvas.height = 1080;
     renderProceduralCard(ctx, canvas.width, canvas.height, cleanGuestName, partySize, refCode, qrCanvas);
   };
 
@@ -929,115 +929,112 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
 function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCode, qrCanvas) {
   ctx.save();
 
-  // Position: Perfectly centered in the open dark space below 'IAN KIROMO GITHENGU'
-  const centerX = width * 0.50;
-  const centerY = height * 0.615;
-  const scale = width / 848;
-
-  // Vertical positions with elegant, balanced spacing
-  const cordiallyY = centerY - Math.round(65 * scale);
-  const nameY = centerY - Math.round(10 * scale);
-  const badgeY = centerY + Math.round(52 * scale);
-  const refY = centerY + Math.round(88 * scale);
+  // Position: Centered in the open space above the gold graduation cap on the right column
+  const scale = width / 726;
+  const centerX = Math.round(505 * scale);
+  const cordiallyY = Math.round(350 * scale);
+  const nameY = Math.round(384 * scale);
 
   // -------------------------------------------------------------
-  // 1. 'CORDIALLY INVITING' (Clean, heavily letter-spaced, #A0ABC0)
+  // 1. 'CORDIALLY INVITING' (Clean, heavily letter-spaced gold)
   // -------------------------------------------------------------
   ctx.save();
-  const cordiallySize = Math.max(12, Math.round(14 * scale));
-  ctx.fillStyle = '#A0ABC0';
+  const cordiallySize = Math.max(10, Math.round(12.5 * scale));
+  ctx.fillStyle = '#fbbf24';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
-  ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 0;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+  ctx.shadowBlur = 4 * scale;
+  ctx.shadowOffsetY = 1 * scale;
 
   if ('letterSpacing' in ctx) {
-    ctx.letterSpacing = `${Math.round(6 * scale)}px`;
-    ctx.font = `500 ${cordiallySize}px "Montserrat", "Inter", sans-serif`;
+    ctx.letterSpacing = `${Math.round(4 * scale)}px`;
+    ctx.font = `700 ${cordiallySize}px "Montserrat", "Space Grotesk", sans-serif`;
     ctx.fillText('CORDIALLY INVITING', centerX, cordiallyY);
   } else {
-    ctx.font = `500 ${cordiallySize}px "Montserrat", "Inter", sans-serif`;
+    ctx.font = `700 ${cordiallySize}px "Montserrat", "Space Grotesk", sans-serif`;
     ctx.fillText('C O R D I A L L Y   I N V I T I N G', centerX, cordiallyY);
   }
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 2. [GUEST NAME] (Focal point: Elegant serif, pure white #FFFFFF,
-  //    soft black drop shadow blur 4px, NO neon glow)
+  // 2. [GUEST NAME] (Pure white, regal serif, soft drop shadow)
   // -------------------------------------------------------------
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  // Dynamic font scaling for group names ("The Maina Family", "Alex & Guest")
-  let nameSize = Math.round(44 * scale);
-  const maxNameWidth = width * 0.72;
+  let nameSize = Math.round(25 * scale);
+  const maxNameWidth = 340 * scale;
   const serifFontFamily = '"Playfair Display", "Cinzel", "Times New Roman", Georgia, serif';
 
   ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
   let measured = ctx.measureText(guestName).width;
-  while (measured > maxNameWidth && nameSize > 20) {
-    nameSize -= 2;
+  while (measured > maxNameWidth && nameSize > 15) {
+    nameSize -= 1.5;
     ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
     measured = ctx.measureText(guestName).width;
   }
 
-  // Soft, subtle black drop shadow (blur 4px) to float naturally over background
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
-  ctx.shadowBlur = 4;
+  // Soft, regal black drop shadow to float naturally over background
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+  ctx.shadowBlur = 6 * scale;
   ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 2;
+  ctx.shadowOffsetY = 2 * scale;
 
-  // Pure white crisp focal text
-  ctx.fillStyle = '#FFFFFF';
+  // Pure white crisp text
+  ctx.fillStyle = '#ffffff';
   ctx.fillText(guestName, centerX, nameY);
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 3. '[ RESERVED PARTY: X GUESTS ]' & Pass Reference Code
+  // 3. Subtle gold flourish / divider under the guest name
   // -------------------------------------------------------------
   ctx.save();
-  const badgeSize = Math.max(11, Math.round(13 * scale));
-  ctx.fillStyle = '#8A9BB4';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
-
-  if ('letterSpacing' in ctx) {
-    ctx.letterSpacing = `${Math.round(2 * scale)}px`;
-  }
-  ctx.font = `500 ${badgeSize}px "Roboto Mono", "JetBrains Mono", "Inter", monospace`;
-
-  // Omit party count for a clean, simple look
-  if (refCode) {
-    ctx.fillStyle = '#fbbf24';
-    ctx.font = `700 ${Math.max(12, Math.round(14 * scale))}px "JetBrains Mono", monospace`;
-    ctx.fillText(`INVITATION PASS: #${refCode}`, centerX, badgeY);
-  }
+  const dividerGrad = ctx.createLinearGradient(centerX - 90 * scale, 0, centerX + 90 * scale, 0);
+  dividerGrad.addColorStop(0, 'transparent');
+  dividerGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.7)');
+  dividerGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = dividerGrad;
+  ctx.fillRect(centerX - 90 * scale, Math.round(406 * scale), 180 * scale, Math.max(1, 1.2 * scale));
   ctx.restore();
 
   // -------------------------------------------------------------
-  // 4. PERSONALIZED GATE VERIFICATION QR CODE (Bottom-Right Pass)
+  // 4. Pass Reference Code in the bottom bar
+  // -------------------------------------------------------------
+  const bottomX = Math.round(42 * scale);
+  const passY = Math.round(1048 * scale);
+
+  ctx.save();
+  // Mask underlying pass line cleanly
+  ctx.fillStyle = '#06101d';
+  ctx.fillRect(bottomX, passY - Math.round(9 * scale), Math.round(380 * scale), Math.round(18 * scale));
+
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = `700 ${Math.round(12.5 * scale)}px "JetBrains Mono", monospace`;
+  ctx.shadowColor = 'transparent';
+  ctx.fillText(`INVITATION PASS: #${refCode}`, bottomX, passY);
+  ctx.restore();
+
+  // -------------------------------------------------------------
+  // 5. Gate Verification QR Code (Bottom-Right Pass)
   // -------------------------------------------------------------
   if (qrCanvas) {
     ctx.save();
-    const qrInnerSize = Math.round(86 * scale);
-    const pad = Math.round(8 * scale);
-    const labelH = Math.round(16 * scale);
+    const qrInnerSize = Math.round(72 * scale);
+    const pad = Math.round(6 * scale);
     const boxW = qrInnerSize + pad * 2;
-    const boxH = qrInnerSize + pad * 2 + labelH;
-    const boxX = width - boxW - Math.round(22 * scale);
-    const boxY = height - boxH - Math.round(20 * scale);
+    const boxH = qrInnerSize + pad * 2;
+    const boxX = width - boxW - Math.round(38 * scale);
+    const boxY = height - boxH - Math.round(22 * scale);
 
-    // Mask out any underlying static placeholder QR behind the badge
-    ctx.fillStyle = '#0d1a2e';
-    drawRoundedRectPath(ctx, boxX - Math.round(6 * scale), boxY - Math.round(6 * scale), boxW + Math.round(12 * scale), boxH + Math.round(12 * scale), Math.round(10 * scale));
-    ctx.fill();
+    // Mask out any underlying static QR
+    ctx.fillStyle = '#06101d';
+    ctx.fillRect(boxX - 4 * scale, boxY - 4 * scale, boxW + 8 * scale, boxH + Math.round(22 * scale));
 
-    // White high-contrast QR container with gold outline
+    // White QR container with gold border
     ctx.fillStyle = '#ffffff';
     drawRoundedRectPath(ctx, boxX, boxY, boxW, boxH, Math.round(8 * scale));
     ctx.fill();
@@ -1045,15 +1042,15 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
     ctx.strokeStyle = '#fbbf24';
     ctx.stroke();
 
-    // Stamp live QR code
+    // Stamp live dynamic QR
     ctx.drawImage(qrCanvas, boxX + pad, boxY + pad, qrInnerSize, qrInnerSize);
 
-    // Verification caption
-    ctx.fillStyle = '#0f172a';
+    // Verification caption below QR
+    ctx.fillStyle = '#fbbf24';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = `800 ${Math.max(8, Math.round(9 * scale))}px "JetBrains Mono", monospace`;
-    ctx.fillText('SCAN TO VERIFY', boxX + boxW / 2, boxY + pad + qrInnerSize + labelH / 2 + Math.round(1 * scale));
+    ctx.font = `800 ${Math.max(8, Math.round(9.5 * scale))}px "JetBrains Mono", monospace`;
+    ctx.fillText('SCAN TO VERIFY', boxX + boxW / 2, boxY + boxH + Math.round(11 * scale));
     ctx.restore();
   }
 
@@ -1062,43 +1059,49 @@ function drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCo
 
 // Procedural Fallback in case image asset cannot be loaded
 function renderProceduralCard(ctx, width, height, guestName, partySize, refCode, qrCanvas) {
-  // Slate Blue Background
+  // Daystar Midnight Navy Background
   const bgGrad = ctx.createRadialGradient(width / 2, height / 2, 50, width / 2, height / 2, width * 0.7);
-  bgGrad.addColorStop(0, '#1c304f');
-  bgGrad.addColorStop(1, '#0c1626');
+  bgGrad.addColorStop(0, '#102542');
+  bgGrad.addColorStop(0.6, '#0b192e');
+  bgGrad.addColorStop(1, '#050c17');
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, width, height);
 
-  // Metallic Silver Outer Borders
-  ctx.strokeStyle = 'rgba(148, 163, 184, 0.6)';
-  ctx.lineWidth = 4;
-  ctx.strokeRect(30, 30, width - 60, height - 60);
+  // Outer Gold Borders
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(18, 18, width - 36, height - 36);
 
-  ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)';
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(45, 45, width - 90, height - 90);
+  ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(24, 24, width - 48, height - 48);
 
   // Top Header
   ctx.textAlign = 'center';
-  ctx.font = '700 32px "Space Grotesk", sans-serif';
+  ctx.font = '700 24px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.fillText('DAYSTAR UNIVERSITY // CLASS OF 2026', width / 2, 85);
+
+  ctx.font = '700 32px "Cinzel", serif';
   ctx.fillStyle = '#ffffff';
-  ctx.fillText('ACADEMIC COMMENCEMENT // CLASS OF 2026', width / 2, 130);
+  ctx.fillText('GRADUATION CELEBRATION', width / 2, 135);
 
-  ctx.font = '500 18px "JetBrains Mono", monospace';
-  ctx.fillStyle = '#94a3b8';
-  ctx.fillText('YOU ARE INVITED TO THE GRADUATION CELEBRATION OF IAN KIROMO GITHENGU', width / 2, 180);
+  ctx.font = '600 20px "Playfair Display", serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.fillText('Ian Kiromo Githengu', width / 2, 180);
 
-  // Elegant Floating Guest Name & QR Code
+  ctx.font = '500 14px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#38bdf8';
+  ctx.fillText('B.Sc. Applied Computer Science', width / 2, 210);
+
+  // Floating Guest Name & QR Code
   drawPersonalizedOverlay(ctx, width, height, guestName, partySize, refCode, qrCanvas);
 
   // Footer Details
-  ctx.font = '600 20px "Space Grotesk", sans-serif';
-  ctx.fillStyle = '#e2e8f0';
-  ctx.fillText('DAYSTAR UNIVERSITY • B.SC. APPLIED COMPUTER SCIENCE', width / 2, height - 120);
-
-  ctx.font = '500 16px "JetBrains Mono", monospace';
-  ctx.fillStyle = '#94a3b8';
-  ctx.fillText('SATURDAY, NOVEMBER 28TH, 2026 • 2:00 PM • THEE BOBIANS RESIDENCE', width / 2, height - 85);
+  ctx.font = '500 13px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#cbd5e1';
+  ctx.fillText('Saturday, November 28, 2026 • 2:00 PM EAT', width / 2, height - 120);
+  ctx.fillText('Thee Bobians Residence • Rironi, Limuru', width / 2, height - 98);
 }
 
 function saveToAdminCache(record) {

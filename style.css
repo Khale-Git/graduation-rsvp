@@ -1670,13 +1670,13 @@ body {
 
 /* Personalized Card Container */
 .personalized-card-container {
-  background: rgba(14, 26, 45, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(14, 26, 45, 0.88);
+  border: 1.5px solid rgba(251, 191, 36, 0.4);
   border-radius: 16px;
   padding: 1.5rem;
   margin: 0 auto 2.25rem;
-  max-width: 720px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow-cyan);
+  max-width: 540px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(251, 191, 36, 0.2);
 }
 
 .card-generator-bar {
