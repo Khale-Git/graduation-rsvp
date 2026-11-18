@@ -875,7 +875,9 @@ function renderPersonalizedInvitationCard(guestName, guestCount, attendingStatus
   const qrCanvas = createOffscreenQrCanvas(verifyUrl, 220);
 
   const bgImg = new Image();
-  bgImg.crossOrigin = 'anonymous';
+  if (CONFIG.BACKGROUND_IMAGE_PATH && CONFIG.BACKGROUND_IMAGE_PATH.startsWith('http')) {
+    bgImg.crossOrigin = 'anonymous';
+  }
   bgImg.src = CONFIG.BACKGROUND_IMAGE_PATH;
 
   bgImg.onload = async () => {

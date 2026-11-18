@@ -1609,8 +1609,7 @@
           </div>
 
           <div style="max-width: 330px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 2.5px solid #fbbf24; box-shadow: 0 12px 35px rgba(0,0,0,0.7), 0 0 25px rgba(251, 191, 36, 0.25);">
-            <canvas id="poster-v3-canvas" width="726" height="1080" style="width: 100%; height: auto; display: block;" aria-label="Personalized Daystar Graduation Poster"></canvas>
-            <img id="poster-v3-img-fallback" src="assets/images/ian-daystar-poster.jpg?v=qr2" alt="Daystar Graduation Poster v3" style="width: 100%; height: auto; display: none;">
+            <img id="poster-v3-img" src="assets/images/ian-daystar-poster.jpg?v=v3" alt="Daystar Graduation Poster v3" style="width: 100%; height: auto; display: block;">
           </div>
 
           <div style="margin-top: 1rem; padding-top: 0.65rem; border-top: 1px solid rgba(251, 191, 36, 0.25); font-size: 0.74rem; color: #cbd5e1; font-family: var(--font-mono, monospace);">
@@ -3130,115 +3129,12 @@
           cardPreviewSection.dataset.guestCategory = category;
           cardPreviewSection.dataset.guestCount = headcount;
 
-          // Render high-res personalized Daystar Poster (v3)
-          renderAdminPersonalizedPoster(displayName, refCode);
-
           // Show preview, hide form
           cardFormSection.style.display = 'none';
           cardPreviewSection.style.display = 'block';
 
-          // Activate Daystar Poster v3 tab as primary showcase
-          const posterTabBtn = document.getElementById('tab-btn-poster-v3');
-          if (posterTabBtn) posterTabBtn.click();
-
           showCardShareFeedback(`☁️ <strong>Saved directly to Database &amp; Google Sheets!</strong> Reference: <code>#${refCode}</code>`);
         });
-      }
-
-      function renderAdminPersonalizedPoster(guestName, refCode) {
-        const canvas = document.getElementById('poster-v3-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = 'assets/images/daystar-invitation-template.jpg';
-        img.onload = () => {
-          canvas.width = img.naturalWidth || 726;
-          canvas.height = img.naturalHeight || 1080;
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          const scale = canvas.width / 726;
-          const centerX = Math.round(505 * scale);
-          const cordiallyY = Math.round(350 * scale);
-          const nameY = Math.round(384 * scale);
-
-          // 1. Cordially Inviting
-          ctx.save();
-          const cordiallySize = Math.max(10, Math.round(12.5 * scale));
-          ctx.fillStyle = '#fbbf24';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
-          ctx.shadowBlur = 4 * scale;
-          ctx.shadowOffsetY = 1 * scale;
-          if ('letterSpacing' in ctx) {
-            ctx.letterSpacing = `${Math.round(4 * scale)}px`;
-            ctx.font = `700 ${cordiallySize}px "Montserrat", "Space Grotesk", sans-serif`;
-            ctx.fillText('CORDIALLY INVITING', centerX, cordiallyY);
-          } else {
-            ctx.font = `700 ${cordiallySize}px "Montserrat", "Space Grotesk", sans-serif`;
-            ctx.fillText('C O R D I A L L Y   I N V I T I N G', centerX, cordiallyY);
-          }
-          ctx.restore();
-
-          // 2. Guest Name
-          ctx.save();
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          let nameSize = Math.round(25 * scale);
-          const maxNameWidth = 340 * scale;
-          const serifFontFamily = '"Playfair Display", "Cinzel", "Times New Roman", Georgia, serif';
-          ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
-          let measured = ctx.measureText(guestName).width;
-          while (measured > maxNameWidth && nameSize > 15) {
-            nameSize -= 1.5;
-            ctx.font = `700 ${nameSize}px ${serifFontFamily}`;
-            measured = ctx.measureText(guestName).width;
-          }
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-          ctx.shadowBlur = 6 * scale;
-          ctx.shadowOffsetY = 2 * scale;
-          ctx.fillStyle = '#ffffff';
-          ctx.fillText(guestName, centerX, nameY);
-          ctx.restore();
-
-          // 3. Gold Accent divider
-          ctx.save();
-          const dividerGrad = ctx.createLinearGradient(centerX - 90 * scale, 0, centerX + 90 * scale, 0);
-          dividerGrad.addColorStop(0, 'transparent');
-          dividerGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.7)');
-          dividerGrad.addColorStop(1, 'transparent');
-          ctx.fillStyle = dividerGrad;
-          ctx.fillRect(centerX - 90 * scale, Math.round(406 * scale), 180 * scale, Math.max(1, 1.2 * scale));
-          ctx.restore();
-
-          // 4. Pass code
-          const bottomX = Math.round(42 * scale);
-          const passY = Math.round(1048 * scale);
-          ctx.save();
-          ctx.fillStyle = '#06101d';
-          ctx.fillRect(bottomX, passY - Math.round(9 * scale), Math.round(380 * scale), Math.round(18 * scale));
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#38bdf8';
-          ctx.font = `700 ${Math.round(12.5 * scale)}px "JetBrains Mono", monospace`;
-          ctx.fillText(`INVITATION PASS: #${refCode}`, bottomX, passY);
-          ctx.restore();
-
-          // 5. Draw live QR code onto canvas
-          const qrImg = new Image();
-          qrImg.crossOrigin = 'anonymous';
-          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(getAppBaseUrl() + 'admin.html?verify=' + refCode)}&color=0f172a&bgcolor=ffffff&qzone=1`;
-          qrImg.onload = () => {
-            const qrInnerSize = Math.round(72 * scale);
-            const pad = Math.round(6 * scale);
-            const boxW = qrInnerSize + pad * 2;
-            const boxH = qrInnerSize + pad * 2;
-            const boxX = canvas.width - boxW - Math.round(38 * scale);
-            const boxY = canvas.height - boxH - Math.round(22 * scale);
-            ctx.drawImage(qrImg, boxX + pad, boxY + pad, qrInnerSize, qrInnerSize);
-          };
-        };
       }
 
       function getAppBaseUrl() {
@@ -3902,21 +3798,11 @@
 
           let file = null;
           let blob = null;
-          const canvas = document.getElementById('poster-v3-canvas');
-          if (canvas) {
-            blob = await new Promise(r => canvas.toBlob(r, 'image/png', 1.0));
-            if (blob) {
-              const safeName = name.replace(/[^a-zA-Z0-9]+/g, '_');
-              file = new File([blob], `Ian_Kiromo_Daystar_Graduation_Poster_${safeName}_${refCode}.png`, { type: 'image/png' });
-            }
-          }
-          if (!file) {
-            try {
-              const resp = await fetch('assets/images/daystar-invitation-template.jpg');
-              blob = await resp.blob();
-              file = new File([blob], 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png', { type: 'image/png' });
-            } catch (err) { }
-          }
+          try {
+            const resp = await fetch('assets/images/ian-daystar-poster.png');
+            blob = await resp.blob();
+            file = new File([blob], 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png', { type: 'image/png' });
+          } catch (err) { }
 
           // 1. Mobile Native Share (Poster Image + Clean Message together into WhatsApp)
           if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -3937,22 +3823,12 @@
           }
 
           // 2. Desktop Fallback: Download poster + copy text to clipboard + launch WhatsApp
-          if (canvas) {
-            const link = document.createElement('a');
-            const safeName = name.replace(/[^a-zA-Z0-9]+/g, '_');
-            link.download = `Ian_Kiromo_Daystar_Graduation_Poster_${safeName}_${refCode}.png`;
-            link.href = canvas.toDataURL('image/png', 1.0);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          } else {
-            const link = document.createElement('a');
-            link.download = `Ian_Kiromo_Daystar_Graduation_Poster_v3.png`;
-            link.href = 'assets/images/daystar-invitation-template.jpg';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
+          const link = document.createElement('a');
+          link.download = 'Ian_Kiromo_Daystar_Graduation_Poster_v3.png';
+          link.href = 'assets/images/ian-daystar-poster.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
 
           let copiedImg = false;
           if (blob && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
@@ -3981,24 +3857,12 @@
       const downloadPosterV3Btn = document.getElementById('download-poster-v3-btn');
       if (downloadPosterV3Btn) {
         downloadPosterV3Btn.addEventListener('click', () => {
-          const canvas = document.getElementById('poster-v3-canvas');
-          const safeName = (cardPreviewSection.dataset.guestName || 'Guest').replace(/[^a-zA-Z0-9]+/g, '_');
-          const refCode = cardPreviewSection.dataset.refCode || 'card';
-          if (canvas) {
-            const link = document.createElement('a');
-            link.download = `Ian_Kiromo_Daystar_Invitation_${safeName}_${refCode}.png`;
-            link.href = canvas.toDataURL('image/png', 1.0);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          } else {
-            const link = document.createElement('a');
-            link.download = 'Ian_Kiromo_Daystar_Graduation_Poster.jpg';
-            link.href = 'assets/images/daystar-invitation-template.jpg';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
+          const link = document.createElement('a');
+          link.download = 'Ian_Kiromo_Daystar_Graduation_Poster_v3.jpg';
+          link.href = 'assets/images/ian-daystar-poster.jpg';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
           showCardShareFeedback('✓ <strong>Downloaded!</strong> Daystar Graduation Poster saved to your device.');
         });
       }
