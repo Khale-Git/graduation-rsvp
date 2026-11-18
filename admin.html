@@ -3810,19 +3810,104 @@
       // ===================================================================
       // SHARE V3: Official Daystar Celebration Poster (High-Res Flyer + Text)
       // ===================================================================
+      async function getPersonalizedPosterBlob(guestName, refCode) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = img.naturalWidth || 726;
+              canvas.height = img.naturalHeight || 1080;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              const scale = canvas.width / 726;
+              const centerX = Math.round(516 * scale);
+              const labelY = Math.round(318 * scale);
+              const nameY = Math.round(358 * scale);
+              const passY = Math.round(400 * scale);
+              const maxNameWidth = Math.round(360 * scale);
+
+              // Scrim
+              ctx.save();
+              ctx.fillStyle = 'rgba(5, 15, 35, 0.52)';
+              const scrimX = Math.round(328 * scale);
+              const scrimY = Math.round(298 * scale);
+              const scrimW = Math.round(390 * scale);
+              const scrimH = Math.round(118 * scale);
+              ctx.fillRect(scrimX, scrimY, scrimW, scrimH);
+              ctx.restore();
+
+              // Cordially Inviting
+              ctx.save();
+              ctx.fillStyle = '#94a3b8';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.font = `600 ${Math.max(9, Math.round(11 * scale))}px "Montserrat", sans-serif`;
+              ctx.fillText('CORDIALLY INVITING', centerX, labelY);
+              ctx.restore();
+
+              // Name
+              ctx.save();
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              let nameSize = Math.round(36 * scale);
+              const serifFont = '"Playfair Display", "Cinzel", Georgia, serif';
+              ctx.font = `700 ${nameSize}px ${serifFont}`;
+              let measured = ctx.measureText(guestName).width;
+              while (measured > maxNameWidth && nameSize > 16) {
+                nameSize -= 2;
+                ctx.font = `700 ${nameSize}px ${serifFont}`;
+                measured = ctx.measureText(guestName).width;
+              }
+              ctx.shadowColor = 'rgba(0,0,0,0.85)';
+              ctx.shadowBlur = 6;
+              ctx.shadowOffsetY = 2;
+              ctx.fillStyle = '#ffffff';
+              ctx.fillText(guestName, centerX, nameY);
+              ctx.restore();
+
+              // Pass
+              if (refCode) {
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = `700 ${Math.max(9, Math.round(11 * scale))}px monospace`;
+                ctx.fillStyle = '#fbbf24';
+                ctx.fillText(`INVITATION PASS: #${refCode}`, centerX, passY);
+                ctx.restore();
+              }
+
+              canvas.toBlob((blob) => {
+                resolve(blob);
+              }, 'image/png');
+            } catch (err) {
+              resolve(null);
+            }
+          };
+          img.onerror = () => resolve(null);
+          img.src = 'assets/images/ian-daystar-poster.jpg';
+        });
+      }
+
       const shareCardV3Btn = document.getElementById('share-card-v3-btn');
       if (shareCardV3Btn) {
         shareCardV3Btn.addEventListener('click', async () => {
           const name = cardPreviewSection.dataset.guestName || 'Honored Guest';
           const refCode = cardPreviewSection.dataset.refCode || 'IKG-C2026';
           const message = buildPrestigeInviteMessageV3(name, refCode);
+          const safeName = (name || 'Guest').replace(/[^a-zA-Z0-9]/g, '_');
 
           let file = null;
           let blob = null;
           try {
-            const resp = await fetch('assets/images/ian-daystar-poster.png');
-            blob = await resp.blob();
-            file = new File([blob], `Ian_Kiromo_Daystar_Graduation_Poster_v3.png`, { type: 'image/png' });
+            blob = await getPersonalizedPosterBlob(name, refCode);
+            if (!blob) {
+              const resp = await fetch('assets/images/ian-daystar-poster.png');
+              blob = await resp.blob();
+            }
+            file = new File([blob], `Ian_Kiromo_Daystar_Invite_${safeName}_${refCode}.png`, { type: 'image/png' });
           } catch (err) { }
 
           // 1. Mobile Native Share (Poster Image + Clean Message together into WhatsApp)
@@ -3844,12 +3929,23 @@
           }
 
           // 2. Desktop Fallback: Download poster + copy text to clipboard + launch WhatsApp
-          const link = document.createElement('a');
-          link.download = `Ian_Kiromo_Daystar_Graduation_Poster_v3.png`;
-          link.href = 'assets/images/ian-daystar-poster.png';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          if (blob) {
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = `Ian_Kiromo_Daystar_Invite_${safeName}_${refCode}.png`;
+            link.href = blobUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+          } else {
+            const link = document.createElement('a');
+            link.download = `Ian_Kiromo_Daystar_Graduation_Poster_v3.png`;
+            link.href = 'assets/images/ian-daystar-poster.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
 
           let copiedImg = false;
           if (blob && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
@@ -3862,7 +3958,7 @@
           showCardShareFeedback(
             copiedImg
               ? '✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded &amp; copied to clipboard. In WhatsApp, press <strong>Ctrl+V</strong> to attach the poster with your invitation text.'
-              : '✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded. Attach <code>Ian_Kiromo_Daystar_Graduation_Poster_v3.png</code> in WhatsApp with your invitation message.'
+              : `✓ <strong>Share v3 Ready!</strong> Daystar Poster downloaded. Attach <code>Ian_Kiromo_Daystar_Invite_${safeName}_${refCode}.png</code> in WhatsApp with your invitation message.`
           );
 
           const guestPhone = (document.getElementById('card-guest-phone').value || '').replace(/\s/g, '');
@@ -3877,7 +3973,26 @@
       // Download Poster v3 direct button
       const downloadPosterV3Btn = document.getElementById('download-poster-v3-btn');
       if (downloadPosterV3Btn) {
-        downloadPosterV3Btn.addEventListener('click', () => {
+        downloadPosterV3Btn.addEventListener('click', async () => {
+          const name = cardPreviewSection.dataset.guestName || 'Guest';
+          const refCode = cardPreviewSection.dataset.refCode || 'IKG-C2026';
+          const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
+          try {
+            const blob = await getPersonalizedPosterBlob(name, refCode);
+            if (blob) {
+              const blobUrl = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.download = `Ian_Kiromo_Daystar_Invite_${safeName}_${refCode}.png`;
+              link.href = blobUrl;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+              showCardShareFeedback(`✓ <strong>Downloaded!</strong> Personalized Daystar Poster for ${escapeHtml(name)} saved.`);
+              return;
+            }
+          } catch (e) { }
+
           const link = document.createElement('a');
           link.download = 'Ian_Kiromo_Daystar_Graduation_Poster.jpg';
           link.href = 'assets/images/ian-daystar-poster.jpg';
