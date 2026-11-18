@@ -1286,7 +1286,7 @@ function initCalendarIntegrations() {
       }
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shareMsg).catch(() => {});
+        navigator.clipboard.writeText(shareMsg).catch(() => { });
       }
       window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, '_blank');
     });

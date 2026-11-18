@@ -3717,14 +3717,18 @@ body {
    DAYSTAR OFFICIAL GRADUATION POSTER & SPOTLIGHT ENHANCEMENTS
    =================================================================== */
 .official-poster-frame {
-  max-width: 300px !important;
-  height: 425px !important;
+  width: 100% !important;
+  max-width: 310px !important;
+  height: auto !important;
+  aspect-ratio: 726 / 1080 !important;
   border-radius: 18px !important;
+  padding: 5px !important;
   background: linear-gradient(135deg, #fbbf24 0%, #d97706 40%, #1d4ed8 100%) !important;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(245, 158, 11, 0.3) !important;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
 }
 
 .official-poster-frame:hover {
@@ -3735,7 +3739,7 @@ body {
 .poster-glow-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 14px;
   display: block;
 }
